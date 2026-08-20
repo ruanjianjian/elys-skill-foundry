@@ -224,9 +224,15 @@ function GooeySkillCard({ skill, onIntent }) {
   const [focused, setFocused] = useState(false);
   const [flashing, setFlashing] = useState(false);
   const flashTimer = useRef();
+  const leaveTimer = useRef();
+  const hoveredRef = useRef(false);
+  const focusedRef = useRef(false);
   const active = !reducedMotion && (hovered || focused || flashing);
 
-  useEffect(() => () => window.clearTimeout(flashTimer.current), []);
+  useEffect(() => () => {
+    window.clearTimeout(flashTimer.current);
+    window.clearTimeout(leaveTimer.current);
+  }, []);
 
   const copySkill = () => {
     window.elysCopyText?.(skill.command);
@@ -238,23 +244,33 @@ function GooeySkillCard({ skill, onIntent }) {
   };
 
   const enterCard = () => {
+    window.clearTimeout(leaveTimer.current);
+    hoveredRef.current = true;
     setHovered(true);
     onIntent(true);
   };
 
   const leaveCard = () => {
-    setHovered(false);
-    if (!focused) onIntent(false);
+    hoveredRef.current = false;
+    window.clearTimeout(leaveTimer.current);
+    leaveTimer.current = window.setTimeout(() => {
+      if (hoveredRef.current) return;
+      setHovered(false);
+      if (!focusedRef.current) onIntent(false);
+    }, 160);
   };
 
   const focusCard = () => {
+    window.clearTimeout(leaveTimer.current);
+    focusedRef.current = true;
     setFocused(true);
     onIntent(true);
   };
 
   const blurCard = () => {
+    focusedRef.current = false;
     setFocused(false);
-    if (!hovered) onIntent(false);
+    if (!hoveredRef.current) onIntent(false);
   };
 
   return (
@@ -334,8 +350,8 @@ function GooeySkillGrid() {
   useEffect(() => {
     if (!skillsMount) return undefined;
 
-    skillsMount.style.gridTemplateColumns = wideGrid && activeIndex !== null
-      ? SKILLS.map((_, index) => (index === activeIndex ? "1.4fr" : "0.9fr")).join(" ")
+    skillsMount.style.gridTemplateColumns = wideGrid
+      ? SKILLS.map((_, index) => `minmax(0, ${index === activeIndex ? "1.4fr" : activeIndex === null ? "1fr" : "0.9fr"})`).join(" ")
       : "";
 
     return () => {
@@ -347,7 +363,9 @@ function GooeySkillGrid() {
     <GooeySkillCard
       key={skill.command}
       skill={skill}
-      onIntent={(intent) => setActiveIndex(intent ? index : null)}
+      onIntent={(intent) => setActiveIndex((current) => (
+        intent ? index : current === index ? null : current
+      ))}
     />
   ));
 }

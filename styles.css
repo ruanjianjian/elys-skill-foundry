@@ -444,6 +444,14 @@ main {
   }
 }
 
+@media (min-width: 1041px) {
+  .skill-card code {
+    overflow-wrap: normal;
+    white-space: nowrap;
+    font-size: 9px;
+  }
+}
+
 @media (max-width: 740px) {
   .liquid-title-group,
   .liquid-title-item,
