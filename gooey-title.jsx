@@ -140,7 +140,7 @@ function GooeyTitle() {
             schedule();
           }, 100);
         }, 300);
-      }, 4000);
+      }, 3000);
     };
 
     const onVisibilityChange = () => {
