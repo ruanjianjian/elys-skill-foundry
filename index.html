@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="五个持续维护的 ELYS 工程 Skills。" />
+    <meta name="theme-color" content="#f2f5ee" />
+    <title>我很懒，所以我做了</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%231746e6'/%3E%3Cpath d='M13 43 24 21h7L20 43zm15 0 11-22h7L35 43z' fill='%23f2f5ee'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+    <script src="gooey-title.bundle.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="返回顶部">
+        <span aria-hidden="true">///</span> ELYS_SKILLS <i aria-hidden="true"></i>
+      </a>
+      <button
+        class="copy-all"
+        type="button"
+        data-copy="/elys-backend-technical-design\n/elys-code-development\n/elys-evaluation\n/engineering-delivery\n/codex-weekly-session-report"
+      >复制全部</button>
+    </header>
+
+    <main id="top">
+      <div class="edition"><span>TEAM OPEN SOURCE</span><span>05 MAINTAINED SKILLS</span></div>
+      <div class="title-stage" data-gooey-title>
+        <h1 class="liquid-title liquid-title-fallback">我很懒，<i class="mobile-break" aria-hidden="true"></i>所以我做了</h1>
+      </div>
+
+      <section class="skill-grid" aria-label="五个 ELYS Skills">
+        <button class="skill-card card-design" type="button" data-copy="/elys-backend-technical-design">
+          <span class="card-meta"><b>01</b><i>SHAPE</i></span>
+          <strong>技术方案</strong>
+          <code>/elys-backend-technical-design</code>
+          <span class="card-promise">把方案钉在当前代码上</span>
+        </button>
+
+        <button class="skill-card card-build" type="button" data-copy="/elys-code-development">
+          <span class="card-meta"><b>02</b><i>BUILD</i></span>
+          <strong>代码开发</strong>
+          <code>/elys-code-development</code>
+          <span class="card-promise">真实 E2E 通过才算完成</span>
+        </button>
+
+        <button class="skill-card card-eval" type="button" data-copy="/elys-evaluation">
+          <span class="card-meta"><b>03</b><i>MEASURE</i></span>
+          <strong>模型评测</strong>
+          <code>/elys-evaluation</code>
+          <span class="card-promise">先定义怎么测，再跑模型</span>
+        </button>
+
+        <button class="skill-card card-ship" type="button" data-copy="/engineering-delivery">
+          <span class="card-meta"><b>04</b><i>SHIP</i></span>
+          <strong>工程交付</strong>
+          <code>/engineering-delivery</code>
+          <span class="card-promise">当前 PR Head 通过才算交付</span>
+        </button>
+
+        <button class="skill-card card-review" type="button" data-copy="/codex-weekly-session-report">
+          <span class="card-meta"><b>05</b><i>REVIEW</i></span>
+          <strong>周报复盘</strong>
+          <code>/codex-weekly-session-report</code>
+          <span class="card-promise">从真实 Session 还原工作</span>
+        </button>
+      </section>
+    </main>
+
+    <div class="toast" role="status" aria-live="polite" aria-atomic="true" data-toast>已复制</div>
+  </body>
+</html>
