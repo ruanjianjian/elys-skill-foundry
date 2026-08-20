@@ -97,6 +97,19 @@ function useReducedMotion() {
   return reduced;
 }
 
+function useWideGrid() {
+  const [wide, setWide] = useState(() => window.matchMedia("(min-width: 1041px)").matches);
+
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 1041px)");
+    const onChange = (event) => setWide(event.matches);
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, []);
+
+  return wide;
+}
+
 function GooeyTitle() {
   const reducedMotion = useReducedMotion();
   const [titleIndex, setTitleIndex] = useState(0);
@@ -205,13 +218,12 @@ function GooeyTitle() {
   );
 }
 
-function GooeySkillCard({ skill }) {
+function GooeySkillCard({ skill, onIntent }) {
   const reducedMotion = useReducedMotion();
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
   const [flashing, setFlashing] = useState(false);
   const flashTimer = useRef();
-  const reactorRef = useRef();
   const active = !reducedMotion && (hovered || focused || flashing);
 
   useEffect(() => () => window.clearTimeout(flashTimer.current), []);
@@ -225,25 +237,28 @@ function GooeySkillCard({ skill }) {
     flashTimer.current = window.setTimeout(() => setFlashing(false), 380);
   };
 
-  const moveCard = (event) => {
-    if (reducedMotion || event.pointerType === "touch") return;
-
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-    reactorRef.current?.style.setProperty("--card-rx", `${(-y * 0.9).toFixed(2)}deg`);
-    reactorRef.current?.style.setProperty("--card-ry", `${(x * 1.1).toFixed(2)}deg`);
+  const enterCard = () => {
+    setHovered(true);
+    onIntent(true);
   };
 
-  const resetCard = () => {
+  const leaveCard = () => {
     setHovered(false);
-    reactorRef.current?.style.setProperty("--card-rx", "0deg");
-    reactorRef.current?.style.setProperty("--card-ry", "0deg");
+    if (!focused) onIntent(false);
+  };
+
+  const focusCard = () => {
+    setFocused(true);
+    onIntent(true);
+  };
+
+  const blurCard = () => {
+    setFocused(false);
+    if (!hovered) onIntent(false);
   };
 
   return (
     <div
-      ref={reactorRef}
       className={`skill-reactor ${skill.className}-reactor${active ? " is-active" : ""}${flashing ? " is-flashing" : ""}`}
       style={{
         "--card-surface": skill.surface,
@@ -274,7 +289,7 @@ function GooeySkillCard({ skill }) {
               evolve: {
                 anticipation: 18,
                 travel: 10,
-                cornerDuration: 760,
+                cornerDuration: 1080,
                 roundness: 0.9,
               },
             },
@@ -292,11 +307,10 @@ function GooeySkillCard({ skill }) {
         className={`skill-card ${skill.className}`}
         type="button"
         data-copy={skill.command}
-        onPointerEnter={() => setHovered(true)}
-        onPointerMove={moveCard}
-        onPointerLeave={resetCard}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
+        onPointerEnter={enterCard}
+        onPointerLeave={leaveCard}
+        onFocus={focusCard}
+        onBlur={blurCard}
         onClick={copySkill}
       >
         <span className="card-meta"><b>{skill.number}</b><i>{skill.verb}</i></span>
@@ -309,12 +323,33 @@ function GooeySkillCard({ skill }) {
 }
 
 function GooeySkillGrid() {
+  const wideGrid = useWideGrid();
+  const [activeIndex, setActiveIndex] = useState(null);
+
   useEffect(() => {
     document.documentElement.classList.add("has-gooey-skills");
     return () => document.documentElement.classList.remove("has-gooey-skills");
   }, []);
 
-  return SKILLS.map((skill) => <GooeySkillCard key={skill.command} skill={skill} />);
+  useEffect(() => {
+    if (!skillsMount) return undefined;
+
+    skillsMount.style.gridTemplateColumns = wideGrid && activeIndex !== null
+      ? SKILLS.map((_, index) => (index === activeIndex ? "1.4fr" : "0.9fr")).join(" ")
+      : "";
+
+    return () => {
+      skillsMount.style.gridTemplateColumns = "";
+    };
+  }, [activeIndex, wideGrid]);
+
+  return SKILLS.map((skill, index) => (
+    <GooeySkillCard
+      key={skill.command}
+      skill={skill}
+      onIntent={(intent) => setActiveIndex(intent ? index : null)}
+    />
+  ));
 }
 
 const titleMount = document.querySelector("[data-gooey-title]");

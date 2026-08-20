@@ -214,6 +214,7 @@ main {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 12px;
+  transition: grid-template-columns 880ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .skill-card {
@@ -245,30 +246,21 @@ main {
   min-height: clamp(220px, 28vh, 310px);
   border: 1px solid var(--card-outline);
   background: var(--card-surface);
-  transform: perspective(800px) translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg);
-  transform-style: preserve-3d;
+  transform: translate3d(0, 0, 0);
   transition:
-    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 520ms cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
 }
 
 .skill-reactor.is-active {
   z-index: 3;
-  transform:
-    perspective(800px)
-    translate3d(0, -3px, 0)
-    rotateX(var(--card-rx, 0deg))
-    rotateY(var(--card-ry, 0deg));
+  transform: translate3d(0, -2px, 0);
   box-shadow: 3px 3px 0 var(--card-accent);
 }
 
 .skill-reactor.is-flashing {
-  transform:
-    perspective(800px)
-    translate3d(0, -2px, 0)
-    rotateX(var(--card-rx, 0deg))
-    rotateY(var(--card-ry, 0deg));
+  transform: translate3d(0, -1px, 0);
 }
 
 .has-gooey-skills .skill-card {
