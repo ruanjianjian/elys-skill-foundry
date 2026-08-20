@@ -162,19 +162,19 @@ main {
   opacity: 1;
   transform: translateY(0) scale(1);
   transition:
-    opacity 260ms ease,
-    transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 240ms ease,
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
 
 .liquid-title.is-exit .liquid-title-copy {
   opacity: 0;
-  transform: translateY(-0.2em) scale(0.97);
+  transform: translateY(-0.11em) scale(0.985);
 }
 
 .liquid-title.is-enter .liquid-title-copy {
   opacity: 0;
-  transform: translateY(0.24em) scale(0.96);
+  transform: translateY(0.13em) scale(0.98);
 }
 
 .mobile-break {
@@ -238,51 +238,85 @@ main {
   box-shadow: 7px 7px 0 var(--cobalt);
 }
 
-.skill-liquid {
-  width: 100%;
-  min-width: 0;
-  height: 100%;
-  overflow: visible;
-}
-
-.skill-liquid.is-active {
-  z-index: 3;
-}
-
-.skill-liquid-item {
-  display: block !important;
-  width: 100%;
+.skill-reactor {
   position: relative;
+  display: flex;
+  min-width: 0;
+  min-height: clamp(220px, 28vh, 310px);
+  border: 1px solid var(--card-outline);
+  background: var(--card-surface);
+  transform: perspective(800px) translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg);
+  transform-style: preserve-3d;
+  transition:
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.skill-reactor.is-active {
+  z-index: 3;
+  transform:
+    perspective(800px)
+    translate3d(0, -3px, 0)
+    rotateX(var(--card-rx, 0deg))
+    rotateY(var(--card-ry, 0deg));
+  box-shadow: 3px 3px 0 var(--card-accent);
+}
+
+.skill-reactor.is-flashing {
+  transform:
+    perspective(800px)
+    translate3d(0, -2px, 0)
+    rotateX(var(--card-rx, 0deg))
+    rotateY(var(--card-ry, 0deg));
 }
 
 .has-gooey-skills .skill-card {
+  z-index: 2;
   width: 100%;
   height: 100%;
-  border-color: transparent;
+  min-height: 100%;
+  flex: 1;
+  border: 0;
   background: transparent;
   box-shadow: none;
-  transform: none;
+  transform: translateZ(1px);
 }
 
 .has-gooey-skills .skill-card:hover,
 .has-gooey-skills .card-ship:hover {
   box-shadow: none;
-  transform: none;
+  transform: translateZ(1px);
 }
 
-.card-drop {
-  position: absolute;
-  top: 16px;
-  right: -9px;
-  z-index: -1;
+.card-verb-liquid {
+  position: absolute !important;
+  top: 14px;
+  right: 14px;
+  z-index: 1;
+  width: 96px;
+  height: 32px;
+  overflow: visible;
   pointer-events: none;
 }
 
-.card-droplet {
+.card-verb-liquid-item {
+  position: absolute !important;
+  top: 4px;
+  right: 0;
+}
+
+.card-verb-blob {
   display: block;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
+  margin-left: calc(96px - var(--verb-width));
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.card-verb-blob.is-active {
+  width: var(--verb-width);
+  height: 20px;
 }
 
 .card-meta {
@@ -299,8 +333,15 @@ main {
 }
 
 .card-meta i {
+  position: relative;
+  z-index: 2;
   font-style: normal;
   letter-spacing: 0.08em;
+  transition: color 140ms ease 30ms;
+}
+
+.skill-reactor.is-active .card-meta i {
+  color: var(--card-accent-ink);
 }
 
 .skill-card strong {
@@ -401,6 +442,10 @@ main {
     min-height: 230px;
   }
 
+  .skill-reactor {
+    min-height: 230px;
+  }
+
   .card-ship,
   .card-review {
     grid-column: span 1;
@@ -472,8 +517,9 @@ main {
     min-height: 190px;
   }
 
-  .card-review-liquid {
+  .card-review-reactor {
     grid-column: 1 / -1;
+    min-height: 190px;
   }
 }
 
@@ -488,7 +534,13 @@ main {
     display: none !important;
   }
 
-  .card-drop {
+  .skill-reactor,
+  .skill-reactor.is-active,
+  .skill-reactor.is-flashing {
+    transform: none;
+  }
+
+  .card-verb-liquid {
     display: none !important;
   }
 }

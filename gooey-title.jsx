@@ -11,9 +11,9 @@ const TITLES = [
 
 const DROP_MOTION = [
   { a: [0, 0], b: [0, 0] },
-  { a: [13, 8], b: [-12, 5] },
-  { a: [-7, 14], b: [11, -7] },
-  { a: [9, -6], b: [-5, 10] },
+  { a: [7, 4], b: [-6, 3] },
+  { a: [-4, 7], b: [6, -4] },
+  { a: [5, -3], b: [-3, 5] },
 ];
 
 const SKILLS = [
@@ -24,10 +24,11 @@ const SKILLS = [
     command: "/elys-backend-technical-design",
     promise: "把方案钉在当前代码上",
     className: "card-design",
-    fill: "#f2f5ee",
-    shadow: "#1746e6",
+    surface: "#f2f5ee",
+    accent: "#1746e6",
+    accentInk: "#ffffff",
     outline: "#11182b",
-    drop: [7, 3],
+    verbWidth: 58,
   },
   {
     number: "02",
@@ -36,10 +37,11 @@ const SKILLS = [
     command: "/elys-code-development",
     promise: "真实 E2E 通过才算完成",
     className: "card-build",
-    fill: "#f2f5ee",
-    shadow: "#1746e6",
+    surface: "#f2f5ee",
+    accent: "#1746e6",
+    accentInk: "#ffffff",
     outline: "#11182b",
-    drop: [-5, 8],
+    verbWidth: 58,
   },
   {
     number: "03",
@@ -48,10 +50,11 @@ const SKILLS = [
     command: "/elys-evaluation",
     promise: "先定义怎么测，再跑模型",
     className: "card-eval",
-    fill: "#f2f5ee",
-    shadow: "#1746e6",
+    surface: "#f2f5ee",
+    accent: "#1746e6",
+    accentInk: "#ffffff",
     outline: "#11182b",
-    drop: [8, -4],
+    verbWidth: 72,
   },
   {
     number: "04",
@@ -60,10 +63,11 @@ const SKILLS = [
     command: "/engineering-delivery",
     promise: "当前 PR Head 通过才算交付",
     className: "card-ship",
-    fill: "#1746e6",
-    shadow: "#e4492e",
-    outline: "transparent",
-    drop: [-4, 7],
+    surface: "#1746e6",
+    accent: "#e4492e",
+    accentInk: "#ffffff",
+    outline: "#1746e6",
+    verbWidth: 48,
   },
   {
     number: "05",
@@ -72,10 +76,11 @@ const SKILLS = [
     command: "/codex-weekly-session-report",
     promise: "从真实 Session 还原工作",
     className: "card-review",
-    fill: "#11182b",
-    shadow: "#20d5ad",
-    outline: "transparent",
-    drop: [7, 5],
+    surface: "#11182b",
+    accent: "#20d5ad",
+    accentInk: "#11182b",
+    outline: "#11182b",
+    verbWidth: 64,
   },
 ];
 
@@ -133,9 +138,9 @@ function GooeyTitle() {
           settleTimer = window.setTimeout(() => {
             setPhase("idle");
             schedule();
-          }, 110);
-        }, 340);
-      }, 6200);
+          }, 100);
+        }, 300);
+      }, 4000);
     };
 
     const onVisibilityChange = () => {
@@ -167,16 +172,16 @@ function GooeyTitle() {
         radius={20}
         morph={{
           shape: true,
-          speed: 0.48,
-          bounce: 0.55,
-          contentBlur: 2,
+          speed: 0.38,
+          bounce: 0.18,
+          contentBlur: 0,
           advanced: {
-            bridgeGrow: 8,
+            bridgeGrow: 4,
             evolve: {
-              anticipation: 38,
-              travel: 30,
-              cornerDuration: 1100,
-              roundness: 1,
+              anticipation: 18,
+              travel: 12,
+              cornerDuration: 1200,
+              roundness: 0.72,
             },
           },
         }}
@@ -206,6 +211,7 @@ function GooeySkillCard({ skill }) {
   const [focused, setFocused] = useState(false);
   const [flashing, setFlashing] = useState(false);
   const flashTimer = useRef();
+  const reactorRef = useRef();
   const active = !reducedMotion && (hovered || focused || flashing);
 
   useEffect(() => () => window.clearTimeout(flashTimer.current), []);
@@ -216,70 +222,89 @@ function GooeySkillCard({ skill }) {
 
     window.clearTimeout(flashTimer.current);
     setFlashing(true);
-    flashTimer.current = window.setTimeout(() => setFlashing(false), 520);
+    flashTimer.current = window.setTimeout(() => setFlashing(false), 380);
+  };
+
+  const moveCard = (event) => {
+    if (reducedMotion || event.pointerType === "touch") return;
+
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    reactorRef.current?.style.setProperty("--card-rx", `${(-y * 0.9).toFixed(2)}deg`);
+    reactorRef.current?.style.setProperty("--card-ry", `${(x * 1.1).toFixed(2)}deg`);
+  };
+
+  const resetCard = () => {
+    setHovered(false);
+    reactorRef.current?.style.setProperty("--card-rx", "0deg");
+    reactorRef.current?.style.setProperty("--card-ry", "0deg");
   };
 
   return (
-    <Liquid
-      className={`skill-liquid ${skill.className}-liquid${active ? " is-active" : ""}`}
-      blur={10}
-      contrast={20}
-      fill={skill.fill}
-      filterPadding={28}
-      shadow={
-        active
-          ? `7px 7px 0 ${skill.shadow}, 0 0 0 1px ${skill.outline}, inset 0 2px 0 rgba(255, 255, 255, 0.24)`
-          : `0 0 0 1px ${skill.outline}`
-      }
+    <div
+      ref={reactorRef}
+      className={`skill-reactor ${skill.className}-reactor${active ? " is-active" : ""}${flashing ? " is-flashing" : ""}`}
+      style={{
+        "--card-surface": skill.surface,
+        "--card-accent": skill.accent,
+        "--card-accent-ink": skill.accentInk,
+        "--card-outline": skill.outline,
+      }}
     >
-      <Liquid.Item
-        className="skill-liquid-item"
-        radius={18}
-        morph={{
-          shape: true,
-          speed: active ? 0.42 : 0.12,
-          bounce: active ? 0.58 : 0.24,
-          contentBlur: active ? 1 : 0,
-          advanced: {
-            bridgeGrow: active ? 7 : 2,
-            evolve: {
-              anticipation: active ? 34 : 0,
-              travel: active ? 24 : 0,
-              cornerDuration: active ? 980 : 2600,
-              roundness: 1,
+      <Liquid
+        className="card-verb-liquid"
+        blur={7}
+        contrast={21}
+        fill={skill.accent}
+        filterPadding={18}
+      >
+        <Liquid.Item
+          className="card-verb-liquid-item"
+          radius={999}
+          scale={flashing ? 1.08 : 1}
+          transition="smooth"
+          morph={{
+            shape: true,
+            speed: 0.46,
+            bounce: 0.2,
+            contentBlur: 0,
+            advanced: {
+              bridgeGrow: 3,
+              evolve: {
+                anticipation: 18,
+                travel: 10,
+                cornerDuration: 760,
+                roundness: 0.9,
+              },
             },
-          },
-        }}
-      >
-        <button
-          className={`skill-card ${skill.className}`}
-          type="button"
-          data-copy={skill.command}
-          onPointerEnter={() => setHovered(true)}
-          onPointerLeave={() => setHovered(false)}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          onClick={copySkill}
+          }}
         >
-          <span className="card-meta"><b>{skill.number}</b><i>{skill.verb}</i></span>
-          <strong>{skill.title}</strong>
-          <code>{skill.command}</code>
-          <span className="card-promise">{skill.promise}</span>
-        </button>
-      </Liquid.Item>
+          <i
+            className={`card-verb-blob${active ? " is-active" : ""}`}
+            style={{ "--verb-width": `${skill.verbWidth}px` }}
+            aria-hidden="true"
+          ></i>
+        </Liquid.Item>
+      </Liquid>
 
-      <Liquid.Item
-        className="card-drop"
-        radius={999}
-        x={active ? skill.drop[0] : 0}
-        y={active ? skill.drop[1] : 0}
-        scale={active ? 1 : 0.01}
-        transition="smooth"
-        delay={45}
+      <button
+        className={`skill-card ${skill.className}`}
+        type="button"
+        data-copy={skill.command}
+        onPointerEnter={() => setHovered(true)}
+        onPointerMove={moveCard}
+        onPointerLeave={resetCard}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        onClick={copySkill}
       >
-        <i className="card-droplet" aria-hidden="true"></i>
-      </Liquid.Item>
-    </Liquid>
+        <span className="card-meta"><b>{skill.number}</b><i>{skill.verb}</i></span>
+        <strong>{skill.title}</strong>
+        <code>{skill.command}</code>
+        <span className="card-promise">{skill.promise}</span>
+      </button>
+    </div>
   );
 }
 
