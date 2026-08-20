@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex Weekly Session Report"
+  short_description: "Scan Codex work sessions and prepare a reviewable weekly report"
+  default_prompt: "Use $codex-weekly-session-report to scan the requested Codex session window, generate and E2E-test a commentable local review preview, read completed comments from the run-scoped review-feedback.json sidecar, and publish externally only after explicit approval."

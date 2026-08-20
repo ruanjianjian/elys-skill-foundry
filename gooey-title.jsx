@@ -11,9 +11,9 @@ const TITLES = [
 
 const DROP_MOTION = [
   { a: [0, 0], b: [0, 0] },
-  { a: [7, 4], b: [-6, 3] },
-  { a: [-4, 7], b: [6, -4] },
-  { a: [5, -3], b: [-3, 5] },
+  { a: [4, 2], b: [-4, 2] },
+  { a: [-2, 4], b: [4, -2] },
+  { a: [3, -2], b: [-2, 3] },
 ];
 
 const SKILLS = [
@@ -28,7 +28,7 @@ const SKILLS = [
     accent: "#1746e6",
     accentInk: "#ffffff",
     outline: "#11182b",
-    verbWidth: 58,
+    verbWidth: 35,
   },
   {
     number: "02",
@@ -41,7 +41,7 @@ const SKILLS = [
     accent: "#1746e6",
     accentInk: "#ffffff",
     outline: "#11182b",
-    verbWidth: 58,
+    verbWidth: 35,
   },
   {
     number: "03",
@@ -54,7 +54,7 @@ const SKILLS = [
     accent: "#1746e6",
     accentInk: "#ffffff",
     outline: "#11182b",
-    verbWidth: 72,
+    verbWidth: 43,
   },
   {
     number: "04",
@@ -67,7 +67,7 @@ const SKILLS = [
     accent: "#e4492e",
     accentInk: "#ffffff",
     outline: "#1746e6",
-    verbWidth: 48,
+    verbWidth: 29,
   },
   {
     number: "05",
@@ -80,7 +80,7 @@ const SKILLS = [
     accent: "#20d5ad",
     accentInk: "#11182b",
     outline: "#11182b",
-    verbWidth: 64,
+    verbWidth: 38,
   },
 ];
 
@@ -174,25 +174,25 @@ function GooeyTitle() {
   return (
     <Liquid
       className="liquid-title-group"
-      blur={14}
+      blur={8}
       contrast={22}
       fill="var(--signal)"
-      filterPadding={42}
-      shadow="8px 9px 0 rgba(17, 24, 43, 0.22), inset 0 2px 0 rgba(255, 255, 255, 0.34), inset 0 -2px 0 rgba(17, 24, 43, 0.18)"
+      filterPadding={25}
+      shadow="5px 5px 0 rgba(17, 24, 43, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.34), inset 0 -1px 0 rgba(17, 24, 43, 0.18)"
     >
       <Liquid.Item
         className="liquid-title-item"
-        radius={20}
+        radius={12}
         morph={{
           shape: true,
           speed: 0.38,
           bounce: 0.18,
           contentBlur: 0,
           advanced: {
-            bridgeGrow: 4,
+            bridgeGrow: 2.4,
             evolve: {
-              anticipation: 18,
-              travel: 12,
+              anticipation: 12,
+              travel: 7,
               cornerDuration: 1200,
               roundness: 0.72,
             },
@@ -234,13 +234,30 @@ function GooeySkillCard({ skill, onIntent }) {
     window.clearTimeout(leaveTimer.current);
   }, []);
 
-  const copySkill = () => {
-    window.elysCopyText?.(skill.command);
+  const pulseCard = () => {
     if (reducedMotion) return;
 
     window.clearTimeout(flashTimer.current);
     setFlashing(true);
     flashTimer.current = window.setTimeout(() => setFlashing(false), 380);
+  };
+
+  const copySkillFile = async () => {
+    pulseCard();
+
+    try {
+      const response = await fetch(`skills/${skill.command.slice(1)}/SKILL.md`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const content = await response.text();
+      await window.elysCopyText?.(content, `${skill.command} 的 SKILL.md 已复制`);
+    } catch (_error) {
+      window.elysShowToast?.("复制失败，请改用下载 ZIP");
+    }
+  };
+
+  const downloadSkill = () => {
+    pulseCard();
+    window.elysShowToast?.(`${skill.command} 开始下载`);
   };
 
   const enterCard = () => {
@@ -267,7 +284,8 @@ function GooeySkillCard({ skill, onIntent }) {
     onIntent(true);
   };
 
-  const blurCard = () => {
+  const blurCard = (event) => {
+    if (event.currentTarget.contains(event.relatedTarget)) return;
     focusedRef.current = false;
     setFocused(false);
     if (!hoveredRef.current) onIntent(false);
@@ -282,13 +300,17 @@ function GooeySkillCard({ skill, onIntent }) {
         "--card-accent-ink": skill.accentInk,
         "--card-outline": skill.outline,
       }}
+      onPointerEnter={enterCard}
+      onPointerLeave={leaveCard}
+      onFocus={focusCard}
+      onBlur={blurCard}
     >
       <Liquid
         className="card-verb-liquid"
-        blur={7}
+        blur={4}
         contrast={21}
         fill={skill.accent}
-        filterPadding={18}
+        filterPadding={11}
       >
         <Liquid.Item
           className="card-verb-liquid-item"
@@ -301,10 +323,10 @@ function GooeySkillCard({ skill, onIntent }) {
             bounce: 0.2,
             contentBlur: 0,
             advanced: {
-              bridgeGrow: 3,
+              bridgeGrow: 2,
               evolve: {
-                anticipation: 18,
-                travel: 10,
+                anticipation: 12,
+                travel: 6,
                 cornerDuration: 1080,
                 roundness: 0.9,
               },
@@ -319,21 +341,23 @@ function GooeySkillCard({ skill, onIntent }) {
         </Liquid.Item>
       </Liquid>
 
-      <button
+      <article
         className={`skill-card ${skill.className}`}
-        type="button"
-        data-copy={skill.command}
-        onPointerEnter={enterCard}
-        onPointerLeave={leaveCard}
-        onFocus={focusCard}
-        onBlur={blurCard}
-        onClick={copySkill}
       >
         <span className="card-meta"><b>{skill.number}</b><i>{skill.verb}</i></span>
         <strong>{skill.title}</strong>
         <code>{skill.command}</code>
         <span className="card-promise">{skill.promise}</span>
-      </button>
+        <span className="card-actions">
+          <button type="button" onClick={copySkillFile} aria-label={`复制 ${skill.command} 的 SKILL.md`}>复制</button>
+          <a
+            href={`downloads/${skill.command.slice(1)}.zip`}
+            download
+            onClick={downloadSkill}
+            aria-label={`下载 ${skill.command} ZIP`}
+          >下载</a>
+        </span>
+      </article>
     </div>
   );
 }

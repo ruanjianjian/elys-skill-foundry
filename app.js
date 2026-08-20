@@ -21,20 +21,21 @@ function showToast(message) {
   toastTimer = window.setTimeout(() => toast.classList.remove("is-visible"), 1700);
 }
 
-async function copyText(text) {
+async function copyText(text, successMessage) {
   try {
     if (navigator.clipboard && window.isSecureContext) {
       await navigator.clipboard.writeText(text);
     } else if (!fallbackCopy(text)) {
       throw new Error("copy unavailable");
     }
-    showToast(text.includes("\n") ? "五个 Skill 已复制" : `${text} 已复制`);
+    showToast(successMessage || (text.includes("\n") ? "五个 Skill 已复制" : `${text} 已复制`));
   } catch (_error) {
     showToast("复制失败，请手动选择名称");
   }
 }
 
 window.elysCopyText = copyText;
+window.elysShowToast = showToast;
 
 document.querySelectorAll("[data-copy]").forEach((button) => {
   button.addEventListener("click", () => copyText(button.dataset.copy.replace(/\\n/g, "\n")));

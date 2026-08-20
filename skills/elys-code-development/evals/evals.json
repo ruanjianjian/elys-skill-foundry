@@ -1,0 +1,74 @@
+{
+  "skill_name": "elys-code-development",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "按已经冻结的 API 合同实现 ELYS backend 和 mobile。接口新增异步状态和两个错误码。",
+      "expected_output": "实现前核对合同版本、字段、状态、错误和共享 fixture；内部选择必要测试，最终以真实用户 E2E 是否通过为结论。",
+      "expectations": [
+        "实现前核对合同版本和源 artifact",
+        "backend 和 mobile 使用同一字段状态错误语义及 fixture",
+        "内部测试按风险选择而非固定流水线",
+        "最终结论聚焦真实 E2E"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "这个功能依赖一次模型判断。请写权威测试用例并给出是否可以交付。",
+      "expected_output": "使用四列表格；通过证据保留完整模型输入输出、模型版本、时间和 trace/request id，不用摘要替代原始日志。",
+      "expectations": [
+        "测试用例只使用约定的四列",
+        "测试内容从用户视角描述",
+        "模型相关通过证据包含完整输入和输出",
+        "证据包含模型版本时间及可用的 trace/request id"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "backend 泳道验证已经通过，但泳道没有 IM。现在要给用户做真实账号验收，普通 dev 集成时还有其他分支的冲突。",
+      "expected_output": "先调用 elys-backend-local-run，让当前 worktree 在本机运行并连接真实 dev 依赖，通过模拟器或真机访问本地 backend 完成可覆盖的真实账号路径；只有 dev 服务反向调用或共享环境边界无法本地表示时才补充普通 dev 部署，并遵守 release 分支冲突边界。",
+      "expectations": [
+        "默认调用 elys-backend-local-run 而不是直接部署普通 dev",
+        "当前 worktree 在本机运行并连接真实 dev 依赖",
+        "区分本地可覆盖路径与 dev 反向调用或共享环境边界",
+        "仅在本地边界不足时补充远端部署",
+        "远端部署仍遵守临时 release 分支冲突边界"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "当前 worktree 的 origin 是 SSH，git fetch --all 报 Permission denied (publickey)，但 GitHub CLI 已登录 ruanjianjian。请继续同步并提交当前分支。",
+      "expected_output": "先验证 GitHub CLI 身份、精确仓库和 HTTPS 访问；随后用显式 HTTPS URL 和非持久 gh credential helper 刷新 origin refs、推送当前分支并回读远端 SHA，不改 origin、全局 Git 配置、SSH key 或本地改动。",
+      "expectations": [
+        "不把 SSH 公钥失败误判为仓库不可访问",
+        "验证 ruanjianjian 身份和精确 OWNER/REPO",
+        "使用单次 HTTPS URL 和 gh auth git-credential 完成 fetch 或 push",
+        "不持久修改 origin、全局 Git 配置或 SSH key",
+        "推送后回读并验证远端分支 SHA"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "现在需要启动 Elys iOS 真机构建并安装到测试设备上。",
+      "expected_output": "默认使用 Flutter/Xcode Profile 模式完成 iOS 真机构建、安装或运行，并记录设备、构建 commit、命令或配置以及结果；除非仓库规则或用户明确要求，不切换到 Debug 或 Release。",
+      "expectations": [
+        "iOS 真机构建默认使用 Profile 模式",
+        "覆盖构建、安装和运行场景",
+        "记录设备、commit、构建配置和结果",
+        "不以 Debug 模拟器结果替代真机证据"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "刚刚完成一轮 elys-backend 接口修改，本地单测通过；根据反馈又修了一个字段映射。现在可以提交 PR 了吗？",
+      "expected_output": "不能只凭本地单测或上一轮证据提交。调用 elys-backend-local-run，使用当前 worktree 通过 make local 在本机运行并连接真实 dev 依赖，确认进程已加载最新字段修复，重新执行受影响的权威 API/用户路径并记录代码状态、模式、lane、健康和业务证据；完成后再进入交付。",
+      "expectations": [
+        "每轮有意义的 backend 更新后重新调用或继续使用 elys-backend-local-run",
+        "验证当前 worktree 的最新代码已被本地进程加载",
+        "使用本机服务连接真实 dev 依赖",
+        "重新执行受影响的 API 或用户路径而非复用旧证据",
+        "通过后才进入 engineering-delivery"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Engineering Delivery"
+  short_description: "ELYS/EVE PR submission, Feishu review, and approval loop"
+  default_prompt: "Use $engineering-delivery to submit this ELYS PR and continue the review loop until the current head is approved."

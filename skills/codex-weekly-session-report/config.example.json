@@ -1,0 +1,15 @@
+{
+  "timezone": "America/New_York",
+  "state_db": "${CODEX_HOME:-$HOME/.codex}/state_5.sqlite",
+  "review_state": "./review-state.json",
+  "review_feedback": "./review-feedback.json",
+  "source_html": "./work-status-signature-page.html",
+  "standalone_html": "./work-status-signature-page-standalone.html",
+  "preview_url": "http://127.0.0.1:8765/work-status-signature-page-standalone.html",
+  "publish_dir": "./publish",
+  "miaoda": {
+    "app_id": "app_replace_me",
+    "published_url": "https://replace-me.feishu.cn/page/replace-me",
+    "management_url": "https://miaoda.feishu.cn/app/app_replace_me"
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "ELYS Code Development"
+  short_description: "ELYS/EVE implementation with dev-connected local verification"
+  default_prompt: "Use $elys-code-development to implement this ELYS change against the frozen contract. For every coherent backend behavior update, compose $elys-backend-local-run to run the current worktree locally against real dev dependencies, rerun the affected user journey, and prepare exact human-acceptance evidence."

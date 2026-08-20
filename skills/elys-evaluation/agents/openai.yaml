@@ -1,0 +1,7 @@
+interface:
+  display_name: "Elys Evaluation"
+  short_description: "Design and run reusable Elys evaluations"
+  default_prompt: "Use $elys-evaluation to define an eval_manifest, validate the dataset, dry-run, judge, and report an Elys evaluation."
+
+policy:
+  allow_implicit_invocation: true

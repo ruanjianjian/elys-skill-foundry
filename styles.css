@@ -23,13 +23,12 @@ html {
 body {
   min-height: 100svh;
   margin: 0;
-  zoom: 0.6;
   color: var(--ink);
   background-color: var(--paper);
   background-image:
     linear-gradient(var(--grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 32px 32px;
+  background-size: 19px 19px;
   font-family: var(--sans);
   -webkit-font-smoothing: antialiased;
 }
@@ -44,13 +43,13 @@ button {
 }
 
 :focus-visible {
-  outline: 3px solid var(--signal);
-  outline-offset: 3px;
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
 }
 
 .topbar {
-  height: 66px;
-  padding: 0 max(24px, calc((100vw - 1440px) / 2 + 32px));
+  height: 40px;
+  padding: 0 max(14px, calc((100vw - 864px) / 2 + 19px));
   border-bottom: 1px solid var(--line);
   background: rgba(242, 245, 238, 0.96);
   display: flex;
@@ -62,10 +61,10 @@ button {
   color: var(--ink);
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 6px;
   text-decoration: none;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 8px;
   font-weight: 600;
   letter-spacing: 0.06em;
 }
@@ -77,21 +76,21 @@ button {
 }
 
 .brand i {
-  width: 7px;
-  height: 7px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: #07856d;
-  box-shadow: 0 0 0 4px rgba(7, 133, 109, 0.12);
+  box-shadow: 0 0 0 2px rgba(7, 133, 109, 0.12);
 }
 
 .copy-all {
   border: 1px solid var(--ink);
   background: transparent;
   color: var(--ink);
-  padding: 8px 13px;
+  padding: 5px 8px;
   cursor: pointer;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 7px;
   font-weight: 600;
 }
 
@@ -101,10 +100,10 @@ button {
 }
 
 main {
-  width: min(100%, 1440px);
-  min-height: calc(100svh - 66px);
+  width: min(100%, 864px);
+  min-height: calc(100svh - 40px);
   margin: 0 auto;
-  padding: clamp(48px, 6vh, 76px) 32px 40px;
+  padding: clamp(29px, 3.6vh, 46px) 19px 24px;
   display: flex;
   flex-direction: column;
 }
@@ -112,22 +111,22 @@ main {
 .edition {
   display: flex;
   justify-content: space-between;
-  gap: 20px;
+  gap: 12px;
   color: var(--cobalt);
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 7px;
   font-weight: 600;
   letter-spacing: 0.08em;
 }
 
 .title-stage {
-  margin: clamp(26px, 4vh, 46px) 0 clamp(22px, 3vh, 36px);
+  margin: clamp(16px, 2.4vh, 28px) 0 clamp(13px, 1.8vh, 22px);
 }
 
 .liquid-title-group,
 .liquid-title-item,
 .liquid-title {
-  max-width: min(1340px, calc(100vw - 64px));
+  max-width: min(804px, calc(100vw - 38px));
 }
 
 .liquid-title-group {
@@ -142,11 +141,11 @@ main {
   width: max-content;
   margin: 0;
   padding: 0.16em 0.3em 0.21em;
-  border-radius: 20px;
+  border-radius: 12px;
   color: #ffffff;
   background: transparent;
   font-family: var(--display);
-  font-size: clamp(44px, 5vw, 76px);
+  font-size: clamp(26px, 3vw, 46px);
   font-weight: 700;
   line-height: 1.02;
   letter-spacing: -0.055em;
@@ -155,7 +154,7 @@ main {
 
 .liquid-title-fallback {
   background: var(--signal);
-  box-shadow: 8px 9px 0 rgba(17, 24, 43, 0.22);
+  box-shadow: 5px 5px 0 rgba(17, 24, 43, 0.22);
 }
 
 .liquid-title-copy {
@@ -190,43 +189,43 @@ main {
 
 .title-drop-a {
   top: 12%;
-  right: -15px;
+  right: -9px;
 }
 
 .title-drop-b {
   right: 8%;
-  bottom: -11px;
+  bottom: -7px;
 }
 
 .title-droplet {
   display: block;
-  width: 30px;
-  height: 30px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
 }
 
 .title-drop-b .title-droplet {
-  width: 20px;
-  height: 20px;
+  width: 12px;
+  height: 12px;
 }
 
 .skill-grid {
   margin-top: 0;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 12px;
+  gap: 7px;
   transition: grid-template-columns 880ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .skill-card {
   position: relative;
-  min-height: clamp(220px, 28vh, 310px);
+  min-height: clamp(132px, 16.8vh, 186px);
   overflow: hidden;
   border: 1px solid var(--ink);
   background: rgba(242, 245, 238, 0.94);
   color: var(--ink);
-  padding: 20px;
-  cursor: pointer;
+  padding: 12px;
+  cursor: default;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -234,17 +233,21 @@ main {
   transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
 }
 
+button.skill-card {
+  cursor: pointer;
+}
+
 .skill-card:hover {
   z-index: 2;
-  transform: translateY(-7px);
-  box-shadow: 7px 7px 0 var(--cobalt);
+  transform: translateY(-4px);
+  box-shadow: 4px 4px 0 var(--cobalt);
 }
 
 .skill-reactor {
   position: relative;
   display: flex;
   min-width: 0;
-  min-height: clamp(220px, 28vh, 310px);
+  min-height: clamp(132px, 16.8vh, 186px);
   border: 1px solid var(--card-outline);
   background: var(--card-surface);
   transform: translate3d(0, 0, 0);
@@ -256,8 +259,8 @@ main {
 
 .skill-reactor.is-active {
   z-index: 3;
-  transform: translate3d(0, -2px, 0);
-  box-shadow: 3px 3px 0 var(--card-accent);
+  transform: translate3d(0, -1px, 0);
+  box-shadow: 2px 2px 0 var(--card-accent);
 }
 
 .skill-reactor.is-flashing {
@@ -284,32 +287,32 @@ main {
 
 .card-verb-liquid {
   position: absolute !important;
-  top: 14px;
-  right: 14px;
+  top: 8px;
+  right: 8px;
   z-index: 1;
-  width: 96px;
-  height: 32px;
+  width: 58px;
+  height: 19px;
   overflow: visible;
   pointer-events: none;
 }
 
 .card-verb-liquid-item {
   position: absolute !important;
-  top: 4px;
+  top: 2px;
   right: 0;
 }
 
 .card-verb-blob {
   display: block;
-  margin-left: calc(96px - var(--verb-width));
-  width: 8px;
-  height: 8px;
+  margin-left: calc(58px - var(--verb-width));
+  width: 5px;
+  height: 5px;
   border-radius: 999px;
 }
 
 .card-verb-blob.is-active {
   width: var(--verb-width);
-  height: 20px;
+  height: 12px;
 }
 
 .card-meta {
@@ -318,11 +321,11 @@ main {
   justify-content: space-between;
   color: var(--cobalt);
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 6px;
 }
 
 .card-meta b {
-  font-size: 13px;
+  font-size: 8px;
 }
 
 .card-meta i {
@@ -338,29 +341,59 @@ main {
 }
 
 .skill-card strong {
-  margin-top: clamp(30px, 5vh, 54px);
+  margin-top: clamp(18px, 3vh, 32px);
   font-family: var(--display);
-  font-size: clamp(24px, 2vw, 34px);
+  font-size: clamp(14px, 1.2vw, 20px);
   line-height: 1.05;
   letter-spacing: -0.04em;
 }
 
 .skill-card code {
-  margin-top: 16px;
+  margin-top: 10px;
   color: var(--cobalt);
   overflow-wrap: anywhere;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 6px;
   line-height: 1.45;
 }
 
 .card-promise {
   margin-top: auto;
-  padding-top: 18px;
+  padding-top: 11px;
   border-top: 1px solid var(--line);
-  font-size: 12px;
+  font-size: 7px;
   font-weight: 600;
   line-height: 1.5;
+}
+
+.card-actions {
+  display: flex;
+  gap: 4px;
+  margin-top: 7px;
+}
+
+.card-actions button,
+.card-actions a {
+  flex: 1;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  padding: 3px 4px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 6px;
+  font-weight: 600;
+  line-height: 1;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.card-actions button:hover,
+.card-actions a:hover {
+  border-color: var(--card-accent);
+  background: var(--card-accent);
+  color: var(--card-accent-ink);
 }
 
 .card-ship {
@@ -378,8 +411,15 @@ main {
   border-color: rgba(255, 255, 255, 0.36);
 }
 
+.card-ship .card-actions button,
+.card-ship .card-actions a,
+.card-review .card-actions button,
+.card-review .card-actions a {
+  border-color: rgba(255, 255, 255, 0.52);
+}
+
 .card-ship:hover {
-  box-shadow: 7px 7px 0 var(--signal);
+  box-shadow: 4px 4px 0 var(--signal);
 }
 
 .card-review {
@@ -398,18 +438,18 @@ main {
 
 .toast {
   position: fixed;
-  right: 22px;
-  bottom: 22px;
+  right: 13px;
+  bottom: 13px;
   z-index: 10;
   border: 1px solid var(--ink);
   background: #ffffff;
-  padding: 12px 15px;
-  box-shadow: 5px 5px 0 var(--signal);
+  padding: 7px 9px;
+  box-shadow: 3px 3px 0 var(--signal);
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(10px);
   pointer-events: none;
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 6px;
   transition: opacity 160ms ease, transform 160ms ease;
 }
 
@@ -420,11 +460,11 @@ main {
 
 @media (max-width: 1040px) {
   main {
-    padding-top: 44px;
+    padding-top: 26px;
   }
 
   .liquid-title {
-    font-size: clamp(44px, 6.4vw, 64px);
+    font-size: clamp(26px, 3.84vw, 38px);
   }
 
   .skill-grid {
@@ -432,11 +472,11 @@ main {
   }
 
   .skill-card {
-    min-height: 230px;
+    min-height: 138px;
   }
 
   .skill-reactor {
-    min-height: 230px;
+    min-height: 138px;
   }
 
   .card-ship,
@@ -449,7 +489,7 @@ main {
   .skill-card code {
     overflow-wrap: normal;
     white-space: nowrap;
-    font-size: 9px;
+    font-size: 6px;
   }
 }
 
@@ -457,11 +497,11 @@ main {
   .liquid-title-group,
   .liquid-title-item,
   .liquid-title {
-    max-width: calc(100vw - 40px);
+    max-width: calc(100vw - 24px);
   }
 
   .liquid-title {
-    font-size: clamp(36px, 11.5vw, 50px);
+    font-size: clamp(22px, 6.9vw, 30px);
   }
 
   .mobile-break {
@@ -471,13 +511,13 @@ main {
 
 @media (max-width: 680px) {
   .topbar {
-    height: 60px;
-    padding: 0 20px;
+    height: 36px;
+    padding: 0 12px;
   }
 
   main {
-    min-height: calc(100svh - 60px);
-    padding: 36px 20px 28px;
+    min-height: calc(100svh - 36px);
+    padding: 22px 12px 17px;
   }
 
   .edition span:last-child {
@@ -485,42 +525,53 @@ main {
   }
 
   .title-stage {
-    margin: 24px 0 26px;
+    margin: 14px 0 16px;
   }
 
   .liquid-title {
     padding: 0.18em 0.26em 0.23em;
-    border-radius: 15px;
+    border-radius: 9px;
     line-height: 1.04;
   }
 
   .skill-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+    gap: 5px;
   }
 
   .skill-card {
-    min-height: 230px;
-    padding: 15px;
+    min-height: 138px;
+    padding: 9px;
   }
 
   .skill-card strong {
-    margin-top: 30px;
-    font-size: 24px;
+    margin-top: 18px;
+    font-size: 14px;
   }
 
   .skill-card code {
-    font-size: 9px;
+    font-size: 5.5px;
+  }
+
+  .card-actions {
+    gap: 3px;
+    margin-top: 6px;
+  }
+
+  .card-actions button,
+  .card-actions a {
+    padding: 3px;
+    font-size: 5.5px;
   }
 
   .card-review {
     grid-column: 1 / -1;
-    min-height: 190px;
+    min-height: 114px;
   }
 
   .card-review-reactor {
     grid-column: 1 / -1;
-    min-height: 190px;
+    min-height: 114px;
   }
 }
 

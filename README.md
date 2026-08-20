@@ -8,7 +8,9 @@
 - `/engineering-delivery`
 - `/codex-weekly-session-report`
 
-页面使用 React 与 `liquid-gooey` 实现液态标题轮播，点击卡片即可复制 Skill 名称。
+页面使用 React 与 `liquid-gooey` 实现液态标题轮播。每张卡片都可以复制对应的 `SKILL.md`，或下载包含完整配套文件的 ZIP。
+
+公开文件位于 `skills/`，下载包位于 `downloads/`。下载 ZIP 后解压到本地 Agent 的 Skills 目录即可使用。
 
 ## 本地运行
 
@@ -22,4 +24,4 @@ python3 -m http.server 4173
 
 ## 隐私
 
-页面只展示可向团队传播的通用能力，不包含本机绝对路径、凭证、个人或群聊 ID、生产配置与私密业务数据。
+公开 Skill 在发布前使用 `gitleaks --redact` 扫描，不包含已识别的凭证或密钥。
