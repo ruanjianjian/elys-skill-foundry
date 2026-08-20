@@ -34,6 +34,8 @@ async function copyText(text) {
   }
 }
 
+window.elysCopyText = copyText;
+
 document.querySelectorAll("[data-copy]").forEach((button) => {
   button.addEventListener("click", () => copyText(button.dataset.copy.replace(/\\n/g, "\n")));
 });
