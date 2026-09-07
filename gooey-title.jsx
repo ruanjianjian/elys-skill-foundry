@@ -18,6 +18,18 @@ const DROP_MOTION = [
 
 const SKILLS = [
   {
+    number: "06", verb: "WEB", title: "Web 验收",
+    command: "/web-testing", promise: "交互、视觉、无障碍与回归",
+    className: "card-web", surface: "#f2f5ee", accent: "#1746e6",
+    accentInk: "#ffffff", outline: "#11182b", verbWidth: 29,
+  },
+  {
+    number: "07", verb: "MOBILE", title: "移动端验收",
+    command: "/mobile-testing", promise: "Flutter、iOS 与真实视觉证据",
+    className: "card-mobile", surface: "#f2f5ee", accent: "#1746e6",
+    accentInk: "#ffffff", outline: "#11182b", verbWidth: 43,
+  },
+  {
     number: "01",
     verb: "SHAPE",
     title: "技术方案",
@@ -375,7 +387,7 @@ function GooeySkillGrid() {
     if (!skillsMount) return undefined;
 
     skillsMount.style.gridTemplateColumns = wideGrid
-      ? SKILLS.map((_, index) => `minmax(0, ${index === activeIndex ? "1.4fr" : activeIndex === null ? "1fr" : "0.9fr"})`).join(" ")
+      ? Array.from({ length: 4 }, (_, index) => `minmax(0, ${index === activeIndex % 4 && activeIndex !== null ? "1.4fr" : activeIndex === null ? "1fr" : "0.9fr"})`).join(" ")
       : "";
 
     return () => {
