@@ -28,7 +28,7 @@ async function copyText(text, successMessage) {
     } else if (!fallbackCopy(text)) {
       throw new Error("copy unavailable");
     }
-    showToast(successMessage || (text.includes("\n") ? "五个 Skill 已复制" : `${text} 已复制`));
+    showToast(successMessage || (text.includes("\n") ? "全部 Skill 已复制" : `${text} 已复制`));
   } catch (_error) {
     showToast("复制失败，请手动选择名称");
   }
