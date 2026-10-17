@@ -14,7 +14,7 @@ if (process.argv.includes("--help")) {
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const artifacts = resolve(
   process.env.FOUNDRY_ARTIFACT_DIR ||
-    join(homedir(), "DevData/Artifacts/20261017-skills-promo/foundry/electro-v2"),
+    join(homedir(), "DevData/Artifacts/20261017-skills-promo/foundry/music-v3"),
 );
 const selected = process.argv.find((arg) => arg.startsWith("--ids="))?.slice(6).split(",");
 const chosen = selected ? films.filter((film) => selected.includes(film.id)) : films;
@@ -32,7 +32,7 @@ function run(command, args) {
   });
 }
 async function measure(path) {
-  const { stderr } = await run("ffmpeg", ["-hide_banner", "-nostdin", "-i", path, "-vn", "-af", "loudnorm=I=-15:LRA=7:TP=-1.8:print_format=json", "-f", "null", "-"]);
+  const { stderr } = await run("ffmpeg", ["-hide_banner", "-nostdin", "-i", path, "-vn", "-af", "loudnorm=I=-15:LRA=7:TP=-2.5:print_format=json", "-f", "null", "-"]);
   const match = stderr.match(/\{\s*"input_i"[\s\S]*?\}/g)?.at(-1);
   assert.ok(match, "Missing loudness measurement: " + path);
   const data = JSON.parse(match);
@@ -58,9 +58,9 @@ for (const film of chosen) {
   const wavProbe = JSON.parse((await run("ffprobe", ["-v", "error", "-show_format", "-of", "json", wav])).stdout);
   assert.ok(Math.abs(Number(wavProbe.format.duration) - film.duration) < 0.025, "Actual WAV duration mismatch");
   const input = await measure(wav);
-  const filter = `loudnorm=I=-15:LRA=7:TP=-1.8:measured_I=${input.input_i}:measured_LRA=${input.input_lra}:measured_TP=${input.input_tp}:measured_thresh=${input.input_thresh}:offset=${input.target_offset}:linear=true`;
+  const filter = `loudnorm=I=-15:LRA=7:TP=-2.5:measured_I=${input.input_i}:measured_LRA=${input.input_lra}:measured_TP=${input.input_tp}:measured_thresh=${input.input_thresh}:offset=${input.target_offset}:linear=true`;
   const output = join(artifacts, "remixed", film.id + ".mp4");
-  await run("ffmpeg", ["-hide_banner", "-loglevel", "error", "-nostdin", "-y", "-i", before, "-i", wav, "-map", "0:v:0", "-map", "1:a:0", "-t", String(film.duration), "-c:v", "copy", "-af", filter, "-ar", "48000", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", output]);
+  await run("ffmpeg", ["-hide_banner", "-loglevel", "error", "-nostdin", "-y", "-i", before, "-i", wav, "-map", "0:v:0", "-map", "1:a:0", "-t", String(film.duration), "-c:v", "copy", "-af", filter, "-ar", "48000", "-c:a", "aac", "-b:a", "320k", "-movflags", "+faststart", output]);
   const final = await measure(output);
   assert.ok(Math.abs(Number(final.input_i) + 15) < 0.8, "Encoded loudness outside -15 ±0.8 LUFS: " + film.id);
   assert.ok(Number(final.input_tp) <= -1, "Encoded true peak exceeds -1 dBTP: " + film.id);

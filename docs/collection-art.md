@@ -8,7 +8,7 @@
 
 原画提供场景、材质、灯光和构图。动作由 Canvas 代码分别绘制：前景物体位移、变形、遮挡、检查与修补动作、纸张翻转、光束与样本通道，以及相应切镜。它们不是把同一张静图统一平移缩放，也不是九支换色字幕模板。每帧由时间参数确定，可以直接定位镜头并重复渲染。
 
-初版配乐是九首分别编排的原创短曲，由 [初版纯 Python 合成脚本](https://github.com/ruanjianjian/elys-skill-foundry/blob/151d17a2c4d0bb538ecd4479a2a5456fb19ce215/scripts/make-collection-score.py) 生成，输出为 48 kHz 双声道 PCM16。下表保留初版音乐参数。当前十片已更新为电子/K-pop方向的独立原创配乐：[制作与验证说明](motion-films.md#配乐更新电子与舞台节奏)、[当前合成脚本](../scripts/make-collection-score.py)、[当前片目参数](../collection-catalog.js)。使用 NumPy 制作 48 kHz 双声道 PCM24 母带，再统一响度并编码 AAC；没有调用音乐生成 API，也没有使用外部歌曲、人声或采样包。**尚未做耳听验证**；文件参数、采样与画面检查不等于对听感、音色或音画卡点的人耳验收。
+初版配乐是九首分别编排的原创短曲，由 [初版纯 Python 合成脚本](https://github.com/ruanjianjian/elys-skill-foundry/blob/151d17a2c4d0bb538ecd4479a2a5456fb19ce215/scripts/make-collection-score.py) 生成，输出为 48 kHz 双声道 PCM16。下表保留初版音乐参数。当前十片已更新为十种独立声音的原创配乐：[制作与验证说明](motion-films.md#配乐更新十种独立声音)、[当前合成脚本](../scripts/make-collection-score.py)、[当前片目参数](../collection-catalog.js)。使用 NumPy 制作 48 kHz 双声道 PCM24 母带，再统一响度并编码 AAC。本轮钢琴/尼龙吉他采用 FreePats CC0 单音色，其它声源独立合成；没有调用音乐生成 API，没有使用参考歌曲、视频配乐或人声。**尚未做耳听验证**；文件参数、采样与画面检查不等于对听感、音色或音画卡点的人耳验收。
 
 ## 原始九片与后续新增
 
@@ -122,7 +122,7 @@ Color only warm cream, deep burgundy, graphite and a little muted brass. Tactile
 
 ## 新增：multi-agent-coding
 
-内置 imagegen 制作的原创「会话调度台」，16 秒。原画：[multi-agent-coding.jpg](../media/collection-art/multi-agent-coding.jpg)；动作：[multi.js](../motion-collection/multi.js)。Claude 拆单 → 三个可见 Codex session 接单 → 反馈回到同一个 B-01 续修 → 结果回收后会话保留。只是能力示意，并非真实桌面录屏。初版复用工程交付原创 126 BPM `dispatch` 合成曲；本轮重作为独立 128 BPM `festival-electro`，无外部采样，未做耳听评价。
+内置 imagegen 制作的原创「会话调度台」，16 秒。原画：[multi-agent-coding.jpg](../media/collection-art/multi-agent-coding.jpg)；动作：[multi.js](../motion-collection/multi.js)。Claude 拆单 → 三个可见 Codex session 接单 → 反馈回到同一个 B-01 续修 → 结果回收后会话保留。只是能力示意，并非真实桌面录屏。初版复用工程交付原创 126 BPM `dispatch` 合成曲；本轮重作为独立 86 BPM `industrial-halfstep`，无外部采样，未做耳听评价。
 
 完整实际原画提示词：
 

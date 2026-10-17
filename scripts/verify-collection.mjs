@@ -535,7 +535,7 @@ try {
           assert.ok(
             new URL(actual.src).pathname.endsWith("/media/collection/" + film.id + ".mp4"),
           );
-          assert.equal(new URL(actual.src).searchParams.get("v"), "electro-v2");
+          assert.equal(new URL(actual.src).searchParams.get("v"), "music-v3");
           assert.ok(
             Math.abs(actual.duration - film.duration) < 0.1,
             "Unexpected duration for " + film.id,

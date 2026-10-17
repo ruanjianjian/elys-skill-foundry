@@ -15,7 +15,7 @@ const cardVerbs = {
   "codex-weekly-session-report": "REVIEW",
 };
 const filmById = new Map(films.map((film) => [film.id, film]));
-const filmPath = (skill) => "media/collection/" + skill.id + ".mp4?v=electro-v2";
+const filmPath = (skill) => "media/collection/" + skill.id + ".mp4?v=music-v3";
 const posterPath = (skill) => "media/collection/" + skill.id + ".jpg";
 
 const grid = document.querySelector("#skill-grid");

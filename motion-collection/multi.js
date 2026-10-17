@@ -3,8 +3,8 @@ export const films = [
   {
     id: "multi-agent-coding",
     duration: 16,
-    bpm: 128,
-    genre: "festival-electro",
+    bpm: 86,
+    genre: "industrial-halfstep",
     style: "会话调度台",
     posterTime: 10.2,
   },
