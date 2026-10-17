@@ -51,6 +51,19 @@ try {
 const reduced = () => quiet || media.matches;
 bgm.volume = 0.24;
 
+function syncPilotSound() {
+  if (
+    cinematicPreview &&
+    active?.skill.id === "ns-spec-cards" &&
+    !active.video.paused &&
+    bgmIntent &&
+    !bgm.paused &&
+    Number.isFinite(bgm.duration)
+  ) {
+    bgm.currentTime = active.video.currentTime % bgm.duration;
+  }
+}
+
 function notify(message) {
   clearTimeout(toastTimer);
   toast.textContent = message;
@@ -79,13 +92,6 @@ async function playItem(item, { manual = false } = {}) {
   active = item;
   item.video.muted = true;
   item.video.currentTime = 0;
-  if (
-    cinematicPreview &&
-    item.skill.id === "ns-spec-cards" &&
-    bgmIntent &&
-    !bgm.paused
-  )
-    bgm.currentTime = 0;
   item.card.classList.add("is-loading");
   try {
     await item.video.play();
@@ -93,6 +99,7 @@ async function playItem(item, { manual = false } = {}) {
       if (active !== item || document.hidden) item.video.pause();
       return;
     }
+    syncPilotSound();
     item.card.classList.remove("is-loading");
     item.card.classList.add("is-playing");
     item.preview.setAttribute("aria-pressed", "true");
@@ -373,6 +380,7 @@ async function tryBgm() {
     await bgm.play();
     if (version !== bgmVersion) return;
     if (!bgmIntent || document.hidden || (reduced() && !bgmManual)) bgm.pause();
+    else syncPilotSound();
   } catch (_) {
     /* Autoplay denial remains visibly waiting for a user gesture. */
   }
