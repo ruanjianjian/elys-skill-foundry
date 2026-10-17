@@ -533,8 +533,9 @@ try {
           await waitPlaying(page, film.id);
           const actual = await state(page, film.id);
           assert.ok(
-            actual.src.endsWith("/media/collection/" + film.id + ".mp4"),
+            new URL(actual.src).pathname.endsWith("/media/collection/" + film.id + ".mp4"),
           );
+          assert.equal(new URL(actual.src).searchParams.get("v"), "electro-v2");
           assert.ok(
             Math.abs(actual.duration - film.duration) < 0.1,
             "Unexpected duration for " + film.id,
@@ -616,6 +617,7 @@ try {
         await page.$eval("#video-ns-spec-cards", (video) => video.muted),
         true,
       );
+      await page.screenshot({ path: join(output, "sound-off.png") });
       await leave(page);
       await page.click("#bgm-toggle");
       await page.hover(preview("ns-spec-cards"));

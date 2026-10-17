@@ -14,6 +14,7 @@
 | FOUNDRY-04 | 核  | 10 支各有不同材质、场景、动作及节奏，均能实际解码；决策卡突出简洁卡片、快速对齐、减少 AI 废话；测试类突出体验优先、必要测试、抓 Bug 和沉淀复测动线。                                       | Web 页面 | 已通过浏览器走查 |
 | FOUNDRY-05 | 核  | 原版纸白/钴蓝/朱红/深墨材质、液态标题轮换、角标形变、悬停列伸缩恢复；标题轮换不推挤卡片。390/320px 无横向溢出；减少动态/静态停止自动片播与页面动效，仍可手动看视频。                       | Web 页面 | 已通过浏览器走查 |
 | FOUNDRY-06 | 核  | 决策卡/测试日志两项高亮；delivery保留，并与代码开发和周报一起标即将淘汰；新增multi-agent-coding准确表现Claude派活给Codex、可见session管理及原会话续修，提供可下载的完整ZIP与对应SKILL.md。 | Web 页面 | 已通过浏览器走查 |
+| FOUNDRY-07 | 核 | 10支短片重作原创电子/K-pop方向配乐，三项主推分别为Y2K electropop、2-step club、festival electro；保持各片差异与14/16秒时长，音量统一，离开停声及OFF规则有效。 | Web 页面 | 待本轮验证 |
 
 图画和剧情是能力宣传示意，不代表技能业务实录或实际部署验收。决策卡和测试日志只提供已核实的私库源链接，不重新公开源码；原公开技能源码和 ZIP 保留历史且不改内容。派活技能按用户选择提供完整ZIP，目录与本机功能源文件逐一核对；不包含缓存、登录态或外部插件。
 
@@ -30,3 +31,13 @@
 完整派活包 SHA-256：`40e915ecfcc652f31681e3b1b533480a448db3e928fee9f5362f5071648b1e0c`。包含脚本、11 份运行时看板模板及配套说明；Python 3、Node、已登录的 Codex CLI 和 Codex Companion 等运行依赖需另行具备。未运行包中的派活或会话创建命令。
 
 仅验证宣传页展示、下载与包完整性，不把它当作真实 Claude→Codex 派活验收。物理手机和配乐耳听未测。
+
+## 配乐更新：电子与舞台节奏
+
+用户反馈旧 BGM 不够带感，改为十首独立原创电子流行/舞曲配乐。以鼓组、切分低音、和弦与短 hook 构成完整段落，先进入 groove，再用过门、断拍和 drop 制造起伏。决策卡为 128 BPM Y2K electropop；测试日志为 134 BPM 2-step club；多 Agent 派活为 128 BPM festival electro；其余使用 future-funk、dark-club、dream-house、bass-house、hyper-glass、synthwave-house 和 nu-disco。学习制作手法，不使用现成歌曲、人声、旋律或音乐采样。
+
+通过替换 AAC 音轨更新已有 MP4，不重新编码画面。每片需对比旧版视频 packet SHA-256 确认一致，并对成片测量响度和 true peak。声音仍跟随当前卡片；悬停开始、离开停止，OFF 偏好保持。媒体 URL 带配乐版本，避免复用旧 BGM 缓存。
+
+参考：[Ableton 的侧链制作示例](https://www.ableton.com/en/blog/sidechain-compression-part-2-common-and-uncommon-uses/)，学习让和弦、低音随鼓点让位及恢复；[DJ Swivel 本人对 K-pop 制作的拆解](https://djswivel.com/bts-euphoria-deconstructed/)，学习分层鼓组、合成器及段落编排。已读制作说明，未把参考视频加载当成耳听完成。浏览器音轨状态和响度测量不代表听觉审美验收。
+
+本轮报告：待重作配乐及浏览器核心动线验证后归档，旧报告只代表前次版本。

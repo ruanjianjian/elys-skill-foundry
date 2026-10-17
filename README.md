@@ -37,21 +37,29 @@ npx http-server . -a 127.0.0.1 -p 4173
 
 ## 重新生成短片
 
-需本机 Chrome、Python 3、ffmpeg（libx264/AAC）。`collection-catalog.js` 是生成的片目，`collection-renderer.js` 汇总 `motion-collection/` 确定性 Canvas 场景，`catalog.js` 管技能入口和文案。
+需本机 Chrome、Python 3 + NumPy、ffmpeg（libx264/AAC）。`collection-catalog.js` 是生成的片目，`collection-renderer.js` 汇总 `motion-collection/` 确定性 Canvas 场景，`catalog.js` 管技能入口和文案。
 
 先为每片生成配乐，例如：
 
 ```sh
-python3 scripts/make-collection-score.py --id ns-spec-cards --duration 16 --bpm 120 --genre ink-rock --out /absolute/artifacts/scores/ns-spec-cards.wav
+python3 scripts/make-collection-score.py --id ns-spec-cards --duration 16 --bpm 128 --genre y2k-electropop --out /absolute/artifacts/scores/ns-spec-cards.wav
 FOUNDRY_ARTIFACT_DIR=/absolute/artifacts npm run build:collection
 # 只重建某片或海报
 node scripts/render-collection.mjs --ids=ns-spec-cards
 node scripts/render-collection.mjs --posters-only --ids=test-journal
 ```
 
-`FOUNDRY_ARTIFACT_DIR` 默认本机任务 `~/DevData/Artifacts/20261017-skills-promo/foundry/collection-v3/`，其中 `scores/<id>.wav` 为渲染输入。10 片参数见生成片目。配乐使用标准库纯合成，无第三方音乐采样。原画已提交在 `media/collection-art/`，决策卡另复用 `media/cinematic-art/` 原画。视频/海报输出到 `media/collection/`，1280×720、30fps，H.264/AAC faststart；WAV、渲染 profile、逐帧截图和日志留在任务产物目录，不发布。
+`FOUNDRY_ARTIFACT_DIR` 默认本机任务 `~/DevData/Artifacts/20261017-skills-promo/foundry/collection-v3/`，其中 `scores/<id>.wav` 为渲染输入。10 片参数见生成片目。配乐使用 NumPy 合成原创鼓组、低音、和弦与短 hook，无第三方音乐采样。原画已提交在 `media/collection-art/`，决策卡另复用 `media/cinematic-art/` 原画。视频/海报输出到 `media/collection/`，1280×720、30fps，H.264/AAC faststart；WAV、渲染 profile、逐帧截图和日志留在任务产物目录，不发布。
 
-`CHROME_PATH` 可覆盖 Chrome 入口。旧片与旧试片保留作历史参考，首页使用九支新片。`gooey-title.jsx` 与 `build:gooey` 负责重建本地液态标题/角标运行包，`surface-motion.js` 管理列伸缩和反馈；不恢复旧七卡 React Grid。
+只更新音乐时，先按片目参数生成 `scores/<id>.wav` 及同名 JSON，然后执行：
+
+```sh
+FOUNDRY_ARTIFACT_DIR=/absolute/artifacts node scripts/remix-collection.mjs
+```
+
+此步骤保留 H.264 视频 packet，只重作 AAC 音轨；两遍响度归一目标 -15 LUFS / -1.8 dBTP，编码后再测量，确认视频 packet SHA 一致。旧 MP4、原始 WAV、响度及 hash 记录留在指定产物目录。新版三项主推分别使用 Y2K electropop、2-step club、festival electro，其他短片各有独立 groove。
+
+`CHROME_PATH` 可覆盖 Chrome 入口。旧片与旧试片保留作历史参考，首页使用十支新片。`gooey-title.jsx` 与 `build:gooey` 负责重建本地液态标题/角标运行包，`surface-motion.js` 管理列伸缩和反馈；不恢复旧七卡 React Grid。
 
 ## 交付与验证
 
