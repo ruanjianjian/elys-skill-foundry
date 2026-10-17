@@ -1,59 +1,57 @@
 # ELYS Skill Foundry — Skills in Motion
 
-[在线片库](https://ruanjianjian.github.io/elys-skill-foundry/)：9个技能、9支12秒动效短片。用画面说明麻烦怎样变成清楚的下一步，再按需安装。
+[在线片库](https://ruanjianjian.github.io/elys-skill-foundry/)：9 个技能、9 个不同的短片世界。悬停看它能帮你解决什么，再按需安装。
 
-- `ns-spec-cards`：讨论 → 逐张确认。
-- `test-journal`：截图 → 最新核心动线报告。
-- `web-testing`：网页 → 用户动线与可见结果。
-- `mobile-testing`：App / 系统交互 → 分层验证证据。
-- `elys-backend-technical-design`：散乱改动 → 当前代码上的契约方案。
-- `elys-code-development`：实现 → 红绿测试与端到端证据。
-- `elys-evaluation`：主观判断 → 同批样本比较。
-- `engineering-delivery`：PR → 评审与交付结论。
-- `codex-weekly-session-report`：零散会话 → 有来源的工作周报。
+| 技能                          | 画面世界           | 核心价值                                             |
+| ----------------------------- | ------------------ | ---------------------------------------------------- |
+| ns-spec-cards                 | 手绘人物与实体卡片 | 简短问题、逐卡交互，快速和 AI 对齐，少受长篇废话打扰 |
+| test-journal                  | 纸片侦探           | 从体验出发，抓关键 Bug，留下可复测的核心动线         |
+| web-testing                   | 黏土浏览器游乐场   | 只走必要步骤，找到真实体验卡点，沉淀复用用例         |
+| mobile-testing                | 午夜城市与手机门   | 从 App 到系统交互，体验走到底                        |
+| elys-backend-technical-design | 实体建筑模型       | 看清责任与边界，再动工                               |
+| elys-code-development         | 机械修理厂         | 找到卡点、修好、复测到可见结果                       |
+| elys-evaluation               | 光学实验           | 同批样本比较，差异与版本可回溯                       |
+| engineering-delivery          | 夜航快递           | 同一份 PR 修复、复审，交付结论有依据                 |
+| codex-weekly-session-report   | 编辑手账           | 零散会话整理为有来源的工作周报                       |
 
-短片使用银铬、黑、电蓝和酸绿，按120BPM节拍编排图形变化；每片独立MP4可下载。图形与示例数据为**能力示意**，不代表真实业务验收、部署或线上效果。视频在每张技能卡内悬停预览，手机点按播放/暂停，同时仅播放一支。独立BGM默认尝试开启，浏览器限制时首次点击启动；关闭偏好会保存。支持静态模式、系统减少动态设置、离屏和隐藏暂停。
+通透玻璃卡片内直接播放，没有专门视频区。每片 14–16 秒，独立原创配乐；同时只播放一支。**悬停播放，离开即停，声音只属于当前短片。** 声音关闭偏好保存，普通点击不会重新开声。浏览器限制有声自动播放时提示点击开声。手机点按播放/暂停，支持键盘聚焦、减少动态、静态模式和离屏/隐藏暂停。
 
-首页不依赖CDN、外部字体或运行时框架，使用同站H.264/AAC视频和海报。
-
-[新版决策卡试片](https://ruanjianjian.github.io/elys-skill-foundry/?cut=cinematic#ns-spec-cards)为16秒原创角色叙事版本；其余8片尚未按新方向重制。先通过试片讨论风格，再制作整套。原先3种方向稿已撤下。新试片在同一张技能卡内播放，没有独立播放器。
+图画与剧情是能力宣传示意，不代表真实业务录屏或验收结论。首页无需 CDN、外部字体或运行时框架，使用同站 H.264/AAC 视频和海报。原创资产、完整提示词见 [制作记录](docs/collection-art.md)。
 
 ## 安装入口
 
-既有7项的公开文件在 `skills/`，完整配套ZIP在 `downloads/`；这次不改动这些技能源码和包内容。可复制对应SKILL.md，完整references/scripts应下载ZIP。
+既有 7 项公开文件在 `skills/`，完整配套 ZIP 在 `downloads/`，此次未改动这些文件。新增 `ns-spec-cards`、`test-journal` 提供 Nature-Select/ns-skills 源链接及安装说明，需要仓库权限，不重新公开分发源码。
 
-新增 `ns-spec-cards`、`test-journal` 只提供 Nature-Select/ns-skills 源链接和安装说明，需要对应仓库权限，不在此重新公开分发源文件。
-
-技能说明不捆绑或自动安装驱动。网页需可用浏览器工具（如 Playwright / Chrome DevTools MCP），移动端需 Mobile MCP、Maestro 或项目已有驱动及实际设备/构建。安装工具不代表当前会话已就绪，模拟器、真机、离线和线上结论分别记录。
+技能不捆绑或自动安装测试驱动。网页可复用 Chrome DevTools MCP、Playwright 等可用工具；移动端可复用 Mobile MCP、Maestro 或项目已有驱动。只补缺少的工具，安装成功与当前会话可操作分别确认。
 
 ## 本地运行
 
 ```sh
 npm ci
 npm run build
-python3 -m http.server 4173 --bind 127.0.0.1
+npx http-server . -a 127.0.0.1 -p 4173
 ```
 
-打开 `http://127.0.0.1:4173/`。`npm run build` 检查源文件语法；已提交的MP4无需重建即可预览。
+打开 `http://127.0.0.1:4173/`。MP4 已提交，无需重建。检查视频定位时使用支持 HTTP Range/206 的静态服务；Python 简单服务器不提供可靠的 MP4 seek。
 
 ## 重新生成短片
 
-需本机Chrome、Python3、ffmpeg（libx264/AAC）。
+需本机 Chrome、Python 3、ffmpeg（libx264/AAC）。`collection-catalog.js` 是生成的片目，`collection-renderer.js` 汇总 `motion-collection/` 三组确定性 Canvas 场景，`catalog.js` 管技能入口和文案。
+
+先为每片生成配乐，例如：
 
 ```sh
-npm run build:films
-# 只更新海报/四幕静帧
-npm run posters
-# 只生成一项
-node scripts/render-films.mjs --skill=ns-spec-cards
-# 新版16秒试片（准备原创插画和score.wav后）
-npm run build:pilot
+python3 scripts/make-collection-score.py --id ns-spec-cards --duration 16 --bpm 120 --genre ink-rock --out /absolute/artifacts/scores/ns-spec-cards.wav
+FOUNDRY_ARTIFACT_DIR=/absolute/artifacts npm run build:collection
+# 只重建某片或海报
+node scripts/render-collection.mjs --ids=ns-spec-cards
+node scripts/render-collection.mjs --posters-only --ids=test-journal
 ```
 
-`catalog.js` 是技能目录与文案；`film-renderer.js` 是无外部资源、无随机状态的逐帧Canvas2D绘制。`scripts/make-beat.py` 使用纯合成的鼓组、贝斯生成原创节拍，不使用第三方采样或音乐。每片1280×720、30fps、12秒，ffmpeg编码H.264/AAC与faststart。视频默认输出到 `~/DevData/Artifacts/20261017-skills-promo/foundry/videos/`，再复制到 `media/films/`；海报在 `media/posters/`，四幕静帧在任务Artifacts的 `foundry/review/`。WAV、渲染profile和日志不发布。`FOUNDRY_ARTIFACT_DIR`、`CHROME_PATH` 可指定产物目录和Chrome入口。
+`FOUNDRY_ARTIFACT_DIR` 默认本机任务 `~/DevData/Artifacts/20261017-skills-promo/foundry/collection-v3/`，其中 `scores/<id>.wav` 为渲染输入。9 片参数见生成片目。配乐使用标准库纯合成，无第三方音乐采样。原画已提交在 `media/collection-art/`，决策卡另复用 `media/cinematic-art/` 原画。视频/海报输出到 `media/collection/`，1280×720、30fps，H.264/AAC faststart；WAV、渲染 profile、逐帧截图和日志留在任务产物目录，不发布。
 
-旧液态标题源文件保留作为参考，新首页不加载旧React/gooey运行包。`build:gooey` 仅用于维护旧效果。
+`CHROME_PATH` 可覆盖 Chrome 入口。旧片、旧试片和液态标题源文件保留作历史参考，首页不加载旧运行包。
 
 ## 交付与验证
 
-规格与报告见 [docs/motion-films.md](docs/motion-films.md)。GitHub Pages 从 `main` 分支根目录发布，所有路径兼容 `/elys-skill-foundry/` 子目录。
+规格、验收边界及独立测试报告见 [docs/motion-films.md](docs/motion-films.md)。GitHub Pages 从 `main` 根目录发布，兼容 `/elys-skill-foundry/` 子目录。旧 `?cut=cinematic` 链接也显示整套新片。

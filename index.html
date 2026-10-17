@@ -4,13 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="color-scheme" content="light" />
-    <meta name="theme-color" content="#dce0e5" />
+    <meta name="theme-color" content="#e8eaf2" />
     <title>ELYS Skill Foundry · 让它干，你看结果。</title>
     <meta name="description" content="9 个技能，悬停看它开工，再按需安装。" />
     <meta property="og:title" content="ELYS Skill Foundry · SKILLS IN MOTION" />
     <meta
       property="og:description"
-      content="少读说明，看它开工。9 个技能，9 支 12 秒短片。"
+      content="9 个技能，9 种世界。悬停播放，移开即停。"
     />
     <meta
       property="og:url"
@@ -19,20 +19,23 @@
     <meta property="og:type" content="website" />
     <meta
       property="og:image"
-      content="https://ruanjianjian.github.io/elys-skill-foundry/media/posters/ns-spec-cards.jpg"
+      content="https://ruanjianjian.github.io/elys-skill-foundry/media/collection/ns-spec-cards.jpg"
     />
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23141619'/%3E%3Cpath d='M13 43 24 21h7L20 43zm15 0 11-22h7L35 43z' fill='%23C1FF29'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="styles.css?v=20261017-cinematic-2" />
-    <script type="module" src="app.js?v=20261017-cinematic-2"></script>
+    <link rel="stylesheet" href="styles.css?v=20261017-collection-3" />
+    <script type="module" src="app.js?v=20261017-collection-3"></script>
   </head>
   <body>
+    <div class="scene-atmosphere" aria-hidden="true">
+      <div id="ambient-poster"></div>
+    </div>
     <a class="skip-link" href="#main">跳到技能</a>
     <header class="topbar">
       <a class="brand" href="#top"><b aria-hidden="true">///</b> ELYS_SKILLS</a>
-      <a class="style-link" href="?cut=cinematic#ns-spec-cards">新版试片 ↗</a>
+      <span class="edition">09 SKILLS / IN MOTION</span>
       <div class="top-actions">
         <button
           id="bgm-toggle"
@@ -40,7 +43,7 @@
           aria-pressed="true"
           data-state="waiting"
         >
-          节拍 · 点击播放</button
+          声音 开 ♪</button
         ><button id="motion-toggle" type="button" aria-pressed="false">
           静态模式</button
         ><button id="copy-all" type="button">复制全部命令 ↗</button>
@@ -48,8 +51,11 @@
     </header>
     <main id="top">
       <header class="page-heading">
-        <h1>让它干，<span>你看结果。</span></h1>
-        <p id="preview-hint">悬停预览 · 9 × 12 秒</p>
+        <div>
+          <p class="eyebrow">好工具，让人轻松一点。</p>
+          <h1>少点废话。<span>多点结果。</span></h1>
+        </div>
+        <p id="preview-hint">悬停播放 · 移开即停</p>
       </header>
       <section id="main" class="library" aria-label="9 个技能的动效预览">
         <div class="film-grid" id="skill-grid"></div>
@@ -57,8 +63,8 @@
       <noscript
         ><p>
           请启用 JavaScript 浏览全部技能。也可打开
-          <a href="media/films/ns-spec-cards.mp4">决策卡短片</a>、<a
-            href="media/films/test-journal.mp4"
+          <a href="media/collection/ns-spec-cards.mp4">决策卡短片</a>、<a
+            href="media/collection/test-journal.mp4"
             >测试日志短片</a
           >，或查看
           <a
@@ -77,13 +83,6 @@
         ><button id="copy-share" type="button">复制群介绍 ↗</button>
       </footer>
     </main>
-    <audio
-      id="bgm"
-      src="media/bgm.m4a"
-      loop
-      preload="none"
-      aria-label="原创背景节拍"
-    ></audio>
     <dialog id="copy-dialog" aria-labelledby="copy-title">
       <div class="dialog-heading">
         <h2 id="copy-title">复制这段内容</h2>

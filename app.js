@@ -1,28 +1,14 @@
 import { skills } from "./catalog.js";
 
-// Keep the new direction reviewable before replacing the full collection.
-const cinematicPreview =
-  new URLSearchParams(location.search).get("cut") === "cinematic";
-if (cinematicPreview) {
-  const link = document.querySelector(".style-link");
-  link.href = "./#ns-spec-cards";
-  link.textContent = "返回原片 ↗";
-}
-const filmPath = (skill) =>
-  cinematicPreview && skill.id === "ns-spec-cards"
-    ? "media/pilots/ns-spec-cards.mp4"
-    : "media/films/" + skill.id + ".mp4";
-const posterPath = (skill) =>
-  cinematicPreview && skill.id === "ns-spec-cards"
-    ? "media/pilots/ns-spec-cards.jpg"
-    : "media/posters/" + skill.id + ".jpg";
+import { films } from "./collection-catalog.js";
+const filmById = new Map(films.map((film) => [film.id, film]));
+const filmPath = (skill) => "media/collection/" + skill.id + ".mp4";
+const posterPath = (skill) => "media/collection/" + skill.id + ".jpg";
 
 const grid = document.querySelector("#skill-grid");
 const toast = document.querySelector("[data-toast]");
 const motionButton = document.querySelector("#motion-toggle");
 const bgmButton = document.querySelector("#bgm-toggle");
-const bgm = document.querySelector("#bgm");
-if (cinematicPreview) bgm.src = "media/pilots/score.m4a";
 const media = matchMedia("(prefers-reduced-motion: reduce)");
 const hoverMedia = matchMedia("(hover: hover) and (pointer: fine)");
 const openers = new WeakMap();
@@ -38,32 +24,16 @@ const examples = {
   },
 };
 let quiet = false;
-let bgmIntent = true;
-let bgmManual = false;
+let soundEnabled = true;
 let active = null;
 let videoVersion = 0;
-let bgmVersion = 0;
+let soundRequest = 0;
 let toastTimer;
 try {
   quiet = localStorage.getItem("foundry-static") === "yes";
-  bgmIntent = localStorage.getItem("foundry-bgm") !== "off";
+  soundEnabled = localStorage.getItem("foundry-bgm") !== "off";
 } catch (_) {}
 const reduced = () => quiet || media.matches;
-bgm.volume = 0.24;
-
-function syncPilotSound() {
-  if (
-    cinematicPreview &&
-    active?.skill.id === "ns-spec-cards" &&
-    !active.video.paused &&
-    bgmIntent &&
-    !bgm.paused &&
-    Number.isFinite(bgm.duration)
-  ) {
-    bgm.currentTime = active.video.currentTime % bgm.duration;
-  }
-}
-
 function notify(message) {
   clearTimeout(toastTimer);
   toast.textContent = message;
@@ -75,14 +45,18 @@ function pauseItem(item) {
   if (active === item) {
     active = null;
     videoVersion++;
+    soundRequest++;
   }
   item.video.pause();
+  item.video.muted = true;
+  item.needsGesture = false;
   item.card.classList.remove("is-playing", "is-loading");
   item.preview.setAttribute("aria-pressed", "false");
   item.preview.setAttribute("aria-label", "播放" + item.skill.title + "短片");
   item.icon.textContent = "▶";
   item.label.textContent =
     reduced() || !hoverMedia.matches ? "点按播放" : "悬停预览";
+  updateSoundButton();
 }
 async function playItem(item, { manual = false } = {}) {
   if (document.hidden || (reduced() && !manual)) return;
@@ -90,22 +64,36 @@ async function playItem(item, { manual = false } = {}) {
   pauseItem(active);
   const version = ++videoVersion;
   active = item;
-  item.video.muted = true;
+  item.video.muted = !soundEnabled;
+  item.video.volume = 0.65;
+  item.needsGesture = false;
   item.video.currentTime = 0;
   item.card.classList.add("is-loading");
+  document.querySelector("#ambient-poster").style.backgroundImage =
+    `url("${item.video.poster}")`;
   try {
-    await item.video.play();
+    try {
+      await item.video.play();
+    } catch (error) {
+      if (error.name !== "NotAllowedError") throw error;
+      if (version !== videoVersion || active !== item || document.hidden)
+        return;
+      // Audible hover may be blocked until a trusted click. Keep the preview usable.
+      item.video.muted = true;
+      item.needsGesture = soundEnabled;
+      await item.video.play();
+    }
     if (version !== videoVersion || active !== item || document.hidden) {
       if (active !== item || document.hidden) item.video.pause();
       return;
     }
-    syncPilotSound();
     item.card.classList.remove("is-loading");
     item.card.classList.add("is-playing");
     item.preview.setAttribute("aria-pressed", "true");
     item.preview.setAttribute("aria-label", "暂停" + item.skill.title + "短片");
     item.icon.textContent = "Ⅱ";
-    item.label.textContent = "正在预览";
+    item.label.textContent = item.needsGesture ? "点击开声" : "正在预览";
+    updateSoundButton();
   } catch (error) {
     if (version === videoVersion) {
       pauseItem(item);
@@ -206,17 +194,11 @@ for (const [index, skill] of skills.entries()) {
   preview.append(
     video,
     poster,
-    node(
-      "span",
-      "preview-number",
-      cinematicPreview && index === 0
-        ? "新版试映"
-        : String(index + 1).padStart(2, "0"),
-    ),
+    node("span", "preview-number", String(index + 1).padStart(2, "0")),
     node(
       "span",
       "preview-duration",
-      cinematicPreview && index === 0 ? "00:16" : "00:12",
+      "00:" + String(filmById.get(skill.id).duration).padStart(2, "0"),
     ),
     state,
   );
@@ -224,7 +206,10 @@ for (const [index, skill] of skills.entries()) {
   const titleRow = node("div", "film-title-row");
   const title = node("h2", "", skill.title);
   title.id = "title-" + skill.id;
-  titleRow.append(title, node("span", "film-tag", skill.tag));
+  titleRow.append(
+    title,
+    node("span", "film-tag", filmById.get(skill.id).style),
+  );
   const actions = node("div", "install-actions");
   const copy = node(
     "button",
@@ -315,7 +300,15 @@ for (const [index, skill] of skills.entries()) {
     details,
   );
   card.append(preview, body);
-  const item = { card, preview, video, icon, label, skill };
+  const item = {
+    card,
+    preview,
+    video,
+    icon,
+    label,
+    skill,
+    needsGesture: false,
+  };
   items.push(item);
   card.addEventListener("pointerenter", (event) => {
     if (event.pointerType === "mouse" && hoverMedia.matches && !reduced())
@@ -331,15 +324,16 @@ for (const [index, skill] of skills.entries()) {
     if (!card.contains(event.relatedTarget)) pauseItem(item);
   });
   preview.addEventListener("click", () => {
-    if (active === item && !video.paused) pauseItem(item);
-    else playItem(item, { manual: true });
+    if (active === item && !video.paused) {
+      if (soundEnabled && video.muted) unmuteActive();
+      else pauseItem(item);
+    } else playItem(item, { manual: true });
   });
-  video.addEventListener("volumechange", () => {
-    if (!video.muted) video.muted = true;
-  });
+  video.addEventListener("volumechange", updateSoundButton);
   video.addEventListener("play", () => {
     if (active !== item || document.hidden) video.pause();
   });
+  video.addEventListener("pause", updateSoundButton);
   video.addEventListener("error", () => {
     pauseItem(item);
     notify(skill.title + "短片加载失败，可稍后重试。");
@@ -347,71 +341,70 @@ for (const [index, skill] of skills.entries()) {
   grid.append(card);
 }
 
-function updateBgmButton() {
-  const playing = bgmIntent && !bgm.paused && !bgm.ended;
-  bgmButton.dataset.state = !bgmIntent
+function updateSoundButton() {
+  const running = active && !active.video.paused;
+  const waiting = soundEnabled && running && active.video.muted;
+  bgmButton.dataset.state = !soundEnabled
     ? "off"
-    : playing
-      ? "playing"
-      : "waiting";
-  bgmButton.setAttribute("aria-pressed", String(bgmIntent));
-  bgmButton.textContent = !bgmIntent
-    ? "节拍 · 关闭"
-    : playing
-      ? "节拍 ♪"
-      : "节拍 · 点击播放";
+    : waiting
+      ? "waiting"
+      : running
+        ? "playing"
+        : "ready";
+  bgmButton.setAttribute("aria-pressed", String(soundEnabled));
+  bgmButton.textContent = soundEnabled ? "声音 开 ♪" : "声音 关";
   bgmButton.setAttribute(
     "aria-label",
-    !bgmIntent
-      ? "开启背景节拍"
-      : playing
-        ? "关闭正在播放的背景节拍"
-        : "背景节拍等待点击播放",
+    soundEnabled ? "关闭所有短片声音" : "开启短片声音（随悬停播放）",
   );
 }
-async function tryBgm() {
-  const version = ++bgmVersion;
-  if (!bgmIntent || document.hidden || (reduced() && !bgmManual)) {
-    bgm.pause();
-    updateBgmButton();
-    return;
-  }
+async function unmuteActive() {
+  const item = active;
+  if (!soundEnabled || !item || item.video.paused || document.hidden) return;
+  const version = videoVersion;
+  const request = ++soundRequest;
+  item.video.muted = false;
   try {
-    await bgm.play();
-    if (version !== bgmVersion) return;
-    if (!bgmIntent || document.hidden || (reduced() && !bgmManual)) bgm.pause();
-    else syncPilotSound();
+    await item.video.play();
+    if (version !== videoVersion || active !== item || request !== soundRequest)
+      return;
+    if (!soundEnabled || document.hidden) item.video.muted = true;
+    else {
+      item.needsGesture = false;
+      item.label.textContent = "正在预览";
+    }
   } catch (_) {
-    /* Autoplay denial remains visibly waiting for a user gesture. */
+    if (version !== videoVersion || active !== item || request !== soundRequest)
+      return;
+    item.video.muted = true;
+    item.needsGesture = true;
+    if (active === item) await item.video.play().catch(() => {});
   }
-  updateBgmButton();
+  updateSoundButton();
 }
 bgmButton.addEventListener("click", () => {
-  if (bgmIntent && !bgm.paused) {
-    bgmIntent = false;
-    bgmManual = false;
-    bgmVersion++;
-    bgm.pause();
-  } else {
-    bgmIntent = true;
-    bgmManual = true;
-    tryBgm();
-  }
+  // A strict preference toggle: OFF always means OFF, even if autoplay was blocked.
+  soundEnabled = !soundEnabled;
+  soundRequest++;
   try {
-    localStorage.setItem("foundry-bgm", bgmIntent ? "on" : "off");
+    localStorage.setItem("foundry-bgm", soundEnabled ? "on" : "off");
   } catch (_) {}
-  updateBgmButton();
-});
-bgm.addEventListener("playing", updateBgmButton);
-bgm.addEventListener("pause", updateBgmButton);
-bgm.addEventListener("error", () => {
-  updateBgmButton();
-  notify("背景节拍暂时不可用，预览仍可正常观看。");
+  if (!soundEnabled) {
+    for (const item of items) {
+      item.video.muted = true;
+      item.needsGesture = false;
+      if (!item.video.paused) item.label.textContent = "正在预览";
+    }
+  } else unmuteActive();
+  updateSoundButton();
 });
 function resumeOnGesture(event) {
-  if (!event.isTrusted || event.target.closest?.("#bgm-toggle, #motion-toggle"))
+  if (
+    !event.isTrusted ||
+    event.target.closest?.("#bgm-toggle, #motion-toggle, .film-preview")
+  )
     return;
-  if (bgmIntent && bgm.paused && !reduced() && !document.hidden) tryBgm();
+  if (soundEnabled && active && active.video.muted) unmuteActive();
 }
 document.addEventListener("pointerdown", resumeOnGesture, { passive: true });
 document.addEventListener("keydown", resumeOnGesture);
@@ -425,17 +418,12 @@ function updatePreference() {
       : "静态模式";
   document.querySelector("#preview-hint").textContent = reduced()
     ? "静态浏览 · 点按可播放"
-    : cinematicPreview
-      ? "新版决策卡 · 16 秒试片"
-      : hoverMedia.matches
-        ? "悬停预览 · 9 × 12 秒"
-        : "点按预览 · 9 × 12 秒";
-  if (reduced()) {
-    pauseItem(active);
-    bgmManual = false;
-  }
+    : hoverMedia.matches
+      ? "悬停播放 · 移开即停"
+      : "点按播放 · 再点暂停";
+  if (reduced()) pauseItem(active);
   for (const item of items) if (active !== item) pauseItem(item);
-  tryBgm();
+  updateSoundButton();
 }
 motionButton.addEventListener("click", () => {
   if (media.matches) {
@@ -462,16 +450,10 @@ const observer = new IntersectionObserver(
 );
 items.forEach((item) => observer.observe(item.preview));
 document.addEventListener("visibilitychange", () => {
-  if (document.hidden) {
-    pauseItem(active);
-    bgmVersion++;
-    bgm.pause();
-  } else tryBgm();
+  if (document.hidden) pauseItem(active);
 });
 window.addEventListener("pagehide", () => {
   pauseItem(active);
-  bgmVersion++;
-  bgm.pause();
   clearTimeout(toastTimer);
 });
 window.addEventListener("pageshow", (event) => {
@@ -496,4 +478,4 @@ document
     ),
   );
 updatePreference();
-updateBgmButton();
+updateSoundButton();

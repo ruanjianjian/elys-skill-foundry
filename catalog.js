@@ -7,13 +7,14 @@ export const skills = [
     command: "/ns-spec-cards",
     tag: "DECIDE",
     accent: "#246BFF",
-    hook: ["讨论刷屏", "到底定了什么"],
-    payoff: "一张卡一个决定",
+    hook: ["AI 又写一大屏", "需求还没对齐"],
+    payoff: "少点废话，一张卡对齐",
     visual: "cards",
     skillUrl:
       "https://github.com/Nature-Select/ns-skills/tree/main/base/ns-spec-cards",
     zipUrl: null,
-    description: "把待定问题变成决策卡，逐张选择、留言，再回写结论。",
+    description:
+      "用简洁卡片逐张确认关键需求和意见，快速与 AI 对齐，减少长篇解释。",
     installText:
       "需有 Nature-Select/ns-skills 仓库权限。打开源仓库，按 SKILL.md 安装；可单独使用，也可配合 ns-spec。",
   },
@@ -23,13 +24,13 @@ export const skills = [
     command: "/test-journal",
     tag: "RECORD",
     accent: "#C1FF29",
-    hook: ["说是测过了", "证据还在找"],
-    payoff: "动线截图一起交",
+    hook: ["测了一大堆", "用户还是卡住"],
+    payoff: "从体验出发，抓住关键 Bug",
     visual: "journal",
     skillUrl:
       "https://github.com/Nature-Select/ns-skills/tree/main/test-journal",
     zipUrl: null,
-    description: "边测边记，把最新核心动线和实际截图做成一份报告。",
+    description: "按核心用户动线边测边记，沉淀可复用用例，只呈现最新有效证据。",
     installText:
       "需有 Nature-Select/ns-skills 仓库权限。按源仓库 SKILL.md 安装并配置 tj Hooks，重新打开会话；不捆绑网页或移动端驱动。",
   },
@@ -39,12 +40,13 @@ export const skills = [
     command: "/web-testing",
     tag: "EXPLORE",
     accent: "#246BFF",
-    hook: ["按钮能点", "结果真对吗"],
-    payoff: "走通网页旅程",
+    hook: ["用例越测越多", "关键体验却没通"],
+    payoff: "走关键动线，抓真实卡点",
     visual: "web",
     skillUrl: "skills/web-testing/SKILL.md",
     zipUrl: "downloads/web-testing.zip",
-    description: "实际操作网页，核对交互、视觉和可见结果，留下证据。",
+    description:
+      "从用户目标出发，用必要步骤验证网页体验，保留截图和可复测路径。",
     installText:
       "下载 ZIP，解压到本地 Agent 的 Skills 目录，重新打开会话。另需可用浏览器工具，如 Chrome DevTools MCP 或 Playwright。",
   },
@@ -55,11 +57,12 @@ export const skills = [
     tag: "DEVICE",
     accent: "#C1FF29",
     hook: ["页面过了", "系统弹窗呢"],
-    payoff: "跨层走完再交",
+    payoff: "从 App 到系统，体验走到底",
     visual: "mobile",
     skillUrl: "skills/mobile-testing/SKILL.md",
     zipUrl: "downloads/mobile-testing.zip",
-    description: "沿用户动线检查 App、原生界面和系统交互。",
+    description:
+      "以用户目标串起 App、原生界面和系统权限，用关键操作发现真实卡点。",
     installText:
       "下载 ZIP，解压到本地 Agent 的 Skills 目录，重新打开会话。另需设备、App 构建及 Mobile MCP、Maestro 或项目现有驱动；模拟器结果与真机结果分别记录。",
   },
