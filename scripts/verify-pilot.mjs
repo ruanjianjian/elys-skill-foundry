@@ -190,7 +190,61 @@ try {
     },
   );
   await check(
-    "Real click starts the 16-second pilot BGM and sound button stops it",
+    "First-gesture BGM and unlocked replay synchronize within 0.3 seconds",
+    async () => {
+      await page.waitForFunction(() => {
+        const video = document.querySelector("#video-ns-spec-cards");
+        return !video.paused && video.currentTime >= 1;
+      });
+      const before = await page.evaluate(() => ({
+        video: document.querySelector("#video-ns-spec-cards").currentTime,
+        audioPaused: document.querySelector("#bgm").paused,
+      }));
+      assert.equal(
+        before.audioPaused,
+        true,
+        "First gesture requires initially blocked audio",
+      );
+      await page.click(card("ns-spec-cards") + " .skill-payoff");
+      await page.waitForFunction(() => {
+        const audio = document.querySelector("#bgm");
+        return !audio.paused && audio.readyState >= 2;
+      });
+      const firstGesture = await page.evaluate(() => {
+        const video = document.querySelector("#video-ns-spec-cards");
+        const audio = document.querySelector("#bgm");
+        return {
+          video: video.currentTime,
+          videoPaused: video.paused,
+          audio: audio.currentTime,
+          delta: Math.abs(video.currentTime - audio.currentTime),
+        };
+      });
+      assert.equal(firstGesture.videoPaused, false);
+      assert.ok(
+        firstGesture.delta < 0.3,
+        "First-gesture drift " + firstGesture.delta,
+      );
+      await page.mouse.move(3, 3);
+      await page.hover(preview("ns-spec-cards"));
+      await waitPlaying(page, "ns-spec-cards");
+      const replay = await page.evaluate(() => {
+        const video = document.querySelector("#video-ns-spec-cards");
+        const audio = document.querySelector("#bgm");
+        return {
+          video: video.currentTime,
+          audio: audio.currentTime,
+          delta: Math.abs(video.currentTime - audio.currentTime),
+          audioPaused: audio.paused,
+        };
+      });
+      assert.equal(replay.audioPaused, false);
+      assert.ok(replay.delta < 0.3, "Unlocked-replay drift " + replay.delta);
+      return { before, firstGesture, replay };
+    },
+  );
+  await check(
+    "Pilot BGM has 16-second metadata and sound button stops it",
     async () => {
       await page.click("h1");
       await page.waitForFunction(() => {
