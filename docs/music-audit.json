@@ -1,687 +1,617 @@
 {
-  "testedCommit": "02e081f54e7b0208f201258c756005ac257d2fc8",
+  "testedCommit": "074949a7a1d519e699145db792fd791995c5be99",
+  "version": "music-v3",
   "methods": [
-    "ffmpeg two-pass loudnorm followed by encoded AAC analysis",
-    "SHA256 of encoded H.264 packet payloads before and after audio replacement"
+    "Four independent composer modules, each cue has its own palette, groove and arrangement",
+    "FFmpeg two-pass loudnorm then 320k AAC; encoded audio measured again",
+    "Encoded H.264 packet SHA256 compared before and after audio replacement"
   ],
+  "instrumentSources": "../media/instruments/tactile/SOURCES.md",
   "listeningVerified": false,
   "tracks": [
     {
       "id": "ns-spec-cards",
-      "genre": "y2k-electropop",
-      "bpm": 128,
+      "genre": "shibuya-pop",
+      "bpm": 126,
       "duration": 16,
       "integratedLUFS": -15.01,
-      "truePeakDBTP": -3.53,
+      "truePeakDBTP": -2.89,
       "videoPacketSHA256": "417f1da6917489ddd08e044f911469b49f8fc764cb6bbb2fea97ceaa8168eb5a",
       "originalVideoPacketSHA256": "417f1da6917489ddd08e044f911469b49f8fc764cb6bbb2fea97ceaa8168eb5a",
       "videoUnchanged": true,
-      "audioPacketSHA256": "265f0bd0025cdafeab0475b5a85c81bd9d033486211434f7453bac895b64a427",
-      "originalAudioPacketSHA256": "22dd6b96a0114b9c07cefb15c5d8b8a7f22a0fc5a19290c33a35aaba820f227b",
+      "audioPacketSHA256": "7db2c581811a9bcdf0be6d571c5f380f9ce07ac270b5cd568e126856fbccdf05",
+      "originalAudioPacketSHA256": "265f0bd0025cdafeab0475b5a85c81bd9d033486211434f7453bac895b64a427",
       "audioChanged": true,
       "audioSampleRate": "48000",
       "channels": 2,
       "cueTimes": [
         0,
         2.5,
-        4,
-        7.5,
-        7.96875,
-        12,
-        15.17,
-        15.55
+        3.35,
+        5.5,
+        10,
+        14.8
       ],
       "listeningVerified": false,
-      "previousIntegratedLUFS": -18.62,
-      "previousTruePeakDBTP": -4.23,
-      "scoreWavSHA256": "198c914b8c850c71d9108bf639f5cb0f819ed84ce0b9ebfa5cfc8f15d13a24af",
+      "version": "music-v3",
+      "meter": "4/4 syncopated city-pop; no four-on-the-floor",
+      "palette": [
+        "FM tine pluck",
+        "short additive reed/brass chords",
+        "major-seven silk keys",
+        "bouncing fingerbass",
+        "snap and tambourine"
+      ],
+      "introSignature": "Major-pentatonic tine question + fingerbass + light snap in the first second",
       "arrangement": [
         {
           "at": 0,
-          "section": "hook",
-          "description": "groove and original motif enter immediately"
+          "section": "immediate pop question",
+          "description": "bright FM tine over elastic bass; no saw lead"
         },
         {
           "at": 2.5,
-          "end": 3.35,
-          "section": "eye-closeup breath",
-          "description": "deliberate all-bus quiet for the character close-up"
+          "section": "character breath",
+          "description": "full-bus stop for the eye close-up"
         },
         {
-          "at": 4.0,
-          "section": "lift",
-          "description": "bass/chord density and ghost percussion rise"
+          "at": 3.35,
+          "section": "answer returns",
+          "description": "ascending four-note answer and snapped backbeat"
         },
         {
-          "at": 7.5,
-          "section": "breath",
-          "description": "all-bus edited silence including effect tails"
+          "at": 5.5,
+          "section": "chorus comping",
+          "description": "short brassy major-seven voicings"
         },
         {
-          "at": 7.96875,
-          "section": "drop",
-          "description": "full drum/sub/chord hook arrangement"
+          "at": 10,
+          "section": "lighter second answer",
+          "description": "keys replace density rather than adding an EDM drop"
         },
         {
-          "at": 12.0,
-          "section": "return",
-          "description": "hook variation and return voicing"
-        },
-        {
-          "at": 15.17,
-          "section": "last-word pause",
-          "description": "full-bus stop before final hit"
-        },
-        {
-          "at": 15.55,
-          "section": "final hit",
-          "description": "short signature voicing and kick"
+          "at": 14.8,
+          "section": "open cadence",
+          "description": "sustained electric-key resolution without a stinger"
         }
       ],
-      "version": "electro-v2"
+      "composerModule": "score_neon.py",
+      "composerSHA256": "c9f3f4010016e20f55591b3947d788bb34cc28c7083538a1b9da6276d2802f2c",
+      "scoreWavSHA256": "cc4d8cfc6d450a829379984328451ca1846a83fb0ba5c2f5d259e26c519ac90b",
+      "previousIntegratedLUFS": -15.01,
+      "previousTruePeakDBTP": -3.53
     },
     {
       "id": "test-journal",
-      "genre": "two-step-club",
-      "bpm": 134,
+      "genre": "detective-bigbeat",
+      "bpm": 104,
       "duration": 16,
-      "integratedLUFS": -15.01,
-      "truePeakDBTP": -3.09,
+      "integratedLUFS": -15.03,
+      "truePeakDBTP": -2.78,
       "videoPacketSHA256": "bc4430ac710c4f9197e1da79c77b78123d8f80dce5ab337dd269bfde6b1f4e00",
       "originalVideoPacketSHA256": "bc4430ac710c4f9197e1da79c77b78123d8f80dce5ab337dd269bfde6b1f4e00",
       "videoUnchanged": true,
-      "audioPacketSHA256": "1d90b9c95669473b578b5600099d3aea0df30d518fdaae94aa66e3f910f98b31",
-      "originalAudioPacketSHA256": "3d670f3b95aaa029e47829baebe574e8303ac66e865fc49eb4111474e6092a94",
+      "audioPacketSHA256": "c04bcd6c53f3933950a87b8bfb714b105b67abdc4ecafec5b90d3748c0891e48",
+      "originalAudioPacketSHA256": "1d90b9c95669473b578b5600099d3aea0df30d518fdaae94aa66e3f910f98b31",
       "audioChanged": true,
       "audioSampleRate": "48000",
       "channels": 2,
       "cueTimes": [
         0,
-        4,
-        7.61194,
-        8.059701,
-        12,
-        15.17,
-        15.55
+        3.1,
+        3.42,
+        6.6,
+        8.3,
+        13.2
       ],
       "listeningVerified": false,
-      "previousIntegratedLUFS": -21.36,
-      "previousTruePeakDBTP": -3.87,
-      "scoreWavSHA256": "1df69ec35fe155cc2ac295d537c69541d25734c2a5a16b2c5152e98474c4f886",
+      "version": "music-v3",
+      "meter": "4/4 swung breakbeat, uneven kick and ghosted snare",
+      "palette": [
+        "9-bit dusty low break kit",
+        "swung ghost drags",
+        "odd-harmonic clarinet",
+        "low pizzicato string",
+        "muted brass stabs"
+      ],
+      "introSignature": "Low dusty break hit + upward chromatic woodwind leap, with no pop snap or four-floor kick",
       "arrangement": [
         {
           "at": 0,
-          "section": "hook",
-          "description": "groove and original motif enter immediately"
+          "section": "dusty detective riff",
+          "description": "coarse low breakbeat and chromatic clarinet enter together"
         },
         {
-          "at": 4.0,
-          "section": "lift",
-          "description": "bass/chord density and ghost percussion rise"
+          "at": 3.1,
+          "section": "sudden stop-time",
+          "description": "short comic cut before the reply"
         },
         {
-          "at": 7.61194,
-          "section": "breath",
-          "description": "all-bus edited silence including effect tails"
+          "at": 3.42,
+          "section": "reply and brass",
+          "description": "falling clarinet with muted horn stabs"
         },
         {
-          "at": 8.059701,
-          "section": "drop",
-          "description": "full drum/sub/chord hook arrangement"
+          "at": 6.6,
+          "section": "clue solo",
+          "description": "drums recede; exposed low pizzicato and woodblock"
         },
         {
-          "at": 12.0,
-          "section": "return",
-          "description": "hook variation and return voicing"
+          "at": 8.3,
+          "section": "chase resumes",
+          "description": "broken drums return, never a four-floor drop"
         },
         {
-          "at": 15.17,
-          "section": "last-word pause",
-          "description": "full-bus stop before final hit"
-        },
-        {
-          "at": 15.55,
-          "section": "final hit",
-          "description": "short signature voicing and kick"
+          "at": 13.2,
+          "section": "case closes",
+          "description": "riff reply and dusty tail; no festival stinger"
         }
       ],
-      "version": "electro-v2"
+      "composerModule": "score_neon.py",
+      "composerSHA256": "c9f3f4010016e20f55591b3947d788bb34cc28c7083538a1b9da6276d2802f2c",
+      "scoreWavSHA256": "13ee3cb6e03e9513c18251f7ca11a9d96a456c26c2b917ba6cddb3ec75c86802",
+      "previousIntegratedLUFS": -15.01,
+      "previousTruePeakDBTP": -3.09
     },
     {
       "id": "multi-agent-coding",
-      "genre": "festival-electro",
-      "bpm": 128,
+      "genre": "industrial-halfstep",
+      "bpm": 86,
       "duration": 16,
-      "integratedLUFS": -15.02,
-      "truePeakDBTP": -2.23,
+      "integratedLUFS": -15.04,
+      "truePeakDBTP": -2.49,
       "videoPacketSHA256": "da0096da08cb36ed011ce1084892ab8207b751b269a2ff6ddc9eb22d3cf8ba2b",
       "originalVideoPacketSHA256": "da0096da08cb36ed011ce1084892ab8207b751b269a2ff6ddc9eb22d3cf8ba2b",
       "videoUnchanged": true,
-      "audioPacketSHA256": "8571586c5e9fe60ee5647e2b244f744e9e4000f19802ae4c7e29929e00532171",
-      "originalAudioPacketSHA256": "f652079a66af2774b81912f2d2e1496cdbb5c88dcfdcb3dd91f6a3bf879242d3",
+      "audioPacketSHA256": "bfc2d29889fee1cfa774ede5c2321c3673fc4ec7e59aa8153e9aa6529e4645fe",
+      "originalAudioPacketSHA256": "8571586c5e9fe60ee5647e2b244f744e9e4000f19802ae4c7e29929e00532171",
       "audioChanged": true,
       "audioSampleRate": "48000",
       "channels": 2,
       "cueTimes": [
         0,
-        4,
-        7.5,
-        7.96875,
-        12,
-        15.17,
-        15.55
+        4.05,
+        4.4,
+        7.8,
+        11.6,
+        14
       ],
       "listeningVerified": false,
-      "previousIntegratedLUFS": -18.72,
-      "previousTruePeakDBTP": -3.94,
-      "scoreWavSHA256": "868c9781f41b4abbee06e6c7bf4428dacbd75f97416a8a14dd6ca14a63a9da91",
+      "version": "music-v3",
+      "meter": "4/4 half-time, single beat-three metal backbeat, triplet subdivisions",
+      "palette": [
+        "resonant anvil and wire",
+        "low mechanical slam",
+        "mono portamento 808",
+        "triplet latch bursts",
+        "no chords or melodic lead"
+      ],
+      "introSignature": "Forged low slam + three clipped command pulses + gliding mono 808",
       "arrangement": [
         {
           "at": 0,
-          "section": "hook",
-          "description": "groove and original motif enter immediately"
+          "section": "forged command",
+          "description": "low 808 and triplet latch signature immediately"
         },
         {
-          "at": 4.0,
-          "section": "lift",
-          "description": "bass/chord density and ghost percussion rise"
+          "at": 4.05,
+          "section": "mechanical breath",
+          "description": "an abrupt short all-bus cut"
         },
         {
-          "at": 7.5,
-          "section": "breath",
-          "description": "all-bus edited silence including effect tails"
+          "at": 4.4,
+          "section": "portamento exchange",
+          "description": "808 slides and sparse command response; no harmony"
         },
         {
-          "at": 7.96875,
-          "section": "drop",
-          "description": "full drum/sub/chord hook arrangement"
+          "at": 7.8,
+          "section": "original-session continuation",
+          "description": "metallic response repeats in the same rhythmic identity"
         },
         {
-          "at": 12.0,
-          "section": "return",
-          "description": "hook variation and return voicing"
+          "at": 11.6,
+          "section": "lead takes control",
+          "description": "one low slam, slower metal density"
         },
         {
-          "at": 15.17,
-          "section": "last-word pause",
-          "description": "full-bus stop before final hit"
-        },
-        {
-          "at": 15.55,
-          "section": "final hit",
-          "description": "short signature voicing and kick"
+          "at": 14,
+          "section": "shutdown tail",
+          "description": "commands fade instead of a major chord or EDM drop"
         }
       ],
-      "version": "electro-v2"
+      "composerModule": "score_neon.py",
+      "composerSHA256": "c9f3f4010016e20f55591b3947d788bb34cc28c7083538a1b9da6276d2802f2c",
+      "scoreWavSHA256": "4e4ae9359e6f5dcdf4e7f24390cc3b3d62d33f3c5a64a5316b2c5896644aeeff",
+      "previousIntegratedLUFS": -15.02,
+      "previousTruePeakDBTP": -2.23
     },
     {
       "id": "web-testing",
-      "genre": "future-funk",
-      "bpm": 124,
+      "genre": "jungle-breaks",
+      "bpm": 168,
       "duration": 14,
-      "integratedLUFS": -15.01,
-      "truePeakDBTP": -4.59,
+      "integratedLUFS": -14.98,
+      "truePeakDBTP": -2.38,
       "videoPacketSHA256": "f561048ea6504f09b25327520be2c7112b37928e495eccc13b27ef88514a5936",
       "originalVideoPacketSHA256": "f561048ea6504f09b25327520be2c7112b37928e495eccc13b27ef88514a5936",
       "videoUnchanged": true,
-      "audioPacketSHA256": "56faaf8dabc992000e9e21953cb2f8d0115918278da90d2e9d4886aeca7c93c8",
-      "originalAudioPacketSHA256": "1c351e7a5c61134c2f0b314ef74bf39bf463dd12e0dd6ac230cd784987f1eafc",
+      "audioPacketSHA256": "39e0d6aa169989574518c8401eeedfdfe731c6809cbf65acac3c9a41df96bc27",
+      "originalAudioPacketSHA256": "56faaf8dabc992000e9e21953cb2f8d0115918278da90d2e9d4886aeca7c93c8",
       "audioChanged": true,
       "audioSampleRate": "48000",
       "channels": 2,
       "cueTimes": [
         0,
-        3.5,
-        6.290323,
-        6.774194,
-        10.5,
-        13.17,
-        13.55
+        4.286,
+        5.714,
+        11.429,
+        12.857
       ],
       "listeningVerified": false,
-      "previousIntegratedLUFS": -18.09,
-      "previousTruePeakDBTP": -1.39,
-      "scoreWavSHA256": "7aa3f8b367b5dab58b805227d9472c121b20deb4302c70e09c5482fa954a83c4",
-      "arrangement": [
-        {
-          "at": 0,
-          "section": "hook",
-          "description": "groove and original motif enter immediately"
-        },
-        {
-          "at": 3.5,
-          "section": "lift",
-          "description": "bass/chord density and ghost percussion rise"
-        },
-        {
-          "at": 6.290323,
-          "section": "breath",
-          "description": "all-bus edited silence including effect tails"
-        },
-        {
-          "at": 6.774194,
-          "section": "drop",
-          "description": "full drum/sub/chord hook arrangement"
-        },
-        {
-          "at": 10.5,
-          "section": "return",
-          "description": "hook variation and return voicing"
-        },
-        {
-          "at": 13.17,
-          "section": "last-word pause",
-          "description": "full-bus stop before final hit"
-        },
-        {
-          "at": 13.55,
-          "section": "final hit",
-          "description": "short signature voicing and kick"
-        }
+      "version": "music-v3",
+      "meter": "4/4, 168 BPM, asymmetric sixteenth break slicing",
+      "palette": [
+        "original synthetic break-kit cut into sixteenths",
+        "dry head/wire ghost snares",
+        "round sliding sub",
+        "sparse minor-ninth organ chops"
       ],
-      "version": "electro-v2"
+      "introSignature": "A complete fast broken drum pattern begins on sample zero; snare hits inside the first half-second with sub and a short jazzy chord chop.",
+      "arrangement": [
+        "0s: full chopped break, kick and sub immediately",
+        "three bars of rolling ghost-snare edits",
+        "fourth bar removes two slices and bass answers",
+        "bass changes beneath a different cut on every bar",
+        "final bars recycle snare fragments rather than a pop drop/stinger"
+      ],
+      "composerModule": "score_kinetic.py",
+      "composerSHA256": "8e6eba3531f01136e0292a93721e6e41308e9e73c833bff3507a1adf9e15cb64",
+      "scoreWavSHA256": "cbaf28ea3ac030bb4a6c9260660e4d54a0c0b77e2c3acd0015591366537d223d",
+      "previousIntegratedLUFS": -15.01,
+      "previousTruePeakDBTP": -4.59
     },
     {
       "id": "mobile-testing",
-      "genre": "dark-club",
-      "bpm": 126,
+      "genre": "night-synthwave",
+      "bpm": 94,
       "duration": 14,
-      "integratedLUFS": -15.04,
-      "truePeakDBTP": -2.48,
+      "integratedLUFS": -15.08,
+      "truePeakDBTP": -2.5,
       "videoPacketSHA256": "45049a4a6a3bc623843acd012d81cad2e6c62a6a26ea4d0d80db213f48c5d796",
       "originalVideoPacketSHA256": "45049a4a6a3bc623843acd012d81cad2e6c62a6a26ea4d0d80db213f48c5d796",
       "videoUnchanged": true,
-      "audioPacketSHA256": "b22830b77b8d6245d4a1a9a3b2e449650117cda659c5320c061a153ed95fe4a2",
-      "originalAudioPacketSHA256": "a5bcc613002a69a421096a9ad08d5e73c53e271e86105bb7b253fd68d5dbfa02",
+      "audioPacketSHA256": "993634125e6ddfc65513e8358d215e404d6f88b58c59626405918b11cb751642",
+      "originalAudioPacketSHA256": "b22830b77b8d6245d4a1a9a3b2e449650117cda659c5320c061a153ed95fe4a2",
       "audioChanged": true,
       "audioSampleRate": "48000",
       "channels": 2,
       "cueTimes": [
         0,
-        3.5,
-        6.666667,
-        7.142857,
-        10.5,
-        13.17,
-        13.55
+        5.106,
+        7.66,
+        12.766
       ],
       "listeningVerified": false,
-      "previousIntegratedLUFS": -18.26,
-      "previousTruePeakDBTP": -3.78,
-      "scoreWavSHA256": "d12cfdf97e3844a6cb4b7b19b1cd48c05e79dfcdbabafec76034019d20661f3c",
+      "version": "music-v3",
+      "meter": "4/4, 94 BPM, slow kick on 1/3 and gated snare on 2/4",
+      "palette": [
+        "wide detuned analog saw ensemble",
+        "low warm pulse bass",
+        "large gated room snare",
+        "stereo eighth-note square arpeggio",
+        "restrained sine lead"
+      ],
+      "introSignature": "Wide left/right detuned chord, warm low pulse and a spacious arpeggio start immediately; the first large gated snare arrives at 0.64s.",
       "arrangement": [
-        {
-          "at": 0,
-          "section": "hook",
-          "description": "groove and original motif enter immediately"
-        },
-        {
-          "at": 3.5,
-          "section": "lift",
-          "description": "bass/chord density and ghost percussion rise"
-        },
-        {
-          "at": 6.666667,
-          "section": "breath",
-          "description": "all-bus edited silence including effect tails"
-        },
-        {
-          "at": 7.142857,
-          "section": "drop",
-          "description": "full drum/sub/chord hook arrangement"
-        },
-        {
-          "at": 10.5,
-          "section": "return",
-          "description": "hook variation and return voicing"
-        },
-        {
-          "at": 13.17,
-          "section": "last-word pause",
-          "description": "full-bus stop before final hit"
-        },
-        {
-          "at": 13.55,
-          "section": "final hit",
-          "description": "short signature voicing and kick"
-        }
+        "immediate wide analog minor-seventh chord and low pulse",
+        "slow half-time-feeling road groove with gated room snare",
+        "third bar holds the harmony and removes a kick/snare",
+        "a sustained answering lead enters after the cruising space",
+        "last partial bar lets its harmony dissolve, no EDM drop"
       ],
-      "version": "electro-v2"
-    },
-    {
-      "id": "elys-backend-technical-design",
-      "genre": "dream-house",
-      "bpm": 120,
-      "duration": 16,
-      "integratedLUFS": -15.01,
-      "truePeakDBTP": -3.8,
-      "videoPacketSHA256": "c56a44d97a76ca098a14a164119d9525c5ac1dfea9d405b45ba9725791a9abd7",
-      "originalVideoPacketSHA256": "c56a44d97a76ca098a14a164119d9525c5ac1dfea9d405b45ba9725791a9abd7",
-      "videoUnchanged": true,
-      "audioPacketSHA256": "ecec33a0eb822bc95c806161ddb5f9f034c5be1a68447a3fdf1567f6ccbe7cde",
-      "originalAudioPacketSHA256": "5215862042927e146eba954a9e55f67f6281a0e36f23e7a2837ac6b0a3e85ac9",
-      "audioChanged": true,
-      "audioSampleRate": "48000",
-      "channels": 2,
-      "cueTimes": [
-        0,
-        4,
-        7.5,
-        8,
-        12,
-        15.17,
-        15.55
-      ],
-      "listeningVerified": false,
-      "previousIntegratedLUFS": -16.39,
-      "previousTruePeakDBTP": -3.96,
-      "scoreWavSHA256": "af77a250b9533fc5f5ff309c9428526b276e55bc87156e048f432ebdbf60869e",
-      "arrangement": [
-        {
-          "at": 0,
-          "section": "hook",
-          "description": "groove and original motif enter immediately"
-        },
-        {
-          "at": 4.0,
-          "section": "lift",
-          "description": "bass/chord density and ghost percussion rise"
-        },
-        {
-          "at": 7.5,
-          "section": "breath",
-          "description": "all-bus edited silence including effect tails"
-        },
-        {
-          "at": 8.0,
-          "section": "drop",
-          "description": "full drum/sub/chord hook arrangement"
-        },
-        {
-          "at": 12.0,
-          "section": "return",
-          "description": "hook variation and return voicing"
-        },
-        {
-          "at": 15.17,
-          "section": "last-word pause",
-          "description": "full-bus stop before final hit"
-        },
-        {
-          "at": 15.55,
-          "section": "final hit",
-          "description": "short signature voicing and kick"
-        }
-      ],
-      "version": "electro-v2"
+      "composerModule": "score_kinetic.py",
+      "composerSHA256": "8e6eba3531f01136e0292a93721e6e41308e9e73c833bff3507a1adf9e15cb64",
+      "scoreWavSHA256": "95fcce2afcd93ea71253c820c170ec4e32ae8bd92317b7d4a081d055c0d1db16",
+      "previousIntegratedLUFS": -15.04,
+      "previousTruePeakDBTP": -2.48
     },
     {
       "id": "elys-code-development",
-      "genre": "bass-house",
-      "bpm": 132,
+      "genre": "electro-punk",
+      "bpm": 148,
       "duration": 14,
-      "integratedLUFS": -15.02,
-      "truePeakDBTP": -2,
+      "integratedLUFS": -14.97,
+      "truePeakDBTP": -2.48,
       "videoPacketSHA256": "a542a232588428a1e79ef5fce67baeba41516346f761a18e03843f60205fc89c",
       "originalVideoPacketSHA256": "a542a232588428a1e79ef5fce67baeba41516346f761a18e03843f60205fc89c",
       "videoUnchanged": true,
-      "audioPacketSHA256": "6ca8fdb93d1353e473901a0b863038706ccf8b3ba1d2aaf1cf100ee9f21d570e",
-      "originalAudioPacketSHA256": "6a6aed6991e9b825a61eea7f98991f3b77ab421d1de6232ae66fdb30948dfc71",
+      "audioPacketSHA256": "f01f04da4132e90c1ca22e0106a2f42cfb39927372eff10b5964bdd7a1da363f",
+      "originalAudioPacketSHA256": "6ca8fdb93d1353e473901a0b863038706ccf8b3ba1d2aaf1cf100ee9f21d570e",
       "audioChanged": true,
       "audioSampleRate": "48000",
       "channels": 2,
       "cueTimes": [
         0,
-        3.5,
-        6.363636,
-        6.818182,
-        10.5,
-        13.17,
-        13.55
+        4.865,
+        6.486,
+        11.351,
+        12.973
       ],
       "listeningVerified": false,
-      "previousIntegratedLUFS": -20.42,
-      "previousTruePeakDBTP": -4.19,
-      "scoreWavSHA256": "178cdd76a443b534b6f672a47b2771f3d233ff6ac2a8304c995d5a03fbc2cb54",
+      "version": "music-v3",
+      "meter": "4/4, 148 BPM, straight rock backbeat and eighth-note guitar strokes",
+      "palette": [
+        "independent left/right Karplus-Strong power-chord guitars",
+        "nonlinear amplifier and dark cabinet",
+        "picked low electric-style bass",
+        "straight rock kick/snare",
+        "inharmonic crash cymbals",
+        "descending tom fill"
+      ],
+      "introSignature": "A distorted root/fifth/octave guitar chord hits with kick and crash immediately; a second independently plucked guitar is 9ms later in the opposite speaker.",
       "arrangement": [
-        {
-          "at": 0,
-          "section": "hook",
-          "description": "groove and original motif enter immediately"
-        },
-        {
-          "at": 3.5,
-          "section": "lift",
-          "description": "bass/chord density and ghost percussion rise"
-        },
-        {
-          "at": 6.363636,
-          "section": "breath",
-          "description": "all-bus edited silence including effect tails"
-        },
-        {
-          "at": 6.818182,
-          "section": "drop",
-          "description": "full drum/sub/chord hook arrangement"
-        },
-        {
-          "at": 10.5,
-          "section": "return",
-          "description": "hook variation and return voicing"
-        },
-        {
-          "at": 13.17,
-          "section": "last-word pause",
-          "description": "full-bus stop before final hit"
-        },
-        {
-          "at": 13.55,
-          "section": "final hit",
-          "description": "short signature voicing and kick"
-        }
+        "first sample: low power chord, kick and crash",
+        "three bars of double-tracked eighth-note downstrokes",
+        "one stop-time bar with two guitar punches",
+        "answer riff uses open chords and a moving bass",
+        "descending acoustic-style tom fill leads to a held final power chord"
       ],
-      "version": "electro-v2"
-    },
-    {
-      "id": "elys-evaluation",
-      "genre": "hyper-glass",
-      "bpm": 138,
-      "duration": 14,
-      "integratedLUFS": -15.01,
-      "truePeakDBTP": -3.66,
-      "videoPacketSHA256": "7f2b2d1ff34a5bbc171893fa43e1b8d13602a713c88129fe5f9878c84f52be7e",
-      "originalVideoPacketSHA256": "7f2b2d1ff34a5bbc171893fa43e1b8d13602a713c88129fe5f9878c84f52be7e",
-      "videoUnchanged": true,
-      "audioPacketSHA256": "0f12d6d693c14e4e3b707416e5dc333562bccbf6aaa74c8ee73570fd0da018d3",
-      "originalAudioPacketSHA256": "ff90856c622bcdc5ac815c5ed6d5279f1cbc0f10e8d18ec812558922b066d8da",
-      "audioChanged": true,
-      "audioSampleRate": "48000",
-      "channels": 2,
-      "cueTimes": [
-        0,
-        3.5,
-        6.521739,
-        6.956522,
-        10.5,
-        13.17,
-        13.55
-      ],
-      "listeningVerified": false,
-      "previousIntegratedLUFS": -17.8,
-      "previousTruePeakDBTP": -3.91,
-      "scoreWavSHA256": "1e0d859a1cb7cd38edff76c0a7f2f685b24093a62235372266460f0717a94249",
-      "arrangement": [
-        {
-          "at": 0,
-          "section": "hook",
-          "description": "groove and original motif enter immediately"
-        },
-        {
-          "at": 3.5,
-          "section": "lift",
-          "description": "bass/chord density and ghost percussion rise"
-        },
-        {
-          "at": 6.521739,
-          "section": "breath",
-          "description": "all-bus edited silence including effect tails"
-        },
-        {
-          "at": 6.956522,
-          "section": "drop",
-          "description": "full drum/sub/chord hook arrangement"
-        },
-        {
-          "at": 10.5,
-          "section": "return",
-          "description": "hook variation and return voicing"
-        },
-        {
-          "at": 13.17,
-          "section": "last-word pause",
-          "description": "full-bus stop before final hit"
-        },
-        {
-          "at": 13.55,
-          "section": "final hit",
-          "description": "short signature voicing and kick"
-        }
-      ],
-      "version": "electro-v2"
-    },
-    {
-      "id": "engineering-delivery",
-      "genre": "synthwave-house",
-      "bpm": 124,
-      "duration": 16,
-      "integratedLUFS": -15.02,
-      "truePeakDBTP": -3.47,
-      "videoPacketSHA256": "e4453e0bfbb37648f0309b97bc1c6959562d64700c3471b09159decc6783156d",
-      "originalVideoPacketSHA256": "e4453e0bfbb37648f0309b97bc1c6959562d64700c3471b09159decc6783156d",
-      "videoUnchanged": true,
-      "audioPacketSHA256": "3442f01adfd9bb67aadd83e2e7de3d77348ee03c5b6f14882020b33ae84ea7d7",
-      "originalAudioPacketSHA256": "f652079a66af2774b81912f2d2e1496cdbb5c88dcfdcb3dd91f6a3bf879242d3",
-      "audioChanged": true,
-      "audioSampleRate": "48000",
-      "channels": 2,
-      "cueTimes": [
-        0,
-        4,
-        7.741935,
-        8.225806,
-        12,
-        15.17,
-        15.55
-      ],
-      "listeningVerified": false,
-      "previousIntegratedLUFS": -18.72,
-      "previousTruePeakDBTP": -3.94,
-      "scoreWavSHA256": "d7e83d076919cd88dbc60e318ff0f7951c22b8e0a87329e0c7537335d2c779f1",
-      "arrangement": [
-        {
-          "at": 0,
-          "section": "hook",
-          "description": "groove and original motif enter immediately"
-        },
-        {
-          "at": 4.0,
-          "section": "lift",
-          "description": "bass/chord density and ghost percussion rise"
-        },
-        {
-          "at": 7.741935,
-          "section": "breath",
-          "description": "all-bus edited silence including effect tails"
-        },
-        {
-          "at": 8.225806,
-          "section": "drop",
-          "description": "full drum/sub/chord hook arrangement"
-        },
-        {
-          "at": 12.0,
-          "section": "return",
-          "description": "hook variation and return voicing"
-        },
-        {
-          "at": 15.17,
-          "section": "last-word pause",
-          "description": "full-bus stop before final hit"
-        },
-        {
-          "at": 15.55,
-          "section": "final hit",
-          "description": "short signature voicing and kick"
-        }
-      ],
-      "version": "electro-v2"
+      "composerModule": "score_kinetic.py",
+      "composerSHA256": "8e6eba3531f01136e0292a93721e6e41308e9e73c833bff3507a1adf9e15cb64",
+      "scoreWavSHA256": "7e7958661d9a0aa515f40499bc8ab2dca2d08483f5e0fc88502a93394a1653fc",
+      "previousIntegratedLUFS": -15.02,
+      "previousTruePeakDBTP": -2
     },
     {
       "id": "codex-weekly-session-report",
-      "genre": "nu-disco",
-      "bpm": 118,
+      "genre": "brushed-jazz",
+      "bpm": 84,
       "duration": 16,
-      "integratedLUFS": -15.02,
-      "truePeakDBTP": -3.94,
+      "integratedLUFS": -15,
+      "truePeakDBTP": -2.34,
       "videoPacketSHA256": "a300db0aac36e620185f03712a1357202c5e8126dfbf8843c002f61358316fc8",
       "originalVideoPacketSHA256": "a300db0aac36e620185f03712a1357202c5e8126dfbf8843c002f61358316fc8",
       "videoUnchanged": true,
-      "audioPacketSHA256": "df917ffc9fc22ac032be86b80e568241172a44db387fea80dd7c899aa3240243",
-      "originalAudioPacketSHA256": "c0eb55c505ebc5510fa81f3998a8a3c28dd5d71cf1a4cc54b3060a33841d7069",
+      "audioPacketSHA256": "b45e94587b5beb39ca1667f67dd6f5dad6c779649fd44ce1487d48777881e8a2",
+      "originalAudioPacketSHA256": "df917ffc9fc22ac032be86b80e568241172a44db387fea80dd7c899aa3240243",
       "audioChanged": true,
       "audioSampleRate": "48000",
       "channels": 2,
       "cueTimes": [
         0,
-        4,
-        7.627119,
-        8.135593,
-        12,
-        15.17,
-        15.55
+        2.86,
+        5.7,
+        8.55,
+        11.4,
+        14.5
       ],
       "listeningVerified": false,
-      "previousIntegratedLUFS": -17.93,
-      "previousTruePeakDBTP": -3.71,
-      "scoreWavSHA256": "1005301a2efe27b5ca77c7736ca2a6e97fe992cac70cc5d7a7ab3080e432e6bf",
+      "version": "music-v3",
+      "meter": "4/4 jazz swing, 2:1 triplet eighths and quarter-note walking bass",
+      "palette": [
+        "circular brushed snare",
+        "triplet-swing ride",
+        "walking upright bass",
+        "Rhodes seventh chords",
+        "breathy flute sentences"
+      ],
+      "introSignature": "Warm Rhodes and a breathy flute pickup over a walking upright, with swung ride skips",
       "arrangement": [
         {
           "at": 0,
-          "section": "hook",
-          "description": "groove and original motif enter immediately"
+          "section": "quartet opening",
+          "description": "flute sentence, Rhodes seventh, walking bass and triplet ride"
         },
         {
-          "at": 4.0,
-          "section": "lift",
-          "description": "bass/chord density and ghost percussion rise"
+          "at": 2.86,
+          "section": "trio conversation",
+          "description": "flute rests while bass/brushes continue"
         },
         {
-          "at": 7.627119,
-          "section": "breath",
-          "description": "all-bus edited silence including effect tails"
+          "at": 5.7,
+          "section": "second wind sentence",
+          "description": "woodwind answers the first phrase"
         },
         {
-          "at": 8.135593,
-          "section": "drop",
-          "description": "full drum/sub/chord hook arrangement"
+          "at": 8.55,
+          "section": "bass and brushes",
+          "description": "trio has space; no electronic build or drop"
         },
         {
-          "at": 12.0,
-          "section": "return",
-          "description": "hook variation and return voicing"
+          "at": 11.4,
+          "section": "final flute answer",
+          "description": "short swung melody returns"
         },
         {
-          "at": 15.17,
-          "section": "last-word pause",
-          "description": "full-bus stop before final hit"
-        },
-        {
-          "at": 15.55,
-          "section": "final hit",
-          "description": "short signature voicing and kick"
+          "at": 14.5,
+          "section": "warm jazz tag",
+          "description": "electric piano rings over the continuing walk"
         }
       ],
-      "version": "electro-v2"
+      "composerModule": "score_precise.py",
+      "composerSHA256": "b30094f7e0fa3cc81c936de793e178b567fb7cda99a1fd1088dc1b8a247cd33a",
+      "scoreWavSHA256": "e3f667f802a8b6c2da96a32ffeb215aee42bc73ee962980e81a974458877a4bd",
+      "previousIntegratedLUFS": -15.02,
+      "previousTruePeakDBTP": -3.94
+    },
+    {
+      "id": "elys-evaluation",
+      "genre": "glitch-lab",
+      "bpm": 112,
+      "duration": 14,
+      "integratedLUFS": -15.02,
+      "truePeakDBTP": -2.59,
+      "videoPacketSHA256": "7f2b2d1ff34a5bbc171893fa43e1b8d13602a713c88129fe5f9878c84f52be7e",
+      "originalVideoPacketSHA256": "7f2b2d1ff34a5bbc171893fa43e1b8d13602a713c88129fe5f9878c84f52be7e",
+      "videoUnchanged": true,
+      "audioPacketSHA256": "c3d70c4c0500958ae15054cdb66f5566049a630d276a1624b5119b072b28518b",
+      "originalAudioPacketSHA256": "0f12d6d693c14e4e3b707416e5dc333562bccbf6aaa74c8ee73570fd0da018d3",
+      "audioChanged": true,
+      "audioSampleRate": "48000",
+      "channels": 2,
+      "cueTimes": [
+        0,
+        4.8,
+        7.6,
+        10.9
+      ],
+      "listeningVerified": false,
+      "version": "music-v3",
+      "meter": "5/4 irregular subdivisions; no kick/snare backbeat",
+      "palette": [
+        "5/4 digital click",
+        "8-bit held micrograins",
+        "inharmonic microtones",
+        "sparse low probes"
+      ],
+      "introSignature": "A dry left/right four-click packet, followed by a non-tonal crushed shard",
+      "arrangement": [
+        {
+          "at": 0,
+          "section": "five-beat packet",
+          "description": "irregular click and 8-bit fragments enter immediately"
+        },
+        {
+          "at": 4.8,
+          "section": "phase displacement",
+          "description": "alternating packets shift an eighth-grid offset"
+        },
+        {
+          "at": 7.6,
+          "section": "fragment reassembly",
+          "description": "delayed mirror shards increase local density"
+        },
+        {
+          "at": 10.9,
+          "section": "precise sparse result",
+          "description": "only paired traces remain; no EDM drop"
+        }
+      ],
+      "composerModule": "score_precise.py",
+      "composerSHA256": "b30094f7e0fa3cc81c936de793e178b567fb7cda99a1fd1088dc1b8a247cd33a",
+      "scoreWavSHA256": "016ac1e5678835c04e5fe88641c322ada2a9f41d1561a86b9dfa22587a919389",
+      "previousIntegratedLUFS": -15.01,
+      "previousTruePeakDBTP": -3.66
+    },
+    {
+      "id": "elys-backend-technical-design",
+      "genre": "minimal-piano",
+      "bpm": 76,
+      "duration": 16,
+      "integratedLUFS": -15.35,
+      "truePeakDBTP": -2.49,
+      "videoPacketSHA256": "c56a44d97a76ca098a14a164119d9525c5ac1dfea9d405b45ba9725791a9abd7",
+      "originalVideoPacketSHA256": "c56a44d97a76ca098a14a164119d9525c5ac1dfea9d405b45ba9725791a9abd7",
+      "videoUnchanged": true,
+      "audioPacketSHA256": "59d4c940b96a65069b8b4f3fa0579e055fce598d9f4d722934faf15b53e0885d",
+      "originalAudioPacketSHA256": "ecec33a0eb822bc95c806161ddb5f9f034c5be1a68447a3fdf1567f6ccbe7cde",
+      "audioChanged": true,
+      "audioSampleRate": "48000",
+      "channels": 2,
+      "cueTimes": [
+        0.055,
+        4.7368,
+        7.1053,
+        9.4737,
+        14.2895
+      ],
+      "listeningVerified": false,
+      "version": "music-v3",
+      "meter": "3/4",
+      "palette": [
+        "CC0 recorded Upright Piano KW",
+        "quiet six-partial bowed-string ensemble",
+        "open stereo room"
+      ],
+      "introSignature": "One soft recorded upright-piano D, then a high A across a long decay; no drums",
+      "arrangement": [
+        {
+          "at": 0.0,
+          "description": "A single piano note opens into a slow, asymmetrical three-beat question"
+        },
+        {
+          "at": 2.3684,
+          "description": "Low B and a soft upper answer; long real-string decays"
+        },
+        {
+          "at": 4.7368,
+          "description": "A very quiet bowed layer enters under the open G voicing"
+        },
+        {
+          "at": 7.1053,
+          "description": "A full measure without new attacks, leaving room and decay"
+        },
+        {
+          "at": 9.4737,
+          "description": "A new low register answer returns; final open D/add9 decays"
+        }
+      ],
+      "composerModule": "score_tactile.py",
+      "composerSHA256": "97a08a7f41a22d5d2eed55e8759a0926e1b907902fb665812ea5165e0a0358c8",
+      "scoreWavSHA256": "47d1319bf637c4581adc574c411c5a6978e630bd3ea3f350ad8bee6bffed58cb",
+      "previousIntegratedLUFS": -15.01,
+      "previousTruePeakDBTP": -3.8
+    },
+    {
+      "id": "engineering-delivery",
+      "genre": "bossa-courier",
+      "bpm": 108,
+      "duration": 16,
+      "integratedLUFS": -14.9,
+      "truePeakDBTP": -2.5,
+      "videoPacketSHA256": "e4453e0bfbb37648f0309b97bc1c6959562d64700c3471b09159decc6783156d",
+      "originalVideoPacketSHA256": "e4453e0bfbb37648f0309b97bc1c6959562d64700c3471b09159decc6783156d",
+      "videoUnchanged": true,
+      "audioPacketSHA256": "a668c1a19455d3949aae3aab211a912bce00719b072ff5e03d3ab0d1f4f4b845",
+      "originalAudioPacketSHA256": "3442f01adfd9bb67aadd83e2e7de3d77348ee03c5b6f14882020b33ae84ea7d7",
+      "audioChanged": true,
+      "audioSampleRate": "48000",
+      "channels": 2,
+      "cueTimes": [
+        0.025,
+        2.2222,
+        5.5556,
+        8.8889,
+        11.1111,
+        13.3333
+      ],
+      "listeningVerified": false,
+      "version": "music-v3",
+      "meter": "4/4 with syncopated bossa thumb-and-treble pattern",
+      "palette": [
+        "CC0 recorded Spanish classical guitar",
+        "modeled hand-conga membranes",
+        "seeded brushed shaker",
+        "small wooden room"
+      ],
+      "introSignature": "Recorded low nylon-string thumb note, a rolled upper chord, and light shaker; immediate acoustic pocket",
+      "arrangement": [
+        {
+          "at": 0.0,
+          "description": "Alternating nylon thumb bass and lightly rolled syncopated chords; no drum kit"
+        },
+        {
+          "at": 2.2222,
+          "description": "Quiet open/muted conga answers the guitar offbeats"
+        },
+        {
+          "at": 5.5556,
+          "description": "A short descending treble response crosses the chord turnaround"
+        },
+        {
+          "at": 8.8889,
+          "description": "Shaker rests for one measure, exposing fingerstyle guitar and hand drums"
+        },
+        {
+          "at": 11.1111,
+          "description": "Shaker returns; upper-string answer leads to an open final C6/9"
+        }
+      ],
+      "composerModule": "score_tactile.py",
+      "composerSHA256": "97a08a7f41a22d5d2eed55e8759a0926e1b907902fb665812ea5165e0a0358c8",
+      "scoreWavSHA256": "7757703175f1af5f74a0498134691823a8b9e0ff9113057c619c74ccd0dde173",
+      "previousIntegratedLUFS": -15.02,
+      "previousTruePeakDBTP": -3.47
     }
   ]
 }
