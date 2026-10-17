@@ -6,10 +6,7 @@
     <meta name="color-scheme" content="light" />
     <meta name="theme-color" content="#dce0e5" />
     <title>ELYS Skill Foundry · 让它干，你看结果。</title>
-    <meta
-      name="description"
-      content="9 个持续维护的技能，9 支动效短片。看它如何解决麻烦，再按需安装。"
-    />
+    <meta name="description" content="9 个技能，悬停看它开工，再按需安装。" />
     <meta property="og:title" content="ELYS Skill Foundry · SKILLS IN MOTION" />
     <meta
       property="og:description"
@@ -28,108 +25,38 @@
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23141619'/%3E%3Cpath d='M13 43 24 21h7L20 43zm15 0 11-22h7L35 43z' fill='%23C1FF29'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="styles.css?v=20261017-film-1" />
-    <script type="module" src="app.js?v=20261017-film-1"></script>
+    <link rel="stylesheet" href="styles.css?v=20261017-cinematic-1" />
+    <script type="module" src="app.js?v=20261017-cinematic-1"></script>
   </head>
   <body>
-    <a class="skip-link" href="#main">跳到短片</a>
+    <a class="skip-link" href="#main">跳到技能</a>
     <header class="topbar">
-      <a class="brand" href="#top"
-        ><b aria-hidden="true">///</b> ELYS_SKILLS <i aria-hidden="true"></i></a
-      ><span class="edition">FOUNDRY / VOL.02</span>
+      <a class="brand" href="#top"><b aria-hidden="true">///</b> ELYS_SKILLS</a>
+      <a class="style-link" href="?cut=cinematic#ns-spec-cards">新版试片 ↗</a>
       <div class="top-actions">
-        <button id="motion-toggle" type="button" aria-pressed="false">
+        <button
+          id="bgm-toggle"
+          type="button"
+          aria-pressed="true"
+          data-state="waiting"
+        >
+          节拍 · 点击播放</button
+        ><button id="motion-toggle" type="button" aria-pressed="false">
           静态模式</button
         ><button id="copy-all" type="button">复制全部命令 ↗</button>
       </div>
     </header>
     <main id="top">
       <header class="page-heading">
-        <div>
-          <p>09 TOOLS. LESS FRICTION.</p>
-          <h1>让它干，<span>你看结果。</span></h1>
-        </div>
-        <span class="edition-counter"
-          >9 × 12 SEC<span>SKILLS IN MOTION</span></span
-        >
+        <h1>让它干，<span>你看结果。</span></h1>
+        <p id="preview-hint">悬停预览 · 9 × 12 秒</p>
       </header>
-      <section class="cinema" id="main" aria-labelledby="film-title">
-        <div class="screen-wrap">
-          <div class="screen-meta">
-            <span
-              ><i aria-hidden="true"></i> NOW PLAYING
-              <b id="film-number">01 / 09</b></span
-            ><span>能力示意 · 非运行实录</span>
-          </div>
-          <div class="screen">
-            <video
-              id="feature-video"
-              controls
-              muted
-              playsinline
-              preload="metadata"
-              poster="media/posters/ns-spec-cards.jpg"
-              aria-label="ns-spec-cards 宣传动效短片"
-            >
-              <source src="media/films/ns-spec-cards.mp4" type="video/mp4" />
-              浏览器不支持视频，可使用下方「下载短片」。
-            </video>
-          </div>
-          <div class="transport">
-            <button id="previous-film" type="button" aria-label="上一支短片">
-              ←</button
-            ><span id="playback-label">12 SEC / 120 BPM</span
-            ><button id="next-film" type="button" aria-label="下一支短片">
-              →</button
-            ><button id="sound-toggle" type="button" aria-pressed="false">
-              开启节拍 ♪</button
-            ><a id="film-download" href="media/films/ns-spec-cards.mp4" download
-              >下载短片 MP4 ↓</a
-            >
-          </div>
-        </div>
-        <aside class="film-info">
-          <div class="info-tag">
-            <span id="skill-tag">DECIDE</span><i aria-hidden="true">↗</i>
-          </div>
-          <h2 id="film-title">决策卡</h2>
-          <p class="payoff" id="skill-payoff">一张卡一个决定</p>
-          <code id="skill-command">/ns-spec-cards</code>
-          <p class="skill-description" id="skill-description">
-            把待定问题变成决策卡，逐张选择、留言，再回写结论。
-          </p>
-          <div class="install-actions">
-            <button type="button" id="copy-skill">复制安装说明</button
-            ><a
-              id="skill-download"
-              href="https://github.com/Nature-Select/ns-skills/tree/main/base/ns-spec-cards"
-              target="_blank"
-              rel="noopener noreferrer"
-              >查看源仓库 ↗</a
-            >
-          </div>
-          <button class="example-button" id="show-example" type="button">
-            看实际页面 ↗
-          </button>
-          <details>
-            <summary>使用提示 <span aria-hidden="true">＋</span></summary>
-            <p id="install-note">需要源仓库访问权限，按 SKILL.md 安装。</p>
-          </details>
-          <div class="info-footer">
-            <span>CLAUDE CODE / CODEX</span><span>按需安装</span>
-          </div>
-        </aside>
-      </section>
-      <section class="library" aria-labelledby="library-title">
-        <header class="library-heading">
-          <h2 id="library-title">选一个麻烦，看看怎么解。</h2>
-          <span>THE COLLECTION / 09</span>
-        </header>
+      <section id="main" class="library" aria-label="9 个技能的动效预览">
         <div class="film-grid" id="skill-grid"></div>
       </section>
       <noscript
         ><p>
-          请启用 JavaScript 浏览全部 9 支短片。也可直接打开
+          请启用 JavaScript 浏览全部技能。也可打开
           <a href="media/films/ns-spec-cards.mp4">决策卡短片</a>、<a
             href="media/films/test-journal.mp4"
             >测试日志短片</a
@@ -146,10 +73,17 @@
           target="_blank"
           rel="noopener noreferrer"
           >SOURCE ↗</a
-        ><span>原创图形 / 原创合成节拍</span
+        ><span>能力示意 · 原创图形与节拍</span
         ><button id="copy-share" type="button">复制群介绍 ↗</button>
       </footer>
     </main>
+    <audio
+      id="bgm"
+      src="media/bgm.m4a"
+      loop
+      preload="none"
+      aria-label="原创背景节拍"
+    ></audio>
     <dialog id="copy-dialog" aria-labelledby="copy-title">
       <div class="dialog-heading">
         <h2 id="copy-title">复制这段内容</h2>

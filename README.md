@@ -12,9 +12,11 @@
 - `engineering-delivery`：PR → 评审与交付结论。
 - `codex-weekly-session-report`：零散会话 → 有来源的工作周报。
 
-短片使用银铬、黑、电蓝和酸绿，按120BPM节拍编排图形变化；每片独立MP4可下载。图形与示例数据为**能力示意**，不代表真实业务验收、部署或线上效果。默认静音，主动点“开启节拍”才出声；支持原生播放/暂停/进度/全屏，静态模式、系统减少动态设置、离屏和隐藏暂停。
+短片使用银铬、黑、电蓝和酸绿，按120BPM节拍编排图形变化；每片独立MP4可下载。图形与示例数据为**能力示意**，不代表真实业务验收、部署或线上效果。视频在每张技能卡内悬停预览，手机点按播放/暂停，同时仅播放一支。独立BGM默认尝试开启，浏览器限制时首次点击启动；关闭偏好会保存。支持静态模式、系统减少动态设置、离屏和隐藏暂停。
 
-首页不依赖CDN、外部字体或运行时框架，使用同站H.264/AAC视频和海报，手机端优先展示短片。
+首页不依赖CDN、外部字体或运行时框架，使用同站H.264/AAC视频和海报。
+
+[新版决策卡试片](https://ruanjianjian.github.io/elys-skill-foundry/?cut=cinematic#ns-spec-cards)为16秒原创角色叙事版本；其余8片尚未按新方向重制。先通过试片讨论风格，再制作整套。原先3种方向稿已撤下。新试片在同一张技能卡内播放，没有独立播放器。
 
 ## 安装入口
 
@@ -44,6 +46,8 @@ npm run build:films
 npm run posters
 # 只生成一项
 node scripts/render-films.mjs --skill=ns-spec-cards
+# 新版16秒试片（准备原创插画和score.wav后）
+npm run build:pilot
 ```
 
 `catalog.js` 是技能目录与文案；`film-renderer.js` 是无外部资源、无随机状态的逐帧Canvas2D绘制。`scripts/make-beat.py` 使用纯合成的鼓组、贝斯生成原创节拍，不使用第三方采样或音乐。每片1280×720、30fps、12秒，ffmpeg编码H.264/AAC与faststart。视频默认输出到 `~/DevData/Artifacts/20261017-skills-promo/foundry/videos/`，再复制到 `media/films/`；海报在 `media/posters/`，四幕静帧在任务Artifacts的 `foundry/review/`。WAV、渲染profile和日志不发布。`FOUNDRY_ARTIFACT_DIR`、`CHROME_PATH` 可指定产物目录和Chrome入口。

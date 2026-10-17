@@ -4,9 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node --check app.js && node --check catalog.js && node --check film-renderer.js",
+    "build": "node --check app.js && node --check catalog.js && node --check film-renderer.js && node --check cinematic-renderer.js",
     "build:gooey": "node build-gooey.mjs",
     "build:films": "node scripts/render-films.mjs",
+    "build:pilot": "node scripts/render-cinematic.mjs",
     "posters": "node scripts/render-films.mjs --posters-only"
   },
   "dependencies": {
