@@ -14,9 +14,9 @@
 | engineering-delivery          | 夜航快递           | 同一份 PR 修复、复审，交付结论有依据                 |
 | codex-weekly-session-report   | 编辑手账           | 零散会话整理为有来源的工作周报                       |
 
-通透玻璃卡片内直接播放，没有专门视频区。每片 14–16 秒，独立原创配乐；同时只播放一支。**悬停播放，离开即停，声音只属于当前短片。** 声音关闭偏好保存，普通点击不会重新开声。浏览器限制有声自动播放时提示点击开声。手机点按播放/暂停，支持键盘聚焦、减少动态、静态模式和离屏/隐藏暂停。
+恢复原始纸白网格、钴蓝/朱红/深墨色板。默认是简洁技能卡，悬停后短片直接在卡片里显出，没有专门视频区。每片 14–16 秒，独立原创配乐；同时只播放一支。**悬停播放，离开即停，声音只属于当前短片。** 声音关闭偏好保存，普通点击不会重新开声。浏览器限制有声自动播放时提示点击开声。手机点按播放/暂停，支持键盘聚焦、减少动态、静态模式和离屏/隐藏暂停。
 
-图画与剧情是能力宣传示意，不代表真实业务录屏或验收结论。首页无需 CDN、外部字体或运行时框架，使用同站 H.264/AAC 视频和海报。原创资产、完整提示词见 [制作记录](docs/collection-art.md)。
+图画与剧情是能力宣传示意，不代表真实业务录屏或验收结论。页面无外部 CDN 或字体依赖，使用同站 H.264/AAC 视频和海报。原标题与卡片角标由本地 React/Liquid 装饰岛恢复液态形变，保留视频 DOM 及声音状态；标题轮换、列伸缩、点击反馈统一响应动态开关。原创资产、完整提示词见 [制作记录](docs/collection-art.md)。
 
 ## 安装入口
 
@@ -50,7 +50,7 @@ node scripts/render-collection.mjs --posters-only --ids=test-journal
 
 `FOUNDRY_ARTIFACT_DIR` 默认本机任务 `~/DevData/Artifacts/20261017-skills-promo/foundry/collection-v3/`，其中 `scores/<id>.wav` 为渲染输入。9 片参数见生成片目。配乐使用标准库纯合成，无第三方音乐采样。原画已提交在 `media/collection-art/`，决策卡另复用 `media/cinematic-art/` 原画。视频/海报输出到 `media/collection/`，1280×720、30fps，H.264/AAC faststart；WAV、渲染 profile、逐帧截图和日志留在任务产物目录，不发布。
 
-`CHROME_PATH` 可覆盖 Chrome 入口。旧片、旧试片和液态标题源文件保留作历史参考，首页不加载旧运行包。
+`CHROME_PATH` 可覆盖 Chrome 入口。旧片与旧试片保留作历史参考，首页使用九支新片。`gooey-title.jsx` 与 `build:gooey` 负责重建本地液态标题/角标运行包，`surface-motion.js` 管理列伸缩和反馈；不恢复旧七卡 React Grid。
 
 ## 交付与验证
 

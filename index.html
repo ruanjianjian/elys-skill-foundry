@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="color-scheme" content="light" />
-    <meta name="theme-color" content="#e8eaf2" />
+    <meta name="theme-color" content="#f2f5ee" />
     <title>ELYS Skill Foundry · 让它干，你看结果。</title>
     <meta name="description" content="9 个技能，悬停看它开工，再按需安装。" />
     <meta property="og:title" content="ELYS Skill Foundry · SKILLS IN MOTION" />
@@ -23,19 +23,19 @@
     />
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23141619'/%3E%3Cpath d='M13 43 24 21h7L20 43zm15 0 11-22h7L35 43z' fill='%23C1FF29'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%231746e6'/%3E%3Cpath d='M13 43 24 21h7L20 43zm15 0 11-22h7L35 43z' fill='%23f2f5ee'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="styles.css?v=20261017-collection-3" />
-    <script type="module" src="app.js?v=20261017-collection-3"></script>
+    <link rel="stylesheet" href="styles.css?v=20261017-original-4" />
+    <script type="module" src="app.js?v=20261017-original-4"></script>
+    <script src="gooey-title.bundle.js?v=20261017-original-4" defer></script>
   </head>
   <body>
-    <div class="scene-atmosphere" aria-hidden="true">
-      <div id="ambient-poster"></div>
-    </div>
     <a class="skip-link" href="#main">跳到技能</a>
     <header class="topbar">
-      <a class="brand" href="#top"><b aria-hidden="true">///</b> ELYS_SKILLS</a>
-      <span class="edition">09 SKILLS / IN MOTION</span>
+      <a class="brand" href="#top"
+        ><b aria-hidden="true">///</b> ELYS_SKILLS<i aria-hidden="true"></i
+      ></a>
+
       <div class="top-actions">
         <button
           id="bgm-toggle"
@@ -51,11 +51,17 @@
     </header>
     <main id="top">
       <header class="page-heading">
-        <div>
-          <p class="eyebrow">好工具，让人轻松一点。</p>
-          <h1>少点废话。<span>多点结果。</span></h1>
+        <div class="edition-strip">
+          <span>TEAM SKILL LIBRARY</span><span>09 SKILLS / IN MOTION</span>
         </div>
-        <p id="preview-hint">悬停播放 · 移开即停</p>
+        <div class="hero-line">
+          <div class="title-stage" data-gooey-title>
+            <h1 class="liquid-title liquid-title-fallback">
+              我很懒，<i class="mobile-break" aria-hidden="true"></i>所以我做了
+            </h1>
+          </div>
+          <p id="preview-hint">悬停播放 · 移开即停</p>
+        </div>
       </header>
       <section id="main" class="library" aria-label="9 个技能的动效预览">
         <div class="film-grid" id="skill-grid"></div>

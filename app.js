@@ -1,6 +1,18 @@
 import { skills } from "./catalog.js";
+import { initSurfaceMotion } from "./surface-motion.js";
 
 import { films } from "./collection-catalog.js";
+const cardVerbs = [
+  "ALIGN",
+  "TRACE",
+  "WEB",
+  "MOBILE",
+  "SHAPE",
+  "BUILD",
+  "MEASURE",
+  "SHIP",
+  "REVIEW",
+];
 const filmById = new Map(films.map((film) => [film.id, film]));
 const filmPath = (skill) => "media/collection/" + skill.id + ".mp4";
 const posterPath = (skill) => "media/collection/" + skill.id + ".jpg";
@@ -69,8 +81,6 @@ async function playItem(item, { manual = false } = {}) {
   item.needsGesture = false;
   item.video.currentTime = 0;
   item.card.classList.add("is-loading");
-  document.querySelector("#ambient-poster").style.backgroundImage =
-    `url("${item.video.poster}")`;
   try {
     try {
       await item.video.play();
@@ -134,6 +144,13 @@ async function copyText(text, opener, message) {
     if (!navigator.clipboard || !isSecureContext)
       throw new Error("Manual copy");
     await navigator.clipboard.writeText(text);
+    const copiedCard = opener?.closest(".film-card");
+    if (copiedCard)
+      document.dispatchEvent(
+        new CustomEvent("foundry:copy-success", {
+          detail: { cardId: copiedCard.id },
+        }),
+      );
     notify(message);
   } catch (_) {
     const input = document.querySelector("#copy-text");
@@ -162,6 +179,15 @@ function showExample(skill, opener) {
 for (const [index, skill] of skills.entries()) {
   const card = node("article", "film-card");
   card.dataset.skill = skill.id;
+  card.dataset.verb = cardVerbs[index];
+  card.dataset.accent =
+    skill.id === "engineering-delivery"
+      ? "#e4492e"
+      : skill.id === "codex-weekly-session-report"
+        ? "#20d5ad"
+        : "#1746e6";
+  card.dataset.accentInk =
+    skill.id === "codex-weekly-session-report" ? "#11182b" : "#ffffff";
   card.id = skill.id;
   card.setAttribute("aria-labelledby", "title-" + skill.id);
   const preview = node("button", "film-preview");
@@ -191,9 +217,22 @@ for (const [index, skill] of skills.entries()) {
   const icon = node("span", "preview-icon", "▶");
   const label = node("span", "preview-label", "悬停预览");
   state.append(icon, label);
+  const face = node("span", "card-face");
+  face.append(
+    node("span", "face-title", skill.title),
+    node("code", "face-command", skill.command),
+    node("span", "face-promise", skill.payoff),
+  );
+  const verbMount = node("span", "card-verb-mount");
+  verbMount.setAttribute("aria-hidden", "true");
+  const verbLabel = node("span", "verb-label", cardVerbs[index]);
+  verbLabel.setAttribute("aria-hidden", "true");
   preview.append(
     video,
     poster,
+    face,
+    verbMount,
+    verbLabel,
     node("span", "preview-number", String(index + 1).padStart(2, "0")),
     node(
       "span",
@@ -291,14 +330,7 @@ for (const [index, skill] of skills.entries()) {
     node("p", "install-note", skill.installText),
     sourceParagraph,
   );
-  body.append(
-    titleRow,
-    node("p", "skill-payoff", skill.payoff),
-    node("code", "skill-command", skill.command),
-    actions,
-    links,
-    details,
-  );
+  body.append(titleRow, actions, links, details);
   card.append(preview, body);
   const item = {
     card,
@@ -424,6 +456,11 @@ function updatePreference() {
   if (reduced()) pauseItem(active);
   for (const item of items) if (active !== item) pauseItem(item);
   updateSoundButton();
+  document.dispatchEvent(
+    new CustomEvent("foundry:motion-change", {
+      detail: { reduced: reduced() },
+    }),
+  );
 }
 motionButton.addEventListener("click", () => {
   if (media.matches) {
@@ -479,3 +516,14 @@ document
   );
 updatePreference();
 updateSoundButton();
+
+let surfaceCleanup = initSurfaceMotion({ grid, items, reduced, hoverMedia });
+document.dispatchEvent(new CustomEvent("foundry:ready"));
+window.addEventListener("pagehide", () => {
+  surfaceCleanup?.();
+  surfaceCleanup = null;
+});
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted && !surfaceCleanup)
+    surfaceCleanup = initSurfaceMotion({ grid, items, reduced, hoverMedia });
+});

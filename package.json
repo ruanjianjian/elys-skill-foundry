@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node --check app.js && node --check catalog.js && node --check collection-catalog.js && node --check collection-renderer.js && node --check motion-collection/people.js && node --check motion-collection/machines.js && node --check motion-collection/stories.js",
+    "build": "npm run build:gooey && node --check app.js && node --check surface-motion.js && node --check catalog.js && node --check collection-catalog.js && node --check collection-renderer.js && node --check motion-collection/people.js && node --check motion-collection/machines.js && node --check motion-collection/stories.js",
     "build:gooey": "node build-gooey.mjs",
     "build:films": "node scripts/render-films.mjs",
     "build:pilot": "node scripts/render-cinematic.mjs",
