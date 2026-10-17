@@ -17,6 +17,14 @@ export const films = [
     posterTime: 7.36,
   },
   {
+    id: "multi-agent-coding",
+    duration: 16,
+    bpm: 126,
+    genre: "dispatch",
+    style: "会话调度台",
+    posterTime: 10.2,
+  },
+  {
     id: "web-testing",
     duration: 14,
     bpm: 128,
@@ -55,14 +63,6 @@ export const films = [
     genre: "prism",
     style: "光学实验",
     posterTime: 10.6,
-  },
-  {
-    id: "engineering-delivery",
-    duration: 16,
-    bpm: 126,
-    genre: "dispatch",
-    style: "夜航快递",
-    posterTime: 7.36,
   },
   {
     id: "codex-weekly-session-report",

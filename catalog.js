@@ -1,5 +1,4 @@
-// Promotional scenes demonstrate capabilities; they are not test or deployment evidence.
-// Keep the two external NS Skills as links: their source is not redistributed here.
+// Promotional scenes demonstrate capabilities, not execution or deployment evidence.
 export const skills = [
   {
     id: "ns-spec-cards",
@@ -17,6 +16,7 @@ export const skills = [
       "用简洁卡片逐张确认关键需求和意见，快速与 AI 对齐，减少长篇解释。",
     installText:
       "需有 Nature-Select/ns-skills 仓库权限。打开源仓库，按 SKILL.md 安装；可单独使用，也可配合 ns-spec。",
+    featured: true,
   },
   {
     id: "test-journal",
@@ -33,6 +33,24 @@ export const skills = [
     description: "按核心用户动线边测边记，沉淀可复用用例，只呈现最新有效证据。",
     installText:
       "需有 Nature-Select/ns-skills 仓库权限。按源仓库 SKILL.md 安装并配置 tj Hooks，重新打开会话；不捆绑网页或移动端驱动。",
+    featured: true,
+  },
+  {
+    id: "multi-agent-coding",
+    title: "多 Agent 派活",
+    command: "/multi-agent-coding",
+    tag: "DISPATCH",
+    accent: "#1746e6",
+    hook: ["Claude 在安排", "Codex 各自开工"],
+    payoff: "Claude 派活，Codex 会话看得见",
+    visual: "dispatch",
+    skillUrl: null,
+    zipUrl: null,
+    installPending: true,
+    description:
+      "让 Claude 把任务派到可见的 Codex session：拆分工作、跟踪进度、取回结果，反馈回到原会话续修。",
+    installText:
+      "已安装后，在 Claude 中调用 /multi-agent-coding，说明任务和目标仓库。团队安装入口正在确认；桌面派活需要可用的 Codex 登录及会话适配器。",
   },
   {
     id: "web-testing",
@@ -95,6 +113,7 @@ export const skills = [
     description: "沿已确认契约实现功能，用实际端到端证据核对结果。",
     installText:
       "下载 ZIP，解压到本地 Agent 的 Skills 目录，重新打开会话。按任务准备仓库、构建和测试环境，配合项目要求的专用技能。",
+    lifecycle: "retiring",
   },
   {
     id: "elys-evaluation",
@@ -112,21 +131,6 @@ export const skills = [
       "下载 ZIP，解压到本地 Agent 的 Skills 目录，重新打开会话。运行前确认评测目标、样本及模型配置；评测报告不代表线上版本已启用。",
   },
   {
-    id: "engineering-delivery",
-    title: "工程交付",
-    command: "/engineering-delivery",
-    tag: "DELIVER",
-    accent: "#BBC5D5",
-    hook: ["代码写完了", "评审还在绕"],
-    payoff: "追到评审有结论",
-    visual: "ship",
-    skillUrl: "skills/engineering-delivery/SKILL.md",
-    zipUrl: "downloads/engineering-delivery.zip",
-    description: "串起提交、评审与反馈修复，跟进同一个 PR。",
-    installText:
-      "下载 ZIP，解压到本地 Agent 的 Skills 目录，重新打开会话。需要相应仓库权限与项目交付工具；审批与发布仍以实际结果为准。",
-  },
-  {
     id: "codex-weekly-session-report",
     title: "工作周报",
     command: "/codex-weekly-session-report",
@@ -140,5 +144,6 @@ export const skills = [
     description: "读会话证据，合并重复工作，整理成可审阅的周报。",
     installText:
       "下载 ZIP，解压到本地 Agent 的 Skills 目录，重新打开会话。需要 Python 3.9+ 和本地 Codex 会话记录；对外发布前先审核内容。",
+    lifecycle: "retiring",
   },
 ];

@@ -14,7 +14,7 @@ const artifacts =
   process.env.FOUNDRY_ARTIFACT_DIR ||
   join(
     homedir(),
-    "DevData/Artifacts/20261017-skills-promo/foundry/collection-v3/qa-local",
+    "DevData/Artifacts/20261017-skills-promo/foundry/surface-restore/qa-local",
   );
 const output = join(artifacts, "ui");
 await mkdir(output, { recursive: true });
@@ -81,6 +81,26 @@ async function settled(page) {
         requestAnimationFrame(() => requestAnimationFrame(resolve)),
       ),
   );
+}
+async function stableDefaultFrame(page) {
+  await page.waitForFunction(() => {
+    const videos = [...document.querySelectorAll(".skill-video")];
+    const faces = [...document.querySelectorAll(".card-face")];
+    const title = document.querySelector(".liquid-title-copy");
+    return (
+      videos.length > 0 &&
+      videos.every(
+        (video) =>
+          video.paused &&
+          video.muted &&
+          Number(getComputedStyle(video).opacity) <= 0.001,
+      ) &&
+      faces.length === videos.length &&
+      faces.every((face) => Number(getComputedStyle(face).opacity) >= 0.999) &&
+      title &&
+      Number(getComputedStyle(title).opacity) > 0.98
+    );
+  });
 }
 async function waitPlaying(page, id) {
   await page.waitForFunction(
@@ -245,7 +265,44 @@ try {
         allPaused: true,
         allMuted: true,
       });
-      return actual;
+      const directory = await page.$$eval(".film-card", (cards) =>
+        cards.map((card) => ({
+          id: card.dataset.skill,
+          lifecycle: card.dataset.lifecycle || null,
+          featured: card.dataset.featured === "true",
+          description: [
+            card.querySelector(".film-description")?.textContent,
+            card.querySelector(".install-note")?.textContent,
+          ]
+            .filter(Boolean)
+            .join(" "),
+        })),
+      );
+      assert.deepEqual(
+        directory.map((item) => item.id),
+        skills.map((skill) => skill.id),
+      );
+      assert.equal(
+        directory.some((item) => item.id === "engineering-delivery"),
+        false,
+      );
+      assert.equal(directory[2].id, "multi-agent-coding");
+      assert.deepEqual(
+        directory.filter((item) => item.featured).map((item) => item.id),
+        ["ns-spec-cards", "test-journal"],
+      );
+      assert.deepEqual(
+        directory
+          .filter((item) => item.lifecycle === "retiring")
+          .map((item) => item.id)
+          .sort(),
+        ["codex-weekly-session-report", "elys-code-development"],
+      );
+      const multi = directory.find((item) => item.id === "multi-agent-coding");
+      assert.match(multi.description, /Claude/i);
+      assert.match(multi.description, /Codex/i);
+      assert.match(multi.description, /session|会话/i);
+      return { ...actual, directory };
     },
   );
   await check("Nine collection posters decode", async () => {
@@ -261,6 +318,112 @@ try {
       );
     return posters;
   });
+  await check(
+    "Liquid title rotates without layout shift; hover expands its column and verb while media stops immediately on leave",
+    async () => {
+      await leave(page);
+      await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
+      await page.waitForSelector(".liquid-title-group .liquid-title-copy");
+      const before = await page.evaluate(() => ({
+        title: document.querySelector(".liquid-title-copy").textContent.trim(),
+        titleTop:
+          document.querySelector(".title-stage").getBoundingClientRect().top +
+          scrollY,
+        titleHeight: document
+          .querySelector(".title-stage")
+          .getBoundingClientRect().height,
+        gridTop:
+          document.querySelector("#skill-grid").getBoundingClientRect().top +
+          scrollY,
+      }));
+      await page.waitForFunction(
+        (previous) => {
+          const copy = document.querySelector(".liquid-title-copy");
+          return (
+            copy &&
+            copy.textContent.trim() !== previous &&
+            copy.closest("h1").classList.contains("is-idle") &&
+            Number(getComputedStyle(copy).opacity) > 0.98
+          );
+        },
+        { timeout: 6500 },
+        before.title,
+      );
+      const after = await page.evaluate(() => ({
+        title: document.querySelector(".liquid-title-copy").textContent.trim(),
+        titleTop:
+          document.querySelector(".title-stage").getBoundingClientRect().top +
+          scrollY,
+        titleHeight: document
+          .querySelector(".title-stage")
+          .getBoundingClientRect().height,
+        gridTop:
+          document.querySelector("#skill-grid").getBoundingClientRect().top +
+          scrollY,
+      }));
+      assert.notEqual(after.title, before.title);
+      assert.ok(Math.abs(after.titleTop - before.titleTop) <= 1);
+      assert.ok(Math.abs(after.titleHeight - before.titleHeight) <= 1);
+      assert.ok(Math.abs(after.gridTop - before.gridTop) <= 1);
+      await stableDefaultFrame(page);
+      await page.screenshot({ path: join(output, "surface-idle.png") });
+      await page.click("h1");
+      await page.hover(preview("ns-spec-cards"));
+      await waitPlaying(page, "ns-spec-cards");
+      await page.waitForFunction(() => {
+        const columns = getComputedStyle(document.querySelector("#skill-grid"))
+          .gridTemplateColumns.split(/\s+/)
+          .map(Number.parseFloat);
+        const blob = document.querySelector("#ns-spec-cards .card-verb-blob");
+        return (
+          columns.length === 3 &&
+          columns[0] > columns[1] * 1.35 &&
+          blob?.getBoundingClientRect().width > 5
+        );
+      });
+      const activeSurface = await page.evaluate(() => ({
+        columns: getComputedStyle(document.querySelector("#skill-grid"))
+          .gridTemplateColumns.split(/\s+/)
+          .map(Number.parseFloat),
+        blobWidth: document
+          .querySelector("#ns-spec-cards .card-verb-blob")
+          .getBoundingClientRect().width,
+        intendedCard: document.querySelector(".film-card.has-intent")?.id,
+      }));
+      await page.screenshot({ path: join(output, "surface-active.png") });
+      await page.mouse.move(2, 2);
+      const stoppedImmediately = await page.$$eval(".skill-video", (videos) =>
+        videos.every((video) => video.paused && video.muted),
+      );
+      assert.equal(stoppedImmediately, true);
+      await page.waitForFunction(
+        () => {
+          const columns = getComputedStyle(
+            document.querySelector("#skill-grid"),
+          )
+            .gridTemplateColumns.split(/\s+/)
+            .map(Number.parseFloat);
+          return (
+            columns.length === 3 &&
+            Math.max(...columns) - Math.min(...columns) <= 1
+          );
+        },
+        { timeout: 3000 },
+      );
+      const idleColumns = await page.$eval(
+        "#skill-grid",
+        (grid) => getComputedStyle(grid).gridTemplateColumns,
+      );
+      return {
+        before,
+        after,
+        activeSurface,
+        stoppedImmediately,
+        idleColumns,
+        screenshots: ["surface-idle.png", "surface-active.png"],
+      };
+    },
+  );
   await check(
     "All nine real hovers play their own audible-track film, leave pauses and mutes all",
     async () => {
@@ -432,6 +595,7 @@ try {
         JSON.stringify(dimensions),
       );
       await decodePosters(mobile);
+      await stableDefaultFrame(mobile);
       await mobile.screenshot({ path: join(output, "mob" + width + ".png") });
       return dimensions;
     });
@@ -447,6 +611,11 @@ try {
       await page.evaluate(() => localStorage.removeItem("foundry-static"));
       await page.reload({ waitUntil: "domcontentloaded" });
       await ready(page);
+      await page.waitForFunction(
+        () =>
+          document.querySelector(".liquid-title-copy") &&
+          !document.querySelector(".liquid-title-group"),
+      );
       await page.hover(preview("ns-spec-cards"));
       await settled(page);
       const before = await page.evaluate(() => ({
@@ -455,19 +624,59 @@ try {
         allPaused: [...document.querySelectorAll(".skill-video")].every(
           (video) => video.paused,
         ),
+        titleLiquidGroups: document.querySelectorAll(".liquid-title-group")
+          .length,
+        inlineColumns:
+          document.querySelector("#skill-grid").style.gridTemplateColumns,
       }));
       assert.deepEqual(before, {
         systemReduced: true,
         staticClass: true,
         allPaused: true,
+        titleLiquidGroups: 0,
+        inlineColumns: "",
       });
+      const titleWindow = await page.evaluate(
+        () =>
+          new Promise((resolve) => {
+            const stage = document.querySelector(".title-stage");
+            const initial = stage
+              .querySelector(".liquid-title-copy")
+              .textContent.trim();
+            const changes = [];
+            const observer = new MutationObserver(() => {
+              const current = stage
+                .querySelector(".liquid-title-copy")
+                ?.textContent.trim();
+              if (current !== initial) changes.push(current);
+            });
+            observer.observe(stage, {
+              childList: true,
+              subtree: true,
+              characterData: true,
+            });
+            setTimeout(() => {
+              observer.disconnect();
+              resolve({
+                initial,
+                final: stage
+                  .querySelector(".liquid-title-copy")
+                  .textContent.trim(),
+                changes,
+                observedMs: 3800,
+              });
+            }, 3800);
+          }),
+      );
+      assert.equal(titleWindow.final, titleWindow.initial);
+      assert.deepEqual(titleWindow.changes, []);
       await page.click(preview("ns-spec-cards"));
       await waitPlaying(page, "ns-spec-cards");
       await page.click(preview("ns-spec-cards"));
       await page.waitForFunction(
         () => document.querySelector("#video-ns-spec-cards").paused,
       );
-      return { before, manualPlayAndStop: true };
+      return { before, titleWindow, manualPlayAndStop: true };
     },
   );
   await page.emulateMediaFeatures([
@@ -476,7 +685,7 @@ try {
   await page.reload({ waitUntil: "domcontentloaded" });
   await ready(page);
   await check(
-    "Seven ZIPs and skill sources remain readable; two private source links remain accurate",
+    "Catalog ZIPs and skill sources remain readable; non-ZIP source links remain accurate",
     async () => {
       const links = await page.$$eval(".film-card", (cards) =>
         cards.map((card) => {
@@ -491,16 +700,44 @@ try {
       );
       for (const skill of skills) {
         const link = links.find((link) => link.id === skill.id);
-        assert.equal(link.href, skill.zipUrl || skill.skillUrl);
+        const expectedHref = skill.installPending
+          ? "#" + skill.id
+          : skill.zipUrl || skill.skillUrl;
+        assert.equal(link.href, expectedHref);
         if (!skill.zipUrl) {
           assert.equal(link.download, false);
           assert.ok(!link.text.includes("ZIP"));
         }
       }
-      const paths = skills
-        .filter((skill) => skill.zipUrl)
-        .flatMap((skill) => [skill.zipUrl, skill.skillUrl]);
-      assert.equal(paths.length, 14);
+      const pendingUsage = [];
+      for (const skill of skills.filter((skill) => skill.installPending)) {
+        assert.equal(skill.zipUrl, null);
+        assert.equal(skill.skillUrl, null);
+        await page.click(card(skill.id) + " .skill-source");
+        await page.waitForFunction(
+          (id) => document.querySelector(id + " details").open,
+          {},
+          "#" + skill.id,
+        );
+        const usage = await page.$eval(card(skill.id) + " details", (details) =>
+          details.textContent.trim(),
+        );
+        assert.match(usage, /Claude/i);
+        assert.match(usage, /Codex/i);
+        await page.click(card(skill.id) + " details summary");
+        await page.waitForFunction(
+          (id) => !document.querySelector(id + " details").open,
+          {},
+          "#" + skill.id,
+        );
+        pendingUsage.push({ id: skill.id, openedAndClosed: true, usage });
+      }
+      const downloadable = skills.filter((skill) => skill.zipUrl);
+      const paths = downloadable.flatMap((skill) => [
+        skill.zipUrl,
+        skill.skillUrl,
+      ]);
+      assert.equal(paths.length, downloadable.length * 2);
       const responses = await page.evaluate(
         async (paths) =>
           Promise.all(
@@ -513,7 +750,13 @@ try {
       );
       for (const result of responses)
         assert.equal(result.status, 200, result.path);
-      return { links, resources: responses };
+      return {
+        zipCount: downloadable.length,
+        sourceCount: downloadable.length,
+        pendingUsage,
+        links,
+        resources: responses,
+      };
     },
   );
   for (const [index, id] of ["ns-spec-cards", "test-journal"].entries()) {
@@ -578,12 +821,46 @@ try {
     },
   );
   await check(
-    "Gallery review screenshots show all nine posters without active playback",
+    "Gallery review screenshots show nine default text cards without active playback",
     async () => {
       await leave(page);
       await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
       await decodePosters(page);
       await settled(page);
+      await page.waitForFunction(
+        () => {
+          const columns = getComputedStyle(
+            document.querySelector("#skill-grid"),
+          )
+            .gridTemplateColumns.split(/\s+/)
+            .map(Number.parseFloat);
+          return (
+            columns.length === 3 &&
+            Math.max(...columns) - Math.min(...columns) <= 1
+          );
+        },
+        { timeout: 3000 },
+      );
+      const faces = await page.$$eval(".film-card", (cards) =>
+        cards.map((card) => ({
+          id: card.id,
+          textOpacity: Number(
+            getComputedStyle(card.querySelector(".card-face")).opacity,
+          ),
+          posterOpacity: Number(
+            getComputedStyle(card.querySelector(".poster")).opacity,
+          ),
+        })),
+      );
+      assert.equal(faces.length, 9);
+      for (const face of faces) {
+        assert.ok(
+          face.textOpacity > 0.98,
+          face.id + " default text face must be visible",
+        );
+        assert.equal(face.posterOpacity, 0);
+      }
+      await stableDefaultFrame(page);
       await page.screenshot({ path: join(output, "desktop.png") });
       await page.screenshot({
         path: join(output, "fullpage.png"),
@@ -592,8 +869,9 @@ try {
       return {
         screenshots: ["desktop.png", "fullpage.png"],
         allPausedAndMuted: true,
+        faces,
         caption:
-          "No hover: nine distinct collection posters; no video playing.",
+          "No hover: nine default text cards in the restored original palette; posters hidden and no video playing.",
       };
     },
   );

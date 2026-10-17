@@ -2,17 +2,17 @@ import { skills } from "./catalog.js";
 import { initSurfaceMotion } from "./surface-motion.js";
 
 import { films } from "./collection-catalog.js";
-const cardVerbs = [
-  "ALIGN",
-  "TRACE",
-  "WEB",
-  "MOBILE",
-  "SHAPE",
-  "BUILD",
-  "MEASURE",
-  "SHIP",
-  "REVIEW",
-];
+const cardVerbs = {
+  "ns-spec-cards": "ALIGN",
+  "test-journal": "TRACE",
+  "multi-agent-coding": "DISPATCH",
+  "web-testing": "WEB",
+  "mobile-testing": "MOBILE",
+  "elys-backend-technical-design": "SHAPE",
+  "elys-code-development": "BUILD",
+  "elys-evaluation": "MEASURE",
+  "codex-weekly-session-report": "REVIEW",
+};
 const filmById = new Map(films.map((film) => [film.id, film]));
 const filmPath = (skill) => "media/collection/" + skill.id + ".mp4";
 const posterPath = (skill) => "media/collection/" + skill.id + ".jpg";
@@ -179,15 +179,23 @@ function showExample(skill, opener) {
 for (const [index, skill] of skills.entries()) {
   const card = node("article", "film-card");
   card.dataset.skill = skill.id;
-  card.dataset.verb = cardVerbs[index];
-  card.dataset.accent =
-    skill.id === "engineering-delivery"
-      ? "#e4492e"
-      : skill.id === "codex-weekly-session-report"
-        ? "#20d5ad"
-        : "#1746e6";
-  card.dataset.accentInk =
-    skill.id === "codex-weekly-session-report" ? "#11182b" : "#ffffff";
+  const verb = cardVerbs[skill.id] || skill.tag;
+  card.dataset.verb = verb;
+  card.dataset.featured = String(Boolean(skill.featured));
+  card.dataset.lifecycle = skill.lifecycle || "active";
+  card.dataset.accent = skill.featured
+    ? skill.id === "test-journal"
+      ? "#20d5ad"
+      : "#e4492e"
+    : skill.id === "codex-weekly-session-report"
+      ? "#20d5ad"
+      : "#1746e6";
+  card.dataset.accentInk = [
+    "test-journal",
+    "codex-weekly-session-report",
+  ].includes(skill.id)
+    ? "#11182b"
+    : "#ffffff";
   card.id = skill.id;
   card.setAttribute("aria-labelledby", "title-" + skill.id);
   const preview = node("button", "film-preview");
@@ -218,14 +226,21 @@ for (const [index, skill] of skills.entries()) {
   const label = node("span", "preview-label", "悬停预览");
   state.append(icon, label);
   const face = node("span", "card-face");
+  const faceTitle = node("span", "face-title", skill.title);
+  if (skill.lifecycle === "retiring") {
+    const status = node("span", "lifecycle-badge", "即将淘汰");
+    status.id = "status-" + skill.id;
+    card.setAttribute("aria-describedby", status.id);
+    faceTitle.append(status);
+  }
   face.append(
-    node("span", "face-title", skill.title),
+    faceTitle,
     node("code", "face-command", skill.command),
     node("span", "face-promise", skill.payoff),
   );
   const verbMount = node("span", "card-verb-mount");
   verbMount.setAttribute("aria-hidden", "true");
-  const verbLabel = node("span", "verb-label", cardVerbs[index]);
+  const verbLabel = node("span", "verb-label", verb);
   verbLabel.setAttribute("aria-hidden", "true");
   preview.append(
     video,
@@ -253,13 +268,21 @@ for (const [index, skill] of skills.entries()) {
   const copy = node(
     "button",
     "copy-skill",
-    skill.zipUrl ? "复制 SKILL.md" : "复制安装说明",
+    skill.installPending
+      ? "复制使用方式"
+      : skill.zipUrl
+        ? "复制 SKILL.md"
+        : "复制安装说明",
   );
   copy.type = "button";
   copy.dataset.skill = skill.id;
   copy.setAttribute(
     "aria-label",
-    (skill.zipUrl ? "复制技能 " : "复制安装说明 ") + skill.id,
+    (skill.installPending
+      ? "复制使用方式 "
+      : skill.zipUrl
+        ? "复制技能 "
+        : "复制安装说明 ") + skill.id,
   );
   copy.addEventListener("click", async () => {
     copy.disabled = true;
@@ -269,7 +292,10 @@ for (const [index, skill] of skills.entries()) {
         const response = await fetch(skill.skillUrl);
         if (!response.ok) throw new Error("Could not load skill");
         text = await response.text();
-      } else
+      } else if (skill.installPending)
+        text =
+          skill.command + "\n" + skill.description + "\n" + skill.installText;
+      else
         text =
           "请安装 " +
           skill.id +
@@ -280,9 +306,11 @@ for (const [index, skill] of skills.entries()) {
       await copyText(
         text,
         copy,
-        skill.zipUrl
-          ? "SKILL.md 已复制；配套文件请下载 ZIP。"
-          : "安装说明已复制。",
+        skill.installPending
+          ? "使用方式已复制。"
+          : skill.zipUrl
+            ? "SKILL.md 已复制；配套文件请下载 ZIP。"
+            : "安装说明已复制。",
       );
     } catch (_) {
       notify("暂时无法读取，请从源链接查看。");
@@ -293,11 +321,22 @@ for (const [index, skill] of skills.entries()) {
   const source = node(
     "a",
     "skill-source",
-    skill.zipUrl ? "下载技能 ZIP ↓" : "查看源仓库 ↗",
+    skill.installPending
+      ? "看使用说明 ↓"
+      : skill.zipUrl
+        ? "下载技能 ZIP ↓"
+        : "查看源仓库 ↗",
   );
-  source.href = skill.zipUrl || skill.skillUrl;
+  source.href = skill.installPending
+    ? "#" + skill.id
+    : skill.zipUrl || skill.skillUrl;
+  if (skill.installPending)
+    source.addEventListener("click", (event) => {
+      event.preventDefault();
+      card.querySelector("details").open = true;
+    });
   if (skill.zipUrl) source.download = skill.id + ".zip";
-  else {
+  else if (!skill.installPending) {
     source.target = "_blank";
     source.rel = "noopener noreferrer";
   }
@@ -317,13 +356,13 @@ for (const [index, skill] of skills.entries()) {
   const summary = node("summary", "", "使用说明");
   summary.append(node("span", "", "＋"));
   const sourceLink = node("a", "", "查看 SKILL.md ↗");
-  sourceLink.href = skill.skillUrl;
+  sourceLink.href = skill.skillUrl || "#" + skill.id;
   if (!skill.zipUrl) {
     sourceLink.target = "_blank";
     sourceLink.rel = "noopener noreferrer";
   }
   const sourceParagraph = node("p");
-  sourceParagraph.append(sourceLink);
+  if (!skill.installPending) sourceParagraph.append(sourceLink);
   details.append(
     summary,
     node("p", "film-description", skill.description),

@@ -2,17 +2,17 @@
 
 [在线片库](https://ruanjianjian.github.io/elys-skill-foundry/)：9 个技能、9 个不同的短片世界。悬停看它能帮你解决什么，再按需安装。
 
-| 技能                          | 画面世界           | 核心价值                                             |
-| ----------------------------- | ------------------ | ---------------------------------------------------- |
-| ns-spec-cards                 | 手绘人物与实体卡片 | 简短问题、逐卡交互，快速和 AI 对齐，少受长篇废话打扰 |
-| test-journal                  | 纸片侦探           | 从体验出发，抓关键 Bug，留下可复测的核心动线         |
-| web-testing                   | 黏土浏览器游乐场   | 只走必要步骤，找到真实体验卡点，沉淀复用用例         |
-| mobile-testing                | 午夜城市与手机门   | 从 App 到系统交互，体验走到底                        |
-| elys-backend-technical-design | 实体建筑模型       | 看清责任与边界，再动工                               |
-| elys-code-development         | 机械修理厂         | 找到卡点、修好、复测到可见结果                       |
-| elys-evaluation               | 光学实验           | 同批样本比较，差异与版本可回溯                       |
-| engineering-delivery          | 夜航快递           | 同一份 PR 修复、复审，交付结论有依据                 |
-| codex-weekly-session-report   | 编辑手账           | 零散会话整理为有来源的工作周报                       |
+| 技能                          | 画面世界           | 核心价值 / 状态                                                 |
+| ----------------------------- | ------------------ | --------------------------------------------------------------- |
+| ns-spec-cards                 | 手绘人物与实体卡片 | **重点展示** · 简短问题、逐卡交互，快速与 AI 对齐               |
+| test-journal                  | 纸片侦探           | **重点展示** · 体验出发，抓关键 Bug，沉淀复测动线               |
+| multi-agent-coding            | 实体会话调度台     | Claude 派活给可见 Codex session，跟进进度、取回结果、原会话续修 |
+| web-testing                   | 黏土浏览器游乐场   | 必要步骤抓住真实体验卡点                                        |
+| mobile-testing                | 午夜城市与手机门   | 从 App 到系统交互，体验走到底                                   |
+| elys-backend-technical-design | 实体建筑模型       | 看清责任与边界，再动工                                          |
+| elys-code-development         | 机械修理厂         | **即将淘汰** · 原功能按需查看                                   |
+| elys-evaluation               | 光学实验           | 同批样本比较，差异可回溯                                        |
+| codex-weekly-session-report   | 编辑手账           | **即将淘汰** · 有来源的工作周报                                 |
 
 恢复原始纸白网格、钴蓝/朱红/深墨色板。默认是简洁技能卡，悬停后短片直接在卡片里显出，没有专门视频区。每片 14–16 秒，独立原创配乐；同时只播放一支。**悬停播放，离开即停，声音只属于当前短片。** 声音关闭偏好保存，普通点击不会重新开声。浏览器限制有声自动播放时提示点击开声。手机点按播放/暂停，支持键盘聚焦、减少动态、静态模式和离屏/隐藏暂停。
 
@@ -20,7 +20,7 @@
 
 ## 安装入口
 
-既有 7 项公开文件在 `skills/`，完整配套 ZIP 在 `downloads/`，此次未改动这些文件。新增 `ns-spec-cards`、`test-journal` 提供 Nature-Select/ns-skills 源链接及安装说明，需要仓库权限，不重新公开分发源码。
+原公开文件在 `skills/`，完整配套 ZIP 在 `downloads/`，此次未改动这些文件；delivery已从页面移除，旧文件仅保留历史。新增 `ns-spec-cards`、`test-journal` 提供 Nature-Select/ns-skills 源链接及安装说明，需要仓库权限，不重新公开分发源码。`multi-agent-coding` 已补充介绍、用法与短片；安装分发路径待确定，当前不提供未经核实的下载链接。
 
 技能不捆绑或自动安装测试驱动。网页可复用 Chrome DevTools MCP、Playwright 等可用工具；移动端可复用 Mobile MCP、Maestro 或项目已有驱动。只补缺少的工具，安装成功与当前会话可操作分别确认。
 
@@ -36,7 +36,7 @@ npx http-server . -a 127.0.0.1 -p 4173
 
 ## 重新生成短片
 
-需本机 Chrome、Python 3、ffmpeg（libx264/AAC）。`collection-catalog.js` 是生成的片目，`collection-renderer.js` 汇总 `motion-collection/` 三组确定性 Canvas 场景，`catalog.js` 管技能入口和文案。
+需本机 Chrome、Python 3、ffmpeg（libx264/AAC）。`collection-catalog.js` 是生成的片目，`collection-renderer.js` 汇总 `motion-collection/` 确定性 Canvas 场景，`catalog.js` 管技能入口和文案。
 
 先为每片生成配乐，例如：
 
