@@ -4,8 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm run build:gooey",
-    "build:gooey": "node build-gooey.mjs"
+    "build": "node --check app.js && node --check catalog.js && node --check film-renderer.js",
+    "build:gooey": "node build-gooey.mjs",
+    "build:films": "node scripts/render-films.mjs",
+    "posters": "node scripts/render-films.mjs --posters-only"
   },
   "dependencies": {
     "liquid-gooey": "^0.1.0",
@@ -13,6 +15,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
-    "esbuild": "^0.28.2"
+    "esbuild": "^0.28.2",
+    "puppeteer-core": "25.14.0"
   }
 }

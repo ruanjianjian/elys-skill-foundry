@@ -1,85 +1,182 @@
 <!doctype html>
 <html lang="zh-CN">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="七个持续维护的工程与客户端验收 Skills。" />
-    <meta name="theme-color" content="#f2f5ee" />
-    <title>我很懒，所以我做了</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#dce0e5" />
+    <title>ELYS Skill Foundry · 让它干，你看结果。</title>
+    <meta
+      name="description"
+      content="9 个持续维护的技能，9 支动效短片。看它如何解决麻烦，再按需安装。"
+    />
+    <meta property="og:title" content="ELYS Skill Foundry · SKILLS IN MOTION" />
+    <meta
+      property="og:description"
+      content="少读说明，看它开工。9 个技能，9 支 12 秒短片。"
+    />
+    <meta
+      property="og:url"
+      content="https://ruanjianjian.github.io/elys-skill-foundry/"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://ruanjianjian.github.io/elys-skill-foundry/media/posters/ns-spec-cards.jpg"
+    />
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%231746e6'/%3E%3Cpath d='M13 43 24 21h7L20 43zm15 0 11-22h7L35 43z' fill='%23f2f5ee'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23141619'/%3E%3Cpath d='M13 43 24 21h7L20 43zm15 0 11-22h7L35 43z' fill='%23C1FF29'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="styles.css?v=20260907-1" />
-    <script src="app.js?v=20260907-1" defer></script>
-    <script src="gooey-title.bundle.js?v=20260907-1" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20261017-film-1" />
+    <script type="module" src="app.js?v=20261017-film-1"></script>
   </head>
   <body>
+    <a class="skip-link" href="#main">跳到短片</a>
     <header class="topbar">
-      <a class="brand" href="#top" aria-label="返回顶部">
-        <span aria-hidden="true">///</span> ELYS_SKILLS <i aria-hidden="true"></i>
-      </a>
-      <button
-        class="copy-all"
-        type="button"
-        data-copy="/web-testing\n/mobile-testing\n/elys-backend-technical-design\n/elys-code-development\n/elys-evaluation\n/engineering-delivery\n/codex-weekly-session-report"
-      >复制全部</button>
-    </header>
-
-    <main id="top">
-      <div class="edition"><span>TEAM OPEN SOURCE</span><span>07 MAINTAINED SKILLS</span></div>
-      <div class="title-stage" data-gooey-title>
-        <h1 class="liquid-title liquid-title-fallback">我很懒，<i class="mobile-break" aria-hidden="true"></i>所以我做了</h1>
+      <a class="brand" href="#top"
+        ><b aria-hidden="true">///</b> ELYS_SKILLS <i aria-hidden="true"></i></a
+      ><span class="edition">FOUNDRY / VOL.02</span>
+      <div class="top-actions">
+        <button id="motion-toggle" type="button" aria-pressed="false">
+          静态模式</button
+        ><button id="copy-all" type="button">复制全部命令 ↗</button>
       </div>
-
-      <section class="skill-grid" aria-label="七个 Skills" data-gooey-skills>
-        <button class="skill-card card-web" type="button" data-copy="/web-testing">
-          <span class="card-meta"><b>06</b><i>WEB</i></span>
-          <strong>Web 验收</strong><code>/web-testing</code>
-          <span class="card-promise">交互、视觉、无障碍与回归</span>
-        </button>
-        <button class="skill-card card-mobile" type="button" data-copy="/mobile-testing">
-          <span class="card-meta"><b>07</b><i>MOBILE</i></span>
-          <strong>移动端验收</strong><code>/mobile-testing</code>
-          <span class="card-promise">Flutter、iOS 与真实视觉证据</span>
-        </button>
-        <button class="skill-card card-design" type="button" data-copy="/elys-backend-technical-design">
-          <span class="card-meta"><b>01</b><i>SHAPE</i></span>
-          <strong>技术方案</strong>
-          <code>/elys-backend-technical-design</code>
-          <span class="card-promise">把方案钉在当前代码上</span>
-        </button>
-
-        <button class="skill-card card-build" type="button" data-copy="/elys-code-development">
-          <span class="card-meta"><b>02</b><i>BUILD</i></span>
-          <strong>代码开发</strong>
-          <code>/elys-code-development</code>
-          <span class="card-promise">真实 E2E 通过才算完成</span>
-        </button>
-
-        <button class="skill-card card-eval" type="button" data-copy="/elys-evaluation">
-          <span class="card-meta"><b>03</b><i>MEASURE</i></span>
-          <strong>模型评测</strong>
-          <code>/elys-evaluation</code>
-          <span class="card-promise">先定义怎么测，再跑模型</span>
-        </button>
-
-        <button class="skill-card card-ship" type="button" data-copy="/engineering-delivery">
-          <span class="card-meta"><b>04</b><i>SHIP</i></span>
-          <strong>工程交付</strong>
-          <code>/engineering-delivery</code>
-          <span class="card-promise">当前 PR Head 通过才算交付</span>
-        </button>
-
-        <button class="skill-card card-review" type="button" data-copy="/codex-weekly-session-report">
-          <span class="card-meta"><b>05</b><i>REVIEW</i></span>
-          <strong>周报复盘</strong>
-          <code>/codex-weekly-session-report</code>
-          <span class="card-promise">从真实 Session 还原工作</span>
-        </button>
+    </header>
+    <main id="top">
+      <header class="page-heading">
+        <div>
+          <p>09 TOOLS. LESS FRICTION.</p>
+          <h1>让它干，<span>你看结果。</span></h1>
+        </div>
+        <span class="edition-counter"
+          >9 × 12 SEC<span>SKILLS IN MOTION</span></span
+        >
+      </header>
+      <section class="cinema" id="main" aria-labelledby="film-title">
+        <div class="screen-wrap">
+          <div class="screen-meta">
+            <span
+              ><i aria-hidden="true"></i> NOW PLAYING
+              <b id="film-number">01 / 09</b></span
+            ><span>能力示意 · 非运行实录</span>
+          </div>
+          <div class="screen">
+            <video
+              id="feature-video"
+              controls
+              muted
+              playsinline
+              preload="metadata"
+              poster="media/posters/ns-spec-cards.jpg"
+              aria-label="ns-spec-cards 宣传动效短片"
+            >
+              <source src="media/films/ns-spec-cards.mp4" type="video/mp4" />
+              浏览器不支持视频，可使用下方「下载短片」。
+            </video>
+          </div>
+          <div class="transport">
+            <button id="previous-film" type="button" aria-label="上一支短片">
+              ←</button
+            ><span id="playback-label">12 SEC / 120 BPM</span
+            ><button id="next-film" type="button" aria-label="下一支短片">
+              →</button
+            ><button id="sound-toggle" type="button" aria-pressed="false">
+              开启节拍 ♪</button
+            ><a id="film-download" href="media/films/ns-spec-cards.mp4" download
+              >下载短片 MP4 ↓</a
+            >
+          </div>
+        </div>
+        <aside class="film-info">
+          <div class="info-tag">
+            <span id="skill-tag">DECIDE</span><i aria-hidden="true">↗</i>
+          </div>
+          <h2 id="film-title">决策卡</h2>
+          <p class="payoff" id="skill-payoff">一张卡一个决定</p>
+          <code id="skill-command">/ns-spec-cards</code>
+          <p class="skill-description" id="skill-description">
+            把待定问题变成决策卡，逐张选择、留言，再回写结论。
+          </p>
+          <div class="install-actions">
+            <button type="button" id="copy-skill">复制安装说明</button
+            ><a
+              id="skill-download"
+              href="https://github.com/Nature-Select/ns-skills/tree/main/base/ns-spec-cards"
+              target="_blank"
+              rel="noopener noreferrer"
+              >查看源仓库 ↗</a
+            >
+          </div>
+          <button class="example-button" id="show-example" type="button">
+            看实际页面 ↗
+          </button>
+          <details>
+            <summary>使用提示 <span aria-hidden="true">＋</span></summary>
+            <p id="install-note">需要源仓库访问权限，按 SKILL.md 安装。</p>
+          </details>
+          <div class="info-footer">
+            <span>CLAUDE CODE / CODEX</span><span>按需安装</span>
+          </div>
+        </aside>
       </section>
+      <section class="library" aria-labelledby="library-title">
+        <header class="library-heading">
+          <h2 id="library-title">选一个麻烦，看看怎么解。</h2>
+          <span>THE COLLECTION / 09</span>
+        </header>
+        <div class="film-grid" id="skill-grid"></div>
+      </section>
+      <noscript
+        ><p>
+          请启用 JavaScript 浏览全部 9 支短片。也可直接打开
+          <a href="media/films/ns-spec-cards.mp4">决策卡短片</a>、<a
+            href="media/films/test-journal.mp4"
+            >测试日志短片</a
+          >，或查看
+          <a
+            href="https://github.com/ruanjianjian/elys-skill-foundry/tree/main/skills"
+            >技能目录</a
+          >。
+        </p></noscript
+      >
+      <footer>
+        <a
+          href="https://github.com/ruanjianjian/elys-skill-foundry"
+          target="_blank"
+          rel="noopener noreferrer"
+          >SOURCE ↗</a
+        ><span>原创图形 / 原创合成节拍</span
+        ><button id="copy-share" type="button">复制群介绍 ↗</button>
+      </footer>
     </main>
-
-    <div class="toast" role="status" aria-live="polite" aria-atomic="true" data-toast>已复制</div>
+    <dialog id="copy-dialog" aria-labelledby="copy-title">
+      <div class="dialog-heading">
+        <h2 id="copy-title">复制这段内容</h2>
+        <button class="close-dialog" type="button" aria-label="关闭复制内容">
+          ×
+        </button>
+      </div>
+      <p>请选中文字复制。</p>
+      <textarea readonly id="copy-text" aria-label="待复制的内容"></textarea
+      ><button class="close-dialog done" type="button">完成</button>
+    </dialog>
+    <dialog id="example-dialog" aria-labelledby="example-title">
+      <div class="dialog-heading">
+        <h2 id="example-title">实际页面示例</h2>
+        <button class="close-dialog" type="button" aria-label="关闭页面示例">
+          ×
+        </button>
+      </div>
+      <div class="example-scroll"><img id="example-image" alt="" /></div>
+      <p>实际页面样式 · 示例内容，不代表业务验收结果</p>
+    </dialog>
+    <div
+      class="toast"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      data-toast
+    ></div>
   </body>
 </html>
