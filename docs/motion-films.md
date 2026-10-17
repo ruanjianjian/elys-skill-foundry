@@ -53,6 +53,6 @@
 
 参考：[Ableton 的侧链制作示例](https://www.ableton.com/en/blog/sidechain-compression-part-2-common-and-uncommon-uses/)，学习让和弦、低音随鼓点让位及恢复；[DJ Swivel 本人对 K-pop 制作的拆解](https://djswivel.com/bts-euphoria-deconstructed/)，学习分层鼓组、合成器及段落编排。已读制作说明，未把参考视频加载当成耳听完成。浏览器音轨状态和响度测量不代表听觉审美验收。
 
-本轮音乐版本为 `music-v3`。四个独立模块与十首 WAV 的源 SHA 均已核对；七个钢琴/尼龙单音色连同原 CC0 许可证、原 readme、逐文件映射随源码保留，见[音色来源](../media/instruments/tactile/SOURCES.md)。成片采用 320k AAC；响度 -15.35 至 -14.90 LUFS、最高 true peak -2.34 dBTP，10 个原视频 packet SHA 全部一致。上一版 192k AAC 对粗颗粒瞬态有编码峰值超限，新版提高码率并测量编码成片后通过。
+本轮音乐版本为 `music-v3`。四个独立模块与十首 WAV 的源 SHA 均已核对；七个钢琴/尼龙单音色连同原 CC0 许可证、原 readme、逐文件映射随源码保留，见[音色来源](../media/instruments/tactile/SOURCES.md)。为保留粗颗粒瞬态，成片采用 320k AAC 并在编码后测量：响度 -15.35 至 -14.90 LUFS、最高 true peak -2.34 dBTP，10 个原视频 packet SHA 全部一致。
 
 Chrome 16/16 功能检查通过：10 个真实媒体播放源都带 `v=music-v3` 并解码新音轨，离开停声、OFF 持久化、手机操作、目录、示例与安装入口均正常。正式报告只保留本轮 PROMO-12 一条核心动线、三步内嵌截图。完整媒体与编排记录见 [music-audit.json](music-audit.json)。客观测量及播放检查不代替用户对音乐辨识度的听觉判断，未宣称用户已认可本轮听感或完成物理手机验收。
