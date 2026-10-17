@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -14,7 +14,7 @@ const artifacts =
   process.env.FOUNDRY_ARTIFACT_DIR ||
   join(
     homedir(),
-    "DevData/Artifacts/20261017-skills-promo/foundry/surface-restore/qa-local",
+    "DevData/Artifacts/20261017-skills-promo/foundry/catalog-zip/qa-local",
   );
 const output = join(artifacts, "ui");
 await mkdir(output, { recursive: true });
@@ -162,6 +162,90 @@ async function decodePosters(page) {
     ),
   );
 }
+async function downloadZip(page, skill) {
+  assert.ok(skill?.zipUrl, "Multi-agent skill must have a real ZIP link");
+  const downloadDir = join(artifacts, "downloads");
+  await mkdir(downloadDir, { recursive: true });
+  const client = await browser.target().createCDPSession();
+  try {
+    await client.send("Browser.setDownloadBehavior", {
+      behavior: "allowAndName",
+      downloadPath: downloadDir,
+      eventsEnabled: true,
+    });
+    const expectedUrl = new URL(skill.zipUrl, url).href;
+    const download = await new Promise((resolve, reject) => {
+      let started;
+      const finish = (error, result) => {
+        clearTimeout(timer);
+        client.off("Browser.downloadWillBegin", onBegin);
+        client.off("Browser.downloadProgress", onProgress);
+        error ? reject(error) : resolve(result);
+      };
+      const onBegin = (event) => {
+        if (event.url === expectedUrl) started = event;
+      };
+      const onProgress = (event) => {
+        if (!started || event.guid !== started.guid) return;
+        if (event.state === "canceled")
+          finish(new Error("Multi-agent ZIP download canceled"));
+        if (event.state === "completed")
+          finish(null, {
+            url: started.url,
+            guid: started.guid,
+            filename: started.suggestedFilename,
+            bytes: event.totalBytes,
+          });
+      };
+      const timer = setTimeout(
+        () => finish(new Error("Multi-agent ZIP download did not complete")),
+        12_000,
+      );
+      client.on("Browser.downloadWillBegin", onBegin);
+      client.on("Browser.downloadProgress", onProgress);
+      page
+        .click(card(skill.id) + " .skill-source")
+        .catch((error) => finish(error));
+    });
+    assert.equal(download.url, expectedUrl);
+    assert.equal(download.filename, skill.id + ".zip");
+    const bytes = await readFile(join(downloadDir, download.guid));
+    assert.deepEqual(
+      [...bytes.subarray(0, 4)],
+      [0x50, 0x4b, 0x03, 0x04],
+      "Downloaded asset must have a ZIP local-file signature",
+    );
+    assert.ok(bytes.length > 4);
+    await leave(page);
+    await page.$eval(card(skill.id), (element) =>
+      element.scrollIntoView({ block: "center", behavior: "instant" }),
+    );
+    await stableDefaultFrame(page);
+    await page.waitForFunction(
+      () => {
+        const columns = getComputedStyle(document.querySelector("#skill-grid"))
+          .gridTemplateColumns.split(/\s+/)
+          .map(Number.parseFloat);
+        return (
+          columns.length === 3 &&
+          Math.max(...columns) - Math.min(...columns) <= 1
+        );
+      },
+      { timeout: 3000 },
+    );
+    await page.screenshot({ path: join(output, "multi-download.png") });
+    return {
+      ...download,
+      bytes: bytes.length,
+      signature: "PK0304",
+      screenshot: "multi-download.png",
+      transport:
+        "Real click with native Chrome download events and downloaded bytes",
+    };
+  } finally {
+    await client.detach();
+  }
+}
 async function freeze(page, id, time, filename, caption) {
   await page.hover(preview(id));
   await waitPlaying(page, id);
@@ -241,7 +325,7 @@ try {
   await page.reload({ waitUntil: "domcontentloaded" });
   await ready(page);
   await check(
-    "Idle is silent with nine inline films and no independent audio player",
+    `Idle is silent with ${skills.length} inline films and no independent audio player`,
     async () => {
       const actual = await page.evaluate(() => ({
         cards: document.querySelectorAll(".film-card").length,
@@ -258,8 +342,8 @@ try {
         ),
       }));
       assert.deepEqual(actual, {
-        cards: 9,
-        videos: 9,
+        cards: skills.length,
+        videos: skills.length,
         audioElements: 0,
         soundPreference: "true",
         allPaused: true,
@@ -284,7 +368,7 @@ try {
       );
       assert.equal(
         directory.some((item) => item.id === "engineering-delivery"),
-        false,
+        true,
       );
       assert.equal(directory[2].id, "multi-agent-coding");
       assert.deepEqual(
@@ -296,8 +380,22 @@ try {
           .filter((item) => item.lifecycle === "retiring")
           .map((item) => item.id)
           .sort(),
-        ["codex-weekly-session-report", "elys-code-development"],
+        [
+          "codex-weekly-session-report",
+          "elys-code-development",
+          "engineering-delivery",
+        ],
       );
+      assert.deepEqual(
+        films.map((film) => film.id).sort(),
+        skills.map((skill) => skill.id).sort(),
+      );
+      const multiCatalog = skills.find(
+        (skill) => skill.id === "multi-agent-coding",
+      );
+      assert.ok(!multiCatalog.installPending);
+      assert.equal(multiCatalog.skillUrl, "skills/multi-agent-coding/SKILL.md");
+      assert.equal(multiCatalog.zipUrl, "downloads/multi-agent-coding.zip");
       const multi = directory.find((item) => item.id === "multi-agent-coding");
       assert.match(multi.description, /Claude/i);
       assert.match(multi.description, /Codex/i);
@@ -305,9 +403,9 @@ try {
       return { ...actual, directory };
     },
   );
-  await check("Nine collection posters decode", async () => {
+  await check(`${skills.length} collection posters decode`, async () => {
     const posters = await decodePosters(page);
-    assert.equal(posters.length, 9);
+    assert.equal(posters.length, skills.length);
     for (const poster of posters)
       assert.ok(poster.width > 0 && poster.height > 0);
     for (const film of films)
@@ -425,7 +523,7 @@ try {
     },
   );
   await check(
-    "All nine real hovers play their own audible-track film, leave pauses and mutes all",
+    `All ${skills.length} real hovers play their own audible-track film, leave pauses and mutes all`,
     async () => {
       await page.click("h1");
       const results = [];
@@ -700,37 +798,15 @@ try {
       );
       for (const skill of skills) {
         const link = links.find((link) => link.id === skill.id);
-        const expectedHref = skill.installPending
-          ? "#" + skill.id
-          : skill.zipUrl || skill.skillUrl;
+        const expectedHref = skill.zipUrl || skill.skillUrl;
         assert.equal(link.href, expectedHref);
         if (!skill.zipUrl) {
           assert.equal(link.download, false);
           assert.ok(!link.text.includes("ZIP"));
+        } else {
+          assert.equal(link.download, true);
+          assert.ok(link.text.includes("ZIP"));
         }
-      }
-      const pendingUsage = [];
-      for (const skill of skills.filter((skill) => skill.installPending)) {
-        assert.equal(skill.zipUrl, null);
-        assert.equal(skill.skillUrl, null);
-        await page.click(card(skill.id) + " .skill-source");
-        await page.waitForFunction(
-          (id) => document.querySelector(id + " details").open,
-          {},
-          "#" + skill.id,
-        );
-        const usage = await page.$eval(card(skill.id) + " details", (details) =>
-          details.textContent.trim(),
-        );
-        assert.match(usage, /Claude/i);
-        assert.match(usage, /Codex/i);
-        await page.click(card(skill.id) + " details summary");
-        await page.waitForFunction(
-          (id) => !document.querySelector(id + " details").open,
-          {},
-          "#" + skill.id,
-        );
-        pendingUsage.push({ id: skill.id, openedAndClosed: true, usage });
       }
       const downloadable = skills.filter((skill) => skill.zipUrl);
       const paths = downloadable.flatMap((skill) => [
@@ -750,10 +826,14 @@ try {
       );
       for (const result of responses)
         assert.equal(result.status, 200, result.path);
+      const downloadedMulti = await downloadZip(
+        page,
+        skills.find((skill) => skill.id === "multi-agent-coding"),
+      );
       return {
         zipCount: downloadable.length,
         sourceCount: downloadable.length,
-        pendingUsage,
+        downloadedMulti,
         links,
         resources: responses,
       };
@@ -821,7 +901,7 @@ try {
     },
   );
   await check(
-    "Gallery review screenshots show nine default text cards without active playback",
+    `Gallery review screenshots show ${skills.length} default text cards without active playback`,
     async () => {
       await leave(page);
       await page.evaluate(() => scrollTo({ top: 0, behavior: "instant" }));
@@ -852,7 +932,7 @@ try {
           ),
         })),
       );
-      assert.equal(faces.length, 9);
+      assert.equal(faces.length, skills.length);
       for (const face of faces) {
         assert.ok(
           face.textOpacity > 0.98,
@@ -870,8 +950,7 @@ try {
         screenshots: ["desktop.png", "fullpage.png"],
         allPausedAndMuted: true,
         faces,
-        caption:
-          "No hover: nine default text cards in the restored original palette; posters hidden and no video playing.",
+        caption: `No hover: ${skills.length} default text cards in the restored original palette; posters hidden and no video playing.`,
       };
     },
   );

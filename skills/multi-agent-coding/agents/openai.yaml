@@ -1,0 +1,4 @@
+interface:
+  display_name: "Multi-Agent Coding · 派活与治理"
+  short_description: "支持 Codex 与 Claude 调度，统一派活、持续记账和真实验收"
+  default_prompt: "使用 $multi-agent-coding 拆解任务，确认执行方式与写入边界，按宿主派发 worker，维护唯一台账并收口真实验收。"

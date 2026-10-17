@@ -1,0 +1,106 @@
+{
+  "skill_name": "multi-agent-coding",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "需求文档已经明确。这个功能同时修改 backend 和 mobile，客户端依赖一个新的异步状态接口。请开始多 Agent 开发，但不要重新和我梳理需求。",
+      "expected_output": "先冻结 provider/consumer 接口合同，并用白话说明推荐多会话还是一个主会话加子 agent、判断依据和协调成本；用户明确确认执行拓扑后，再按中度耦合拆分 backend/mobile worktree。",
+      "expectations": [
+        "不重复进行需求访谈",
+        "创建开发 worker 前单独取得执行拓扑确认",
+        "编码前冻结跨端接口合同",
+        "合同冻结后再拆分 backend 和 mobile worktree",
+        "用户可见计划以真实 E2E 和人工验收为核心"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "一个 Flutter 模块需要同时调整路由表、共享状态管理和三个页面。希望开三个 Agent 并行开发。",
+      "expected_output": "识别共享文件和高耦合风险，不机械创建三个并行 code-change worktree；用白话解释建议的会话拓扑并取得确认，再指定一个代码 owner，其他 Agent 只做探索或验证。",
+      "expectations": [
+        "识别路由表和共享状态的高耦合",
+        "创建开发 worker 前单独取得执行拓扑确认",
+        "不创建三个重叠写范围的并行 worker",
+        "指定唯一代码 owner 和共享文件 owner",
+        "允许其他 Agent 进行探索或验证"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "这是 ELYS 的跨端任务。backend 可以泳道部署，但完整用户路径依赖 IM；Loom API 没有泳道。完成后需要给我真实账号人工验收。",
+      "expected_output": "先确认执行方式；读取当前 ELYS 规范，按实际依赖验证 IM 路径，不把泳道当必经门禁或冒充完整 E2E。缺少依赖或权限保持 EVIDENCE_BLOCKED。",
+      "expectations": [
+        "不重复确认已明确的范围",
+        "依据当前项目技能选择环境",
+        "不在无 IM 的环境中宣称完整 E2E",
+        "不擅自部署共享 dev 或泳道",
+        "证据绑定当前构建与设备/实例"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "这个项目预计做两三周，涉及 backend 和 app，中间接口、交互和架构方案很可能还要我确认。我希望能随时打开每个开发 agent 的历史并直接介入。",
+      "expected_output": "用白话建议 multi-session，说明依据是两三周周期、多轮人类确认和需要查看独立历史，同时说明额外同步成本；取得用户明确确认后，Lead 再为独立仓库/工作面创建可见 worker session 和独立 worktree。",
+      "expectations": [
+        "向用户建议 multi-session 而不是一次性子 agent",
+        "用当前任务的具体事实和白话解释判断",
+        "创建 worker 前取得用户明确确认",
+        "worker session 对人类可见且允许直接介入",
+        "Lead 是共享 ledger 和飞书迭代记录的唯一写入者",
+        "人类改变 scope 或 contract 时触发 Human Intervention Notice",
+        "会话按当前任务和 work order 存续而不是永久绑定模块"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "修一个后端仓库里的单文件空指针问题，原因和验收命令都明确，不需要我中间确认。",
+      "expected_output": "用白话建议一个主会话加 bounded subagent，说明这是单文件、验收明确且无需中途介入；告知无法独立进入子 agent 过程但同步成本更低，取得用户确认后再发 work order。",
+      "expectations": [
+        "向用户建议普通 subagent",
+        "创建 worker 前取得用户明确确认",
+        "不机械创建多 session",
+        "仍保留 write scope、验收和 Completion Notice"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "我在 Claude 里，已确认给两个独立 repo 创建可见 Codex 任务。companion 的 task 超时，没有拿到 job ID；能再发一次吗？",
+      "expected_output": "保留派发 intent，先按精确 cwd 核对是否已创建及状态/结果。不能盲重发、改数据库或杀全局 worker；可见性独立核验。",
+      "expectations": [
+        "按宿主适配 companion",
+        "不盲目重发",
+        "不伪造 thread ID",
+        "记录不确定状态"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "worker 日志半小时没更新，但 status 是 running；另一个 worker completed 说环境缺失没跑 E2E。帮我收口。",
+      "expected_output": "前者为 stale/待核对，不判完成；后者为证据阻塞，不开依赖其证据的门控。只对可复核产物集成，不冒称通过。",
+      "expectations": [
+        "日志静默不等于完成",
+        "completed 不等于通过",
+        "无误杀/自动重派"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "沿用 tasks/old-feature/ 的 contracts.md、decisions.md、test-matrix.md，两个 worker 仍在跑。不要飞书。改用合并后的 skill 继续管理。",
+      "expected_output": "沿用物理真源，记录路径映射和现有 worker 身份，不初始化第二套空账本、不重派、不写飞书。",
+      "expectations": [
+        "单一真源",
+        "已有任务不重派",
+        "飞书 not-requested"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "只在本地合并 multi-agent-coding 和 codex-fleet 这两个 Skill。",
+      "expected_output": "编辑技能本身，不启动业务开发 worker、工具级 goal、飞书同步或发布。",
+      "expectations": [
+        "不把技能编辑请求当执行工作流",
+        "只做本地变更"
+      ]
+    }
+  ]
+}

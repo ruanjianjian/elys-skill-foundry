@@ -1,6 +1,6 @@
 # ELYS Skill Foundry — Skills in Motion
 
-[在线片库](https://ruanjianjian.github.io/elys-skill-foundry/)：9 个技能、9 个不同的短片世界。悬停看它能帮你解决什么，再按需安装。
+[在线片库](https://ruanjianjian.github.io/elys-skill-foundry/)：10 个技能、10 个不同的短片世界。悬停看它能帮你解决什么，再按需安装。
 
 | 技能                          | 画面世界           | 核心价值 / 状态                                                 |
 | ----------------------------- | ------------------ | --------------------------------------------------------------- |
@@ -12,6 +12,7 @@
 | elys-backend-technical-design | 实体建筑模型       | 看清责任与边界，再动工                                          |
 | elys-code-development         | 机械修理厂         | **即将淘汰** · 原功能按需查看                                   |
 | elys-evaluation               | 光学实验           | 同批样本比较，差异可回溯                                        |
+| engineering-delivery          | 夜航快递           | **即将淘汰** · PR 评审与交付跟进                                |
 | codex-weekly-session-report   | 编辑手账           | **即将淘汰** · 有来源的工作周报                                 |
 
 恢复原始纸白网格、钴蓝/朱红/深墨色板。默认是简洁技能卡，悬停后短片直接在卡片里显出，没有专门视频区。每片 14–16 秒，独立原创配乐；同时只播放一支。**悬停播放，离开即停，声音只属于当前短片。** 声音关闭偏好保存，普通点击不会重新开声。浏览器限制有声自动播放时提示点击开声。手机点按播放/暂停，支持键盘聚焦、减少动态、静态模式和离屏/隐藏暂停。
@@ -20,7 +21,7 @@
 
 ## 安装入口
 
-原公开文件在 `skills/`，完整配套 ZIP 在 `downloads/`，此次未改动这些文件；delivery已从页面移除，旧文件仅保留历史。新增 `ns-spec-cards`、`test-journal` 提供 Nature-Select/ns-skills 源链接及安装说明，需要仓库权限，不重新公开分发源码。`multi-agent-coding` 已补充介绍、用法与短片；安装分发路径待确定，当前不提供未经核实的下载链接。
+原公开文件在 `skills/`，完整配套 ZIP 在 `downloads/`，原有文件保持不变；delivery、代码开发和周报均保留并标记即将淘汰。新增 `ns-spec-cards`、`test-journal` 提供 Nature-Select/ns-skills 源链接及安装说明，需要仓库权限，不重新公开分发源码。`multi-agent-coding` 提供[完整 ZIP](downloads/multi-agent-coding.zip)与[SKILL.md](skills/multi-agent-coding/SKILL.md)，包括脚本、参考说明、模板、Agent元数据及评测材料；不包含本机缓存、登录态或外部插件。Claude→Codex桌面派活所需Codex CLI登录与Companion适配器按包内说明准备。
 
 技能不捆绑或自动安装测试驱动。网页可复用 Chrome DevTools MCP、Playwright 等可用工具；移动端可复用 Mobile MCP、Maestro 或项目已有驱动。只补缺少的工具，安装成功与当前会话可操作分别确认。
 
@@ -48,7 +49,7 @@ node scripts/render-collection.mjs --ids=ns-spec-cards
 node scripts/render-collection.mjs --posters-only --ids=test-journal
 ```
 
-`FOUNDRY_ARTIFACT_DIR` 默认本机任务 `~/DevData/Artifacts/20261017-skills-promo/foundry/collection-v3/`，其中 `scores/<id>.wav` 为渲染输入。9 片参数见生成片目。配乐使用标准库纯合成，无第三方音乐采样。原画已提交在 `media/collection-art/`，决策卡另复用 `media/cinematic-art/` 原画。视频/海报输出到 `media/collection/`，1280×720、30fps，H.264/AAC faststart；WAV、渲染 profile、逐帧截图和日志留在任务产物目录，不发布。
+`FOUNDRY_ARTIFACT_DIR` 默认本机任务 `~/DevData/Artifacts/20261017-skills-promo/foundry/collection-v3/`，其中 `scores/<id>.wav` 为渲染输入。10 片参数见生成片目。配乐使用标准库纯合成，无第三方音乐采样。原画已提交在 `media/collection-art/`，决策卡另复用 `media/cinematic-art/` 原画。视频/海报输出到 `media/collection/`，1280×720、30fps，H.264/AAC faststart；WAV、渲染 profile、逐帧截图和日志留在任务产物目录，不发布。
 
 `CHROME_PATH` 可覆盖 Chrome 入口。旧片与旧试片保留作历史参考，首页使用九支新片。`gooey-title.jsx` 与 `build:gooey` 负责重建本地液态标题/角标运行包，`surface-motion.js` 管理列伸缩和反馈；不恢复旧七卡 React Grid。
 

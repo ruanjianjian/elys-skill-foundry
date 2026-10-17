@@ -1,6 +1,6 @@
 # Skill 短片：原画与制作记录
 
-当前片库用不同的视觉世界介绍九个 Skill；engineering-delivery 已移出页面，制作记录仅作历史保留，新增 multi-agent-coding 见文末。**全部为能力示意，不是技能实际运行录屏、测试验收报告或上线证明。** 片中的样本、版本、票据和界面元素用于讲述工作方式，不代表真实业务评测分数、部署状态或本周实际成果。
+当前片库用不同的视觉世界介绍十个 Skill；engineering-delivery 保留并标记即将淘汰，新增 multi-agent-coding 见文末。**全部为能力示意，不是技能实际运行录屏、测试验收报告或上线证明。** 片中的样本、版本、票据和界面元素用于讲述工作方式，不代表真实业务评测分数、部署状态或本周实际成果。
 
 ## 制作方法
 
@@ -98,7 +98,7 @@ Camera: low three-quarter macro wide angle, 16:9, not isometric diagram. High co
 No text, no letters, no digits, no fake interface, no chart, no graph, no flowchart, no arrows, no logo, no watermark, no glossy human skin. Do not put glowing rings or generic science-fiction HUD overlays. Do not depict numeric results or claims. One coherent cinematic scene, not panels.
 ```
 
-### engineering-delivery（历史存档，已移出页面）
+### engineering-delivery（即将淘汰）
 
 生产文件：[`media/collection-art/engineering-delivery.jpg`](../media/collection-art/engineering-delivery.jpg)。
 
@@ -122,7 +122,7 @@ Color only warm cream, deep burgundy, graphite and a little muted brass. Tactile
 
 ## 新增：multi-agent-coding
 
-内置 imagegen 制作的原创「会话调度台」，16 秒 / 126 BPM。原画：[multi-agent-coding.jpg](../media/collection-art/multi-agent-coding.jpg)；动作：[multi.js](../motion-collection/multi.js)。Claude 拆单 → 三个可见 Codex session 接单 → 反馈回到同一个 B-01 续修 → 结果回收后会话保留。只是能力示意，并非真实桌面录屏。配乐复用移出片库的工程交付原创 `dispatch` 合成曲，无外部采样，未做耳听评价。
+内置 imagegen 制作的原创「会话调度台」，16 秒 / 126 BPM。原画：[multi-agent-coding.jpg](../media/collection-art/multi-agent-coding.jpg)；动作：[multi.js](../motion-collection/multi.js)。Claude 拆单 → 三个可见 Codex session 接单 → 反馈回到同一个 B-01 续修 → 结果回收后会话保留。只是能力示意，并非真实桌面录屏。配乐复用工程交付原创 `dispatch` 合成曲，无外部采样，未做耳听评价。
 
 完整实际原画提示词：
 

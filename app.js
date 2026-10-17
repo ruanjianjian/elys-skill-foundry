@@ -11,6 +11,7 @@ const cardVerbs = {
   "elys-backend-technical-design": "SHAPE",
   "elys-code-development": "BUILD",
   "elys-evaluation": "MEASURE",
+  "engineering-delivery": "SHIP",
   "codex-weekly-session-report": "REVIEW",
 };
 const filmById = new Map(films.map((film) => [film.id, film]));
@@ -541,14 +542,16 @@ document
     copyText(
       skills.map((skill) => skill.command).join("\n"),
       event.currentTarget,
-      "9 个技能命令已复制。",
+      skills.length + " 个技能命令已复制。",
     ),
   );
 document
   .querySelector("#copy-share")
   .addEventListener("click", (event) =>
     copyText(
-      "分享一个 Skill 片库：悬停或点按就能看懂用途，9 个技能按需安装。\nhttps://ruanjianjian.github.io/elys-skill-foundry/",
+      "分享一个 Skill 片库：悬停或点按就能看懂用途，" +
+        skills.length +
+        " 个技能按需安装。\nhttps://ruanjianjian.github.io/elys-skill-foundry/",
       event.currentTarget,
       "群介绍已复制。",
     ),

@@ -44,13 +44,12 @@ export const skills = [
     hook: ["Claude 在安排", "Codex 各自开工"],
     payoff: "Claude 派活，Codex 会话看得见",
     visual: "dispatch",
-    skillUrl: null,
-    zipUrl: null,
-    installPending: true,
+    skillUrl: "skills/multi-agent-coding/SKILL.md",
+    zipUrl: "downloads/multi-agent-coding.zip",
     description:
       "让 Claude 把任务派到可见的 Codex session：拆分工作、跟踪进度、取回结果，反馈回到原会话续修。",
     installText:
-      "已安装后，在 Claude 中调用 /multi-agent-coding，说明任务和目标仓库。团队安装入口正在确认；桌面派活需要可用的 Codex 登录及会话适配器。",
+      "下载完整 ZIP，解压到本地 Agent 的 Skills 目录，重新打开会话。Claude 派活到 Codex 桌面需已登录的 Codex CLI 与 Codex Companion 插件；先用包内 doctor 检查依赖。",
   },
   {
     id: "web-testing",
@@ -129,6 +128,22 @@ export const skills = [
     description: "明确样本、模型版本和判定标准，再比较真实输出。",
     installText:
       "下载 ZIP，解压到本地 Agent 的 Skills 目录，重新打开会话。运行前确认评测目标、样本及模型配置；评测报告不代表线上版本已启用。",
+  },
+  {
+    id: "engineering-delivery",
+    title: "工程交付",
+    command: "/engineering-delivery",
+    tag: "DELIVER",
+    accent: "#BBC5D5",
+    hook: ["代码写完了", "评审还在绕"],
+    payoff: "追到评审有结论",
+    visual: "ship",
+    skillUrl: "skills/engineering-delivery/SKILL.md",
+    zipUrl: "downloads/engineering-delivery.zip",
+    description: "串起提交、评审与反馈修复，跟进同一个 PR。",
+    installText:
+      "下载 ZIP，解压到本地 Agent 的 Skills 目录，重新打开会话。需要相应仓库权限与项目交付工具；审批与发布仍以实际结果为准。",
+    lifecycle: "retiring",
   },
   {
     id: "codex-weekly-session-report",
