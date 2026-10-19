@@ -1,0 +1,11 @@
+{
+  "title": "Supernova",
+  "artist": "Scott Buckley",
+  "sourcePage": "https://www.scottbuckley.com.au/library/supernova/",
+  "downloadUrl": "https://www.scottbuckley.com.au/wp-content/audio/sb_supernova.mp3",
+  "license": "CC BY 4.0",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "bytes": 9413089,
+  "sha256": "9bb8aa0f0896d900c8ca39f6a2c3d609986728d776a86e0f2e9502e10f7fa834",
+  "changes": "Original MP3 unmodified; playback volume adjusted in browser, loop while a skill preview is active."
+}

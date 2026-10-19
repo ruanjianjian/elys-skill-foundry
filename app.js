@@ -1,6 +1,6 @@
 import { skills } from "./catalog.js";
 import { initSurfaceMotion } from "./surface-motion.js";
-import { createOfficialMusic } from "./official-music.js";
+import { createNativeMusic } from "./native-music.js";
 
 import { films } from "./collection-catalog.js";
 const cardVerbs = {
@@ -46,12 +46,9 @@ try {
   quiet = localStorage.getItem("foundry-static") === "yes";
   soundEnabled = localStorage.getItem("foundry-bgm") !== "off";
 } catch (_) {}
-const officialMusic = createOfficialMusic({
-  videoId: "E6wPP2tOHgg",
+const backgroundMusic = createNativeMusic({
+  src: new URL("media/audio/scott-buckley-supernova.mp3", import.meta.url).href,
   onChange: () => queueMicrotask(updateSoundButton),
-  onClose: () => {
-    if (soundEnabled) bgmButton.click();
-  },
 });
 const reduced = () => quiet || media.matches;
 function notify(message) {
@@ -65,7 +62,7 @@ function pauseItem(item) {
   if (active === item) {
     active = null;
     videoVersion++;
-    officialMusic.setWanted(false);
+    backgroundMusic.setWanted(false);
   }
   item.video.pause();
   item.video.muted = true;
@@ -84,7 +81,7 @@ async function playItem(item, { manual = false } = {}) {
   pauseItem(active);
   const version = ++videoVersion;
   active = item;
-  // Music stays in the artist's official player; card films never mix in audio.
+  // A single same-origin MP3 follows the active card; films stay muted.
   item.video.muted = true;
   item.needsGesture = false;
   item.video.currentTime = 0;
@@ -100,7 +97,7 @@ async function playItem(item, { manual = false } = {}) {
     item.preview.setAttribute("aria-pressed", "true");
     item.preview.setAttribute("aria-label", "暂停" + item.skill.title + "短片");
     item.icon.textContent = "Ⅱ";
-    officialMusic.setWanted(soundEnabled);
+    backgroundMusic.setWanted(soundEnabled);
     updateSoundButton();
   } catch (error) {
     if (version === videoVersion) {
@@ -394,7 +391,7 @@ for (const [index, skill] of skills.entries()) {
   });
   preview.addEventListener("click", () => {
     if (active === item && !video.paused) {
-      if (hoverMedia.matches && soundEnabled && !officialMusic.getState().playing)
+      if (hoverMedia.matches && soundEnabled && !backgroundMusic.getState().playing)
         unmuteActive();
       else pauseItem(item);
     } else playItem(item, { manual: true });
@@ -404,7 +401,7 @@ for (const [index, skill] of skills.entries()) {
     if (active !== item || document.hidden) video.pause();
   });
   video.addEventListener("pause", () => {
-    if (active === item && video.paused) officialMusic.setWanted(false);
+    if (active === item && video.paused) backgroundMusic.setWanted(false);
     updateSoundButton();
   });
   video.addEventListener("error", () => {
@@ -416,7 +413,7 @@ for (const [index, skill] of skills.entries()) {
 
 function updateSoundButton() {
   const running = active && !active.video.paused;
-  const music = officialMusic.getState();
+  const music = backgroundMusic.getState();
   const waiting = soundEnabled && running && !music.playing;
   if (running) {
     active.needsGesture = waiting;
@@ -439,14 +436,14 @@ function updateSoundButton() {
   bgmButton.textContent = soundEnabled ? "声音 开 ♪" : "声音 关";
   bgmButton.setAttribute(
     "aria-label",
-    soundEnabled ? "关闭 Groove Dealers 配乐" : "开启 Groove Dealers 配乐（随悬停播放）",
+    soundEnabled ? "关闭 Supernova 配乐" : "开启 Supernova 配乐（随悬停播放）",
   );
 }
 function unmuteActive() {
   const item = active;
   if (!soundEnabled || !item || item.video.paused || document.hidden) return;
-  officialMusic.setWanted(true);
-  officialMusic.resumeFromGesture();
+  backgroundMusic.setWanted(true);
+  backgroundMusic.resumeFromGesture();
   updateSoundButton();
 }
 bgmButton.addEventListener("click", () => {
@@ -456,7 +453,7 @@ bgmButton.addEventListener("click", () => {
     localStorage.setItem("foundry-bgm", soundEnabled ? "on" : "off");
   } catch (_) {}
   if (!soundEnabled) {
-    officialMusic.setWanted(false);
+    backgroundMusic.setWanted(false);
     for (const item of items) {
       item.video.muted = true;
       item.needsGesture = false;
@@ -471,7 +468,7 @@ function resumeOnGesture(event) {
     event.target.closest?.("#bgm-toggle, #motion-toggle, .film-preview")
   )
     return;
-  if (soundEnabled && active && !officialMusic.getState().playing) unmuteActive();
+  if (soundEnabled && active && !backgroundMusic.getState().playing) unmuteActive();
 }
 document.addEventListener("pointerdown", resumeOnGesture, { passive: true });
 document.addEventListener("keydown", resumeOnGesture);

@@ -14,7 +14,7 @@ const artifacts =
   process.env.FOUNDRY_ARTIFACT_DIR ||
   join(
     homedir(),
-    "DevData/Artifacts/20261017-skills-promo/foundry/official-music/qa-local",
+    "DevData/Artifacts/20261017-skills-promo/foundry/native-mp3/qa-local",
   );
 const output = join(artifacts, "ui");
 await mkdir(output, { recursive: true });
@@ -26,7 +26,7 @@ const report = {
     encoding: "utf8",
   }).trim(),
   audioEvidence:
-    "Card films must remain muted. This core gallery suite keeps the global music preference OFF during card interactions; actual official YouTube playback requires the independent verify-official-music.mjs suite. Chrome --mute-audio suppresses speakers; no listening review is claimed.",
+    "Card films remain muted. This gallery suite keeps music OFF for card checks. Native MP3 playback is accepted separately with the Work local browser; no listening review is claimed.",
   checks: [],
   consoleErrors: [],
   pageErrors: [],
@@ -319,7 +319,7 @@ try {
   await page.reload({ waitUntil: "domcontentloaded" });
   await ready(page);
   await check(
-    `Idle is silent with ${skills.length} muted card films and no native audio player`,
+    `Idle is silent with ${skills.length} muted card films and one paused native MP3`,
     async () => {
       const actual = await page.evaluate(() => ({
         cards: document.querySelectorAll(".film-card").length,
@@ -338,7 +338,7 @@ try {
       assert.deepEqual(actual, {
         cards: skills.length,
         videos: skills.length,
-        audioElements: 0,
+        audioElements: 1,
         soundPreference: "true",
         allPaused: true,
         allMuted: true,
@@ -397,7 +397,7 @@ try {
       return { ...actual, directory };
     },
   );
-  // Keep card UX deterministic; the separate real-network suite proves official music.
+  // Keep card UX deterministic; the Work local-browser journey proves native MP3 behavior.
   await page.click("#bgm-toggle");
   await page.waitForFunction(() => document.querySelector("#bgm-toggle").dataset.state === "off");
   await check(`${skills.length} collection posters decode`, async () => {
@@ -621,7 +621,7 @@ try {
       }));
       assert.deepEqual(explicitOn, { preference: "on", pressed: "true", cardsMuted: true });
       await page.click("#bgm-toggle");
-      return { ordinaryClickDidNotEnableSound: true, persisted, explicitOn, externalPlaybackEvidence: "Requires separate real-network verify-official-music.mjs report" };
+      return { ordinaryClickDidNotEnableSound: true, persisted, explicitOn, externalPlaybackEvidence: "See Work local-browser native MP3 journey" };
     },
   );
 
