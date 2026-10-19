@@ -1,5 +1,6 @@
 import { skills } from "./catalog.js";
 import { initSurfaceMotion } from "./surface-motion.js";
+import { createOfficialMusic } from "./official-music.js";
 
 import { films } from "./collection-catalog.js";
 const cardVerbs = {
@@ -40,12 +41,18 @@ let quiet = false;
 let soundEnabled = true;
 let active = null;
 let videoVersion = 0;
-let soundRequest = 0;
 let toastTimer;
 try {
   quiet = localStorage.getItem("foundry-static") === "yes";
   soundEnabled = localStorage.getItem("foundry-bgm") !== "off";
 } catch (_) {}
+const officialMusic = createOfficialMusic({
+  videoId: "E6wPP2tOHgg",
+  onChange: () => queueMicrotask(updateSoundButton),
+  onClose: () => {
+    if (soundEnabled) bgmButton.click();
+  },
+});
 const reduced = () => quiet || media.matches;
 function notify(message) {
   clearTimeout(toastTimer);
@@ -58,7 +65,7 @@ function pauseItem(item) {
   if (active === item) {
     active = null;
     videoVersion++;
-    soundRequest++;
+    officialMusic.setWanted(false);
   }
   item.video.pause();
   item.video.muted = true;
@@ -77,23 +84,13 @@ async function playItem(item, { manual = false } = {}) {
   pauseItem(active);
   const version = ++videoVersion;
   active = item;
-  item.video.muted = !soundEnabled;
-  item.video.volume = 0.65;
+  // Music stays in the artist's official player; card films never mix in audio.
+  item.video.muted = true;
   item.needsGesture = false;
   item.video.currentTime = 0;
   item.card.classList.add("is-loading");
   try {
-    try {
-      await item.video.play();
-    } catch (error) {
-      if (error.name !== "NotAllowedError") throw error;
-      if (version !== videoVersion || active !== item || document.hidden)
-        return;
-      // Audible hover may be blocked until a trusted click. Keep the preview usable.
-      item.video.muted = true;
-      item.needsGesture = soundEnabled;
-      await item.video.play();
-    }
+    await item.video.play();
     if (version !== videoVersion || active !== item || document.hidden) {
       if (active !== item || document.hidden) item.video.pause();
       return;
@@ -103,7 +100,7 @@ async function playItem(item, { manual = false } = {}) {
     item.preview.setAttribute("aria-pressed", "true");
     item.preview.setAttribute("aria-label", "暂停" + item.skill.title + "短片");
     item.icon.textContent = "Ⅱ";
-    item.label.textContent = item.needsGesture ? "点击开声" : "正在预览";
+    officialMusic.setWanted(soundEnabled);
     updateSoundButton();
   } catch (error) {
     if (version === videoVersion) {
@@ -397,7 +394,8 @@ for (const [index, skill] of skills.entries()) {
   });
   preview.addEventListener("click", () => {
     if (active === item && !video.paused) {
-      if (soundEnabled && video.muted) unmuteActive();
+      if (hoverMedia.matches && soundEnabled && !officialMusic.getState().playing)
+        unmuteActive();
       else pauseItem(item);
     } else playItem(item, { manual: true });
   });
@@ -405,7 +403,10 @@ for (const [index, skill] of skills.entries()) {
   video.addEventListener("play", () => {
     if (active !== item || document.hidden) video.pause();
   });
-  video.addEventListener("pause", updateSoundButton);
+  video.addEventListener("pause", () => {
+    if (active === item) officialMusic.setWanted(false);
+    updateSoundButton();
+  });
   video.addEventListener("error", () => {
     pauseItem(item);
     notify(skill.title + "短片加载失败，可稍后重试。");
@@ -415,7 +416,18 @@ for (const [index, skill] of skills.entries()) {
 
 function updateSoundButton() {
   const running = active && !active.video.paused;
-  const waiting = soundEnabled && running && active.video.muted;
+  const music = officialMusic.getState();
+  const waiting = soundEnabled && running && !music.playing;
+  if (running) {
+    active.needsGesture = waiting;
+    active.label.textContent = !soundEnabled || music.playing
+      ? "正在预览"
+      : music.status === "loading"
+        ? "配乐加载中"
+        : music.status === "error"
+          ? "配乐暂不可用"
+          : "点击开声";
+  }
   bgmButton.dataset.state = !soundEnabled
     ? "off"
     : waiting
@@ -427,41 +439,24 @@ function updateSoundButton() {
   bgmButton.textContent = soundEnabled ? "声音 开 ♪" : "声音 关";
   bgmButton.setAttribute(
     "aria-label",
-    soundEnabled ? "关闭所有短片声音" : "开启短片声音（随悬停播放）",
+    soundEnabled ? "关闭 Groove Dealers 配乐" : "开启 Groove Dealers 配乐（随悬停播放）",
   );
 }
-async function unmuteActive() {
+function unmuteActive() {
   const item = active;
   if (!soundEnabled || !item || item.video.paused || document.hidden) return;
-  const version = videoVersion;
-  const request = ++soundRequest;
-  item.video.muted = false;
-  try {
-    await item.video.play();
-    if (version !== videoVersion || active !== item || request !== soundRequest)
-      return;
-    if (!soundEnabled || document.hidden) item.video.muted = true;
-    else {
-      item.needsGesture = false;
-      item.label.textContent = "正在预览";
-    }
-  } catch (_) {
-    if (version !== videoVersion || active !== item || request !== soundRequest)
-      return;
-    item.video.muted = true;
-    item.needsGesture = true;
-    if (active === item) await item.video.play().catch(() => {});
-  }
+  officialMusic.setWanted(true);
+  officialMusic.resumeFromGesture();
   updateSoundButton();
 }
 bgmButton.addEventListener("click", () => {
   // A strict preference toggle: OFF always means OFF, even if autoplay was blocked.
   soundEnabled = !soundEnabled;
-  soundRequest++;
   try {
     localStorage.setItem("foundry-bgm", soundEnabled ? "on" : "off");
   } catch (_) {}
   if (!soundEnabled) {
+    officialMusic.setWanted(false);
     for (const item of items) {
       item.video.muted = true;
       item.needsGesture = false;
@@ -476,7 +471,7 @@ function resumeOnGesture(event) {
     event.target.closest?.("#bgm-toggle, #motion-toggle, .film-preview")
   )
     return;
-  if (soundEnabled && active && active.video.muted) unmuteActive();
+  if (soundEnabled && active && !officialMusic.getState().playing) unmuteActive();
 }
 document.addEventListener("pointerdown", resumeOnGesture, { passive: true });
 document.addEventListener("keydown", resumeOnGesture);

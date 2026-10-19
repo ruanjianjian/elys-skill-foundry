@@ -14,7 +14,7 @@ const artifacts =
   process.env.FOUNDRY_ARTIFACT_DIR ||
   join(
     homedir(),
-    "DevData/Artifacts/20261017-skills-promo/foundry/catalog-zip/qa-local",
+    "DevData/Artifacts/20261017-skills-promo/foundry/official-music/qa-local",
   );
 const output = join(artifacts, "ui");
 await mkdir(output, { recursive: true });
@@ -26,7 +26,7 @@ const report = {
     encoding: "utf8",
   }).trim(),
   audioEvidence:
-    "Native media state and decoded audio-track presence only. Chrome --mute-audio suppresses speakers; no listening review is claimed.",
+    "Card films must remain muted. This core gallery suite keeps the global music preference OFF during card interactions; actual official YouTube playback requires the independent verify-official-music.mjs suite. Chrome --mute-audio suppresses speakers; no listening review is claimed.",
   checks: [],
   consoleErrors: [],
   pageErrors: [],
@@ -115,12 +115,6 @@ async function waitPlaying(page, id) {
 async function state(page, id) {
   return page.evaluate((id) => {
     const video = document.querySelector("#video-" + id);
-    let audioTracks = null;
-    if (typeof video.captureStream === "function") {
-      const stream = video.captureStream();
-      audioTracks = stream.getAudioTracks().length;
-      for (const track of stream.getTracks()) track.stop();
-    }
     return {
       id,
       src: video.currentSrc,
@@ -131,8 +125,7 @@ async function state(page, id) {
       paused: video.paused,
       muted: video.muted,
       volume: video.volume,
-      audioTracks,
-      decodedAudioBytes: video.webkitAudioDecodedByteCount ?? null,
+      decodedVideoFrames: video.getVideoPlaybackQuality?.().totalVideoFrames ?? null,
       running: [...document.querySelectorAll(".skill-video")]
         .filter((video) => !video.paused)
         .map((video) => video.id),
@@ -307,6 +300,7 @@ try {
       "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     userDataDir: join(artifacts, "chrome-collection-qa-profile"),
     headless: true,
+    pipe: true,
     args: [
       "--mute-audio",
       "--disable-background-timer-throttling",
@@ -325,7 +319,7 @@ try {
   await page.reload({ waitUntil: "domcontentloaded" });
   await ready(page);
   await check(
-    `Idle is silent with ${skills.length} inline films and no independent audio player`,
+    `Idle is silent with ${skills.length} muted card films and no native audio player`,
     async () => {
       const actual = await page.evaluate(() => ({
         cards: document.querySelectorAll(".film-card").length,
@@ -403,6 +397,9 @@ try {
       return { ...actual, directory };
     },
   );
+  // Keep card UX deterministic; the separate real-network suite proves official music.
+  await page.click("#bgm-toggle");
+  await page.waitForFunction(() => document.querySelector("#bgm-toggle").dataset.state === "off");
   await check(`${skills.length} collection posters decode`, async () => {
     const posters = await decodePosters(page);
     assert.equal(posters.length, skills.length);
@@ -523,7 +520,7 @@ try {
     },
   );
   await check(
-    `All ${skills.length} real hovers play their own audible-track film, leave pauses and mutes all`,
+    `All ${skills.length} real hovers decode their muted card film; leave pauses all`,
     async () => {
       await page.click("h1");
       const results = [];
@@ -542,12 +539,8 @@ try {
           );
           assert.equal(actual.width, 1280);
           assert.equal(actual.height, 720);
-          assert.equal(actual.muted, false);
-          assert.ok(actual.volume > 0);
-          assert.ok(
-            actual.audioTracks > 0 || actual.decodedAudioBytes > 0,
-            "No decoded audio track for " + film.id,
-          );
+          assert.equal(actual.muted, true);
+          if (actual.decodedVideoFrames !== null) assert.ok(actual.decodedVideoFrames > 0, "No decoded video frames for " + film.id);
           assert.deepEqual(actual.running, ["video-" + film.id]);
           await leave(page);
           results.push({
@@ -567,7 +560,7 @@ try {
       await waitPlaying(page, films[0].id);
       const returned = await state(page, films[0].id);
       assert.deepEqual(returned.running, ["video-" + films[0].id]);
-      assert.equal(returned.muted, false);
+      assert.equal(returned.muted, true);
       await leave(page);
       const failed = results.filter((result) => !result.passed);
       if (failed.length)
@@ -588,9 +581,10 @@ try {
     },
   );
   await check(
-    "One idle sound click switches OFF; ordinary gestures and reload preserve OFF; explicit ON restores audio",
+    "Music intent toggles OFF once and persists; card films remain muted when intent is explicitly ON",
     async () => {
       await leave(page);
+      if (await page.$eval("#bgm-toggle", button => button.getAttribute("aria-pressed") === "false")) await page.click("#bgm-toggle");
       await page.click("#bgm-toggle");
       await page.waitForFunction(
         () => document.querySelector("#bgm-toggle").dataset.state === "off",
@@ -620,19 +614,14 @@ try {
       await page.screenshot({ path: join(output, "sound-off.png") });
       await leave(page);
       await page.click("#bgm-toggle");
-      await page.hover(preview("ns-spec-cards"));
-      await waitPlaying(page, "ns-spec-cards");
-      const restored = await state(page, "ns-spec-cards");
-      assert.equal(restored.muted, false);
-      await leave(page);
-      return {
-        ordinaryClickDidNotEnableSound: true,
-        persisted,
-        explicitOn: {
-          muted: restored.muted,
-          audioTracks: restored.audioTracks,
-        },
-      };
+      const explicitOn = await page.evaluate(() => ({
+        preference: localStorage.getItem("foundry-bgm"),
+        pressed: document.querySelector("#bgm-toggle").getAttribute("aria-pressed"),
+        cardsMuted: [...document.querySelectorAll(".skill-video")].every(video => video.muted),
+      }));
+      assert.deepEqual(explicitOn, { preference: "on", pressed: "true", cardsMuted: true });
+      await page.click("#bgm-toggle");
+      return { ordinaryClickDidNotEnableSound: true, persisted, explicitOn, externalPlaybackEvidence: "Requires separate real-network verify-official-music.mjs report" };
     },
   );
 
@@ -647,7 +636,7 @@ try {
       await waitPlaying(mobile, "ns-spec-cards");
       const actual = await state(mobile, "ns-spec-cards");
       assert.deepEqual(actual.running, ["video-ns-spec-cards"]);
-      assert.equal(actual.muted, false);
+      assert.equal(actual.muted, true);
       await mobile.tap(preview("ns-spec-cards"));
       await mobile.waitForFunction(
         () =>
@@ -943,11 +932,13 @@ try {
         assert.equal(face.posterOpacity, 0);
       }
       await stableDefaultFrame(page);
+      if (await page.$eval("#bgm-toggle", button => button.getAttribute("aria-pressed") === "false")) await page.click("#bgm-toggle");
       await page.screenshot({ path: join(output, "desktop.png") });
       await page.screenshot({
         path: join(output, "fullpage.png"),
         fullPage: true,
       });
+      await page.click("#bgm-toggle");
       return {
         screenshots: ["desktop.png", "fullpage.png"],
         allPausedAndMuted: true,
@@ -990,7 +981,12 @@ try {
   report.fatalError = error.stack;
   console.error(error.stack);
 } finally {
-  if (browser) await browser.close();
+  if (browser) {
+    const pages = await browser.pages();
+    const closing = await Promise.allSettled(pages.map(page => page.close({ runBeforeUnload: false })));
+    await browser.close();
+    report.cleanup = { closedPages: pages.length, pageCloseErrors: closing.filter(result => result.status === "rejected").map(result => result.reason?.message || String(result.reason)), browserDisconnected: !browser.connected, activeResourcesAfterClose: process.getActiveResourcesInfo?.() || [] };
+  }
   report.finishedAt = new Date().toISOString();
   report.passed =
     !report.fatalError &&
