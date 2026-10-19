@@ -58,7 +58,7 @@ node scripts/render-collection.mjs --posters-only --ids=test-journal
 FOUNDRY_ARTIFACT_DIR=/absolute/artifacts node scripts/remix-collection.mjs
 ```
 
-此步骤保留 H.264 视频 packet，只重作 AAC 音轨；两遍响度归一目标 -15 LUFS / -2.5 dBTP，编码后再测量，确认视频 packet SHA 一致。旧 MP4、原始 WAV、响度及 hash 记录留在指定产物目录。`music-v3` 三项主推分别使用明亮流行、侦探 Big Beat、工业半拍；其余覆盖 Jungle、夜驾 Synthwave、无鼓钢琴、朋克、Glitch、Bossa 与 Swing 爵士。[配乐方向表](docs/motion-films.md#配乐更新十种独立声音)记录速度与乐器差异。
+此步骤保留 H.264 视频 packet，只重作 AAC 音轨；两遍响度归一目标 -15 LUFS / -2.5 dBTP，编码后再测量，确认视频 packet SHA 一致。旧 MP4、原始 WAV、响度及 hash 记录留在指定产物目录。`music-v3` 三项主推分别使用明亮流行、侦探 Big Beat、工业半拍；其余覆盖 Jungle、夜驾 Synthwave、无鼓钢琴、朋克、Glitch、Bossa 与 Swing 爵士。[配乐方向表](docs/motion-films.md#2026-10-17-历史资产十种独立声音)记录速度与乐器差异。
 
 音乐分别定义在 `scripts/score_neon.py`、`scripts/score_kinetic.py`、`scripts/score_tactile.py`、`scripts/score_precise.py`。每首自行定义声源、鼓组和段落，`make-collection-score.py` 仅路由、校验与写 WAV。
 
