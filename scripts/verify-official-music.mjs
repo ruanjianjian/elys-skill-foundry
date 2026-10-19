@@ -118,8 +118,16 @@ async function playOfficial(page) {
   assert.notEqual(ready.dataset.status, "error", "Official source unavailable: " + ready.dataset.error);
   await sameCardGesture(page);
   await page.waitForFunction(selector => { const d = document.querySelector(selector)?.dataset; return d?.playerState === "1" && d.playing === "true" && d.muted === "false" && Number(d.currentTime) > .6; }, { timeout: 20_000 }, dock);
-  const first = await snapshot(page); await delay(800); const second = await snapshot(page);
-  assert.ok(Number(second.dataset.currentTime) - Number(first.dataset.currentTime) > .35, "Real YouTube time did not advance");
+  const first = await snapshot(page);
+  try {
+    await page.waitForFunction((selector, initialTime) => {
+      const d = document.querySelector(selector)?.dataset;
+      return d?.playerState === "1" && d.muted === "false" && Number(d.currentTime) > initialTime + .35;
+    }, { timeout: 5000 }, dock, Number(first.dataset.currentTime));
+  } catch (error) {
+    throw new Error("Real YouTube time did not advance: " + JSON.stringify({ first, later: await snapshot(page), native: await nativeState(page) }), { cause: error });
+  }
+  const second = await snapshot(page);
   assert.equal(second.dataset.videoId, report.expectedVideoId);
   assert.ok(second.iframe?.src.includes("/embed/" + report.expectedVideoId));
   assert.ok(second.iframe.visible && second.iframe.width >= 200 && second.iframe.height >= 200, "Official player must remain visibly at least 200x200");

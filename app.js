@@ -404,7 +404,7 @@ for (const [index, skill] of skills.entries()) {
     if (active !== item || document.hidden) video.pause();
   });
   video.addEventListener("pause", () => {
-    if (active === item) officialMusic.setWanted(false);
+    if (active === item && video.paused) officialMusic.setWanted(false);
     updateSoundButton();
   });
   video.addEventListener("error", () => {
