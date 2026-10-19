@@ -1,6 +1,6 @@
 import { skills } from "./catalog.js";
 import { initSurfaceMotion } from "./surface-motion.js";
-import { createNativeMusic } from "./native-music.js?v=20261019-foundry-11";
+import { createNativeMusic } from "./native-music.js?v=20261019-foundry-12";
 
 import { films } from "./collection-catalog.js";
 const cardVerbs = {
@@ -47,7 +47,7 @@ try {
   soundEnabled = localStorage.getItem("foundry-bgm") !== "off";
 } catch (_) {}
 const backgroundMusic = createNativeMusic({
-  src: new URL("media/audio/supernova-highlight.mp3", import.meta.url).href,
+  src: new URL("media/audio/supernova-hook.mp3", import.meta.url).href,
   onChange: () => queueMicrotask(updateSoundButton),
 });
 const reduced = () => quiet || media.matches;

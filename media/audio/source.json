@@ -9,8 +9,8 @@
   "sha256": "9bb8aa0f0896d900c8ca39f6a2c3d609986728d776a86e0f2e9502e10f7fa834",
   "changes": "Original MP3 unmodified; playback volume adjusted in browser, loop while a skill preview is active.",
   "websitePlayback": {
-    "file": "supernova-highlight.mp3",
-    "provenance": "supernova-highlight.json",
-    "changes": "High-energy excerpt; loop crossfade, limiter and edge fades, encoded at 128kbps. Visible attribution labels highlight edit."
+    "file": "supernova-hook.mp3",
+    "provenance": "supernova-hook.json",
+    "changes": "User-selected B: source 60.600–85.863s, 160kbps, only 8ms edge fades; no introductory splice, crossfade, EQ, compressor or limiter. Original dynamics retained. Visible credit labels an excerpt."
   }
 }

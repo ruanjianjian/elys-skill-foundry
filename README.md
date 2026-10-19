@@ -19,7 +19,7 @@
 
 **悬停续播，离开即停；声音关闭偏好保存，普通点击和刷新不会重新开声。** 浏览器限制有声自动播放时提示点击开声。手机点按播放/暂停，支持键盘、减少动态、静态模式和离屏/隐藏暂停。短片本身始终静音，下载的原MP4仍保留各自原创配乐。
 
-音乐署名：‘Supernova’ by Scott Buckley — released under CC-BY 4.0. www.scottbuckley.com.au 。原MP3未修改，浏览器调整音量并在短片预览期间循环播放。[官方曲目](https://www.scottbuckley.com.au/library/supernova/) · [音频许可与出处](media/audio/README.md)。
+音乐署名：‘Supernova’ by Scott Buckley — released under CC-BY 4.0. www.scottbuckley.com.au 。原MP3保留；网页播放用户选择的B段节选（原曲1:00.6起），仅首尾短淡化，浏览器调整音量并在预览期间循环播放。[官方曲目](https://www.scottbuckley.com.au/library/supernova/) · [音频许可与出处](media/audio/README.md)。
 
 图画与剧情是能力宣传示意，不代表真实业务实录或验收结论。画面、海报、MP3和页面脚本均由同站提供。原标题与卡片角标保留本地React/Liquid装饰岛和原有液态动效。[制作记录](docs/collection-art.md)。
 
@@ -72,4 +72,4 @@ FOUNDRY_ARTIFACT_DIR=/absolute/artifacts node scripts/remix-collection.mjs
 
 规格、验收边界及独立测试报告见 [docs/motion-films.md](docs/motion-films.md)。GitHub Pages 从 `main` 根目录发布，兼容 `/elys-skill-foundry/` 子目录。旧 `?cut=cinematic` 链接也显示整套新片。
 
-The website preloads a 486 KB, 30.316-second highlight edit of Supernova (original 123.789–154.105s), rather than loading the 9.4 MB full track on hover. Audio starts alongside the video request, without waiting for the video buffer. First-visit sound is ON; an explicitly saved OFF choice is respected. Browser autoplay restrictions may still require the first click on a skill preview.
+The website preloads the user-selected B edit of Supernova: 507 KB, 25.263 seconds, original 60.600–85.863s, with only 8ms edge fades. The previously rejected bass-heavy 123.789s opening is no longer referenced. It does not load the 9.4 MB full track on hover. Audio starts alongside the video request, without waiting for the video buffer. First-visit sound is ON; an explicitly saved OFF choice is respected. Browser autoplay restrictions may still require the first click on a skill preview.
