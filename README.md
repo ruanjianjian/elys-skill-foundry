@@ -71,3 +71,5 @@ FOUNDRY_ARTIFACT_DIR=/absolute/artifacts node scripts/remix-collection.mjs
 ## 交付与验证
 
 规格、验收边界及独立测试报告见 [docs/motion-films.md](docs/motion-films.md)。GitHub Pages 从 `main` 根目录发布，兼容 `/elys-skill-foundry/` 子目录。旧 `?cut=cinematic` 链接也显示整套新片。
+
+The website preloads a 486 KB, 30.316-second highlight edit of Supernova (original 123.789–154.105s), rather than loading the 9.4 MB full track on hover. Audio starts alongside the video request, without waiting for the video buffer. First-visit sound is ON; an explicitly saved OFF choice is respected. Browser autoplay restrictions may still require the first click on a skill preview.

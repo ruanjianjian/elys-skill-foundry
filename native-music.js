@@ -11,10 +11,10 @@ export function createNativeMusic({ src, onChange = () => {} } = {}) {
   audio.id = "foundry-bgm-audio";
   audio.hidden = true;
   audio.setAttribute("aria-hidden", "true");
-  audio.preload = "none";
+  audio.preload = "auto";
   audio.loop = true;
   audio.muted = true;
-  audio.volume = 0.32;
+  audio.volume = 0.42;
   audio.src = source.href;
   document.body.append(audio);
 
@@ -23,6 +23,8 @@ export function createNativeMusic({ src, onChange = () => {} } = {}) {
   let request = 0;
   let pending = null;
   let confirmedPlaying = false;
+  let requestedAt = 0;
+  let startupMs = 0;
   let status = "idle";
   let reason = "idle";
   let error = "";
@@ -34,6 +36,7 @@ export function createNativeMusic({ src, onChange = () => {} } = {}) {
   function getState() {
     return {
       status,
+      startupMs,
       playing: confirmedPlaying && !audio.paused && !audio.ended && audio.readyState >= 3,
       wanted,
       muted: audio.muted,
@@ -93,6 +96,8 @@ export function createNativeMusic({ src, onChange = () => {} } = {}) {
   function attemptPlay() {
     if (!allowed()) return false;
     const version = ++request;
+    requestedAt = performance.now();
+    startupMs = 0;
     pending = version;
     confirmedPlaying = false;
     status = audio.readyState >= 2 ? "ready" : "loading";
@@ -121,6 +126,7 @@ export function createNativeMusic({ src, onChange = () => {} } = {}) {
       pending = null;
       if (!allowed()) { revoke("revoked-after-play"); return; }
       if (!audio.paused && !audio.ended && audio.readyState >= 3) {
+        if (!confirmedPlaying) startupMs = Math.round(performance.now() - requestedAt);
         confirmedPlaying = true;
         status = "playing";
         reason = "playing";
@@ -158,6 +164,7 @@ export function createNativeMusic({ src, onChange = () => {} } = {}) {
   });
   listen("playing", () => {
     if (!guardMediaEvent()) return;
+    startupMs = Math.round(performance.now() - requestedAt);
     confirmedPlaying = true;
     status = "playing";
     reason = "playing";
@@ -226,12 +233,21 @@ export function createNativeMusic({ src, onChange = () => {} } = {}) {
     // This is intentionally not an ON switch; the caller must still want music
     // for the currently active card when the trusted gesture arrives.
     if (!allowed()) return false;
+    // setWanted may already have started this same gesture. Do not issue a
+    // second play() or invalidate its request while the file is buffering.
+    if (pending !== null || getState().playing) return true;
     return attemptPlay();
   }
   const onVisibility = () => { if (document.hidden) revoke("hidden"); };
   const onPageHide = () => revoke("pagehide");
   document.addEventListener("visibilitychange", onVisibility);
   window.addEventListener("pagehide", onPageHide);
+  function prepare() {
+    // Preload without playing outside the active-card scope. Browser autoplay
+    // policy still decides whether a later hover needs an explicit click.
+    if (!destroyed && audio.networkState === 0) audio.load();
+  }
+  prepare();
   lastNotification = JSON.stringify(getState());
   publish();
 
@@ -239,6 +255,7 @@ export function createNativeMusic({ src, onChange = () => {} } = {}) {
     setWanted,
     resumeFromGesture,
     getState,
+    prepare,
     destroy() {
       if (destroyed) return;
       revoke("destroyed");

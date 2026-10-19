@@ -1,6 +1,6 @@
 import { skills } from "./catalog.js";
 import { initSurfaceMotion } from "./surface-motion.js";
-import { createNativeMusic } from "./native-music.js";
+import { createNativeMusic } from "./native-music.js?v=20261019-foundry-11";
 
 import { films } from "./collection-catalog.js";
 const cardVerbs = {
@@ -47,7 +47,7 @@ try {
   soundEnabled = localStorage.getItem("foundry-bgm") !== "off";
 } catch (_) {}
 const backgroundMusic = createNativeMusic({
-  src: new URL("media/audio/scott-buckley-supernova.mp3", import.meta.url).href,
+  src: new URL("media/audio/supernova-highlight.mp3", import.meta.url).href,
   onChange: () => queueMicrotask(updateSoundButton),
 });
 const reduced = () => quiet || media.matches;
@@ -86,6 +86,9 @@ async function playItem(item, { manual = false } = {}) {
   item.needsGesture = false;
   item.video.currentTime = 0;
   item.card.classList.add("is-loading");
+  // Request audio in the same input event, before waiting for video buffering.
+  backgroundMusic.setWanted(soundEnabled);
+  updateSoundButton();
   try {
     await item.video.play();
     if (version !== videoVersion || active !== item || document.hidden) {
@@ -97,7 +100,6 @@ async function playItem(item, { manual = false } = {}) {
     item.preview.setAttribute("aria-pressed", "true");
     item.preview.setAttribute("aria-label", "暂停" + item.skill.title + "短片");
     item.icon.textContent = "Ⅱ";
-    backgroundMusic.setWanted(soundEnabled);
     updateSoundButton();
   } catch (error) {
     if (version === videoVersion) {
@@ -390,7 +392,7 @@ for (const [index, skill] of skills.entries()) {
     if (!card.contains(event.relatedTarget)) pauseItem(item);
   });
   preview.addEventListener("click", () => {
-    if (active === item && !video.paused) {
+    if (active === item && (!video.paused || card.classList.contains("is-loading"))) {
       if (hoverMedia.matches && soundEnabled && !backgroundMusic.getState().playing)
         unmuteActive();
       else pauseItem(item);
@@ -412,7 +414,7 @@ for (const [index, skill] of skills.entries()) {
 }
 
 function updateSoundButton() {
-  const running = active && !active.video.paused;
+  const running = active && (!active.video.paused || active.card.classList.contains("is-loading"));
   const music = backgroundMusic.getState();
   const waiting = soundEnabled && running && !music.playing;
   if (running) {
@@ -432,6 +434,14 @@ function updateSoundButton() {
       : running
         ? "playing"
         : "ready";
+  const hint = document.querySelector("#preview-hint");
+  hint.textContent = reduced()
+    ? "静态浏览 · 点按可播放"
+    : hoverMedia.matches
+      ? "悬停播放 · 移开即停"
+      : "点按播放 · 再点暂停";
+  if (waiting && music.status === "blocked")
+    hint.textContent += " · 首次点按短片开声";
   bgmButton.setAttribute("aria-pressed", String(soundEnabled));
   bgmButton.textContent = soundEnabled ? "声音 开 ♪" : "声音 关";
   bgmButton.setAttribute(
@@ -441,7 +451,7 @@ function updateSoundButton() {
 }
 function unmuteActive() {
   const item = active;
-  if (!soundEnabled || !item || item.video.paused || document.hidden) return;
+  if (!soundEnabled || !item || document.hidden) return;
   backgroundMusic.setWanted(true);
   backgroundMusic.resumeFromGesture();
   updateSoundButton();
@@ -468,9 +478,11 @@ function resumeOnGesture(event) {
     event.target.closest?.("#bgm-toggle, #motion-toggle, .film-preview")
   )
     return;
-  if (soundEnabled && active && !backgroundMusic.getState().playing) unmuteActive();
+  if (!soundEnabled || document.hidden) return;
+  if (active && !backgroundMusic.getState().playing) unmuteActive();
+  else if (!active) backgroundMusic.prepare();
 }
-document.addEventListener("pointerdown", resumeOnGesture, { passive: true });
+document.addEventListener("click", resumeOnGesture);
 document.addEventListener("keydown", resumeOnGesture);
 function updatePreference() {
   document.documentElement.classList.toggle("static-mode", reduced());

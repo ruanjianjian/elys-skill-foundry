@@ -1,0 +1,47 @@
+{
+  "title": "Supernova — highlight edit",
+  "artist": "Scott Buckley",
+  "sourceFile": "scott-buckley-supernova.mp3",
+  "sourceSHA256": "9bb8aa0f0896d900c8ca39f6a2c3d609986728d776a86e0f2e9502e10f7fa834",
+  "license": "CC BY 4.0 (source already provided and authorized in this task)",
+  "sourceExcerptSeconds": {
+    "start": 123.789473684,
+    "end": 154.10526315768422
+  },
+  "loopSeamContextSeconds": {
+    "start": 154.10526315768422,
+    "end": 154.18526315768423
+  },
+  "intendedDurationSeconds": 30.31578947368421,
+  "encodedDurationSeconds": 30.315782,
+  "decodedDurationSeconds": 30.31578231292517,
+  "bitrateKbps": 128,
+  "sampleRate": 44100,
+  "channels": 2,
+  "filters": "[0:a]atrim=start=123.789473684:end=154.105263158,asetpts=PTS-STARTPTS,asplit=2[hs][bs];[hs]atrim=start=0:end=0.08,asetpts=PTS-STARTPTS[head];[bs]atrim=start=0.08:end=30.315789474,asetpts=PTS-STARTPTS[body];[0:a]atrim=start=154.105263158:end=154.185263158,asetpts=PTS-STARTPTS[continuation];[continuation][head]acrossfade=d=0.08:c1=tri:c2=tri[loopseam];[loopseam][body]concat=n=2:v=0:a=1,alimiter=limit=0.89:level=0:attack=1:release=20:latency=1,afade=t=in:st=0:d=0.006,afade=t=out:st=30.291789474:d=0.024[out]",
+  "loopTreatment": "80 ms linear continuation-to-head crossfade; exact rhythmic window retained; limiter latency compensated before final 6 ms start / 24 ms end de-click fades",
+  "selectionBasis": {
+    "method": "local decoded mono RMS, 100 ms block floor and multi-band onset autocorrelation; no listening claim",
+    "estimatedPulseBpm": 95,
+    "pulseEstimateIsInference": true,
+    "windowInferredBeats": 48,
+    "selectedMonoRms": 0.308139,
+    "selectedMonoRms10thPercentile": 0.258473,
+    "opening0to32SecondsApproxMonoRms": 0.1315,
+    "reason": "Second sustained high-energy section; highest RMS and 100 ms energy floor among seven onset-aligned candidates. Starts inside strong percussion without the original quiet introduction."
+  },
+  "measurements": {
+    "decodedPeak": 0.7498103380203247,
+    "decodedRms": 0.21286666092381484,
+    "firstAboveMinus50DbSeconds": 6.802721088435374e-05,
+    "finite": true,
+    "silenceThresholdDb": -50,
+    "integratedLufs": -13.0,
+    "truePeakDbtp": -2.5,
+    "decodedLoopBoundarySampleJump": 0.0021757788490504026,
+    "sourceUnchanged": true
+  },
+  "sizeBytes": 486327,
+  "sha256": "969b4bffc2e6266ff4772eecdc014207d14f66254634566bdb6d3be62625056b",
+  "listeningVerified": false
+}
