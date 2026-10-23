@@ -17,6 +17,14 @@ export const films = [
     posterTime: 7.36,
   },
   {
+    id: "mac-dev-resource-guard",
+    duration: 16,
+    bpm: 120,
+    genre: "studio-house",
+    style: "桌面整理术",
+    posterTime: 6.4,
+  },
+  {
     id: "multi-agent-coding",
     duration: 16,
     bpm: 86,
