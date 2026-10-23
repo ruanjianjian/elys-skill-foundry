@@ -1,11 +1,12 @@
-import { skills } from "./catalog.js";
+import { skills } from "./catalog.js?v=20261023-foundry-13";
 import { initSurfaceMotion } from "./surface-motion.js";
 import { createNativeMusic } from "./native-music.js?v=20261019-foundry-12";
 
-import { films } from "./collection-catalog.js";
+import { films } from "./collection-catalog.js?v=20261023-foundry-13";
 const cardVerbs = {
   "ns-spec-cards": "ALIGN",
   "test-journal": "TRACE",
+  "mac-dev-resource-guard": "RECLAIM",
   "multi-agent-coding": "DISPATCH",
   "web-testing": "WEB",
   "mobile-testing": "MOBILE",
@@ -180,13 +181,13 @@ for (const [index, skill] of skills.entries()) {
   card.dataset.verb = verb;
   card.dataset.featured = String(Boolean(skill.featured));
   card.dataset.lifecycle = skill.lifecycle || "active";
-  card.dataset.accent = skill.featured
+  card.dataset.accent = skill.cardAccent || (skill.featured
     ? skill.id === "test-journal"
       ? "#20d5ad"
       : "#e4492e"
     : skill.id === "codex-weekly-session-report"
       ? "#20d5ad"
-      : "#1746e6";
+      : "#1746e6");
   card.dataset.accentInk = [
     "test-journal",
     "codex-weekly-session-report",
@@ -285,7 +286,8 @@ for (const [index, skill] of skills.entries()) {
     copy.disabled = true;
     try {
       let text;
-      if (skill.zipUrl) {
+      if (skill.installPrompt) text = skill.installPrompt;
+      else if (skill.zipUrl) {
         const response = await fetch(skill.skillUrl);
         if (!response.ok) throw new Error("Could not load skill");
         text = await response.text();
@@ -349,10 +351,18 @@ for (const [index, skill] of skills.entries()) {
   download.href = video.getAttribute("src");
   download.download = skill.id + ".mp4";
   links.append(download);
+  if (skill.shareText) {
+    const share = node("button", "show-example", "复制推广文案 ↗");
+    share.type = "button";
+    share.addEventListener("click", () =>
+      copyText(skill.shareText, share, "资源看板推广文案已复制。"),
+    );
+    links.append(share);
+  }
   const details = node("details", "film-tools");
   const summary = node("summary", "", "使用说明");
   summary.append(node("span", "", "＋"));
-  const sourceLink = node("a", "", "查看 SKILL.md ↗");
+  const sourceLink = node("a", "", skill.detailLabel || "查看 SKILL.md ↗");
   sourceLink.href = skill.skillUrl || "#" + skill.id;
   if (!skill.zipUrl) {
     sourceLink.target = "_blank";
@@ -412,6 +422,10 @@ for (const [index, skill] of skills.entries()) {
   });
   grid.append(card);
 }
+if (skills.some((skill) => "#" + skill.id === location.hash))
+  requestAnimationFrame(() =>
+    document.getElementById(location.hash.slice(1))?.scrollIntoView(),
+  );
 
 function updateSoundButton() {
   const running = active && (!active.video.paused || active.card.classList.contains("is-loading"));

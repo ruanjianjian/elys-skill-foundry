@@ -36,6 +36,29 @@ export const skills = [
     featured: true,
   },
   {
+    id: "mac-dev-resource-guard",
+    title: "资源看板",
+    command: "/mac-dev-resource-guard",
+    tag: "RECLAIM",
+    accent: "#087f73",
+    cardAccent: "#087f73",
+    hook: ["缓存积起来", "开发现场别打断"],
+    payoff: "看清再清理，留住开发现场",
+    visual: "resource",
+    skillUrl: "https://github.com/ruanjianjian/mac-dev-resource-guard",
+    zipUrl: null,
+    description:
+      "在一个菜单栏入口查看内存与磁盘，分类扫描受管理缓存和开发后台，先看预览、再确认清理。复用 dev-storage / dev-memory 的保护规则，保留活跃、受保护和状态不明的资源；不直接删除任务目录。还可按项目接入固定 Xcode 构建缓存复用。",
+    installText:
+      "macOS 13+、Python 3.9+，构建看板需 Xcode 或 Command Line Tools。把源仓库交给 Codex / Claude，先检查并复用已有工具，安装看板和配套命令。面板可独立只读使用，清理按钮需 dev-storage / dev-memory；默认不开自动回收、不安装周期调度。启动默认隐藏，点击菜单栏图标或按 ⌃⌥⌘S 呼出，快捷键冲突时自动尝试备用组合。",
+    installPrompt:
+      "请按 https://github.com/ruanjianjian/mac-dev-resource-guard 的 README 安装资源看板和配套命令。先检查现有 dev-storage / dev-memory、调度和正在运行的任务，复用已有安装，不覆盖、不打断开发。暂不开启周期清理；先展示诊断和清理预览。需要修改项目构建入口时先列出具体改动。",
+    shareText:
+      "给 Mac 开发同学推荐「资源看板」：菜单栏里查看内存与磁盘，分类扫描、先看预览再清理，复用 dev-storage / dev-memory 保护规则，保留活跃与受保护资源。默认隐藏面板，点击图标或 ⌃⌥⌘S 唤出；开源，macOS 13+，默认不开自动回收。\n看短片与安装说明：https://ruanjianjian.github.io/elys-skill-foundry/?v=foundry-13#mac-dev-resource-guard\n源码：https://github.com/ruanjianjian/mac-dev-resource-guard",
+    detailLabel: "查看安装步骤 ↗",
+    featured: true,
+  },
+  {
     id: "multi-agent-coding",
     title: "多 Agent 派活",
     command: "/multi-agent-coding",

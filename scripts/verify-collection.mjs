@@ -364,10 +364,11 @@ try {
         directory.some((item) => item.id === "engineering-delivery"),
         true,
       );
-      assert.equal(directory[2].id, "multi-agent-coding");
+      assert.equal(directory[2].id, "mac-dev-resource-guard");
+      assert.equal(directory[3].id, "multi-agent-coding");
       assert.deepEqual(
         directory.filter((item) => item.featured).map((item) => item.id),
-        ["ns-spec-cards", "test-journal"],
+        ["ns-spec-cards", "test-journal", "mac-dev-resource-guard"],
       );
       assert.deepEqual(
         directory

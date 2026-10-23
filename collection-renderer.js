@@ -2,11 +2,12 @@ import * as people from "./motion-collection/people.js";
 import * as machines from "./motion-collection/machines.js";
 import * as stories from "./motion-collection/stories.js";
 import * as multi from "./motion-collection/multi.js";
+import * as resource from "./motion-collection/resource.js";
 import { skills } from "./catalog.js";
 
 export const WIDTH = 1280,
   HEIGHT = 720;
-const modules = [people, machines, stories, multi];
+const modules = [people, machines, stories, multi, resource];
 const entries = modules.flatMap((module) =>
   module.films.map((film) => ({ film, module })),
 );

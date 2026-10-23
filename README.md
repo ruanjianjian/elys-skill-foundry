@@ -1,11 +1,12 @@
 # ELYS Skill Foundry — Skills in Motion
 
-[在线片库](https://ruanjianjian.github.io/elys-skill-foundry/)：10 个技能、10 个不同的短片世界。悬停看它能帮你解决什么，再按需安装。
+[在线片库](https://ruanjianjian.github.io/elys-skill-foundry/)：11 个技能、11 个不同的短片世界。悬停看它能帮你解决什么，再按需安装。
 
 | 技能                          | 画面世界           | 核心价值 / 状态                                                 |
 | ----------------------------- | ------------------ | --------------------------------------------------------------- |
 | ns-spec-cards                 | 手绘人物与实体卡片 | **重点展示** · 简短问题、逐卡交互，快速与 AI 对齐               |
 | test-journal                  | 纸片侦探           | **重点展示** · 体验出发，抓关键 Bug，沉淀复测动线               |
+| mac-dev-resource-guard       | 墨绿铝制工作台     | **新增** · 内存与磁盘同一入口，预览后回收，保留开发现场         |
 | multi-agent-coding            | 实体会话调度台     | Claude 派活给可见 Codex session，跟进进度、取回结果、原会话续修 |
 | web-testing                   | 黏土浏览器游乐场   | 必要步骤抓住真实体验卡点                                        |
 | mobile-testing                | 午夜城市与手机门   | 从 App 到系统交互，体验走到底                                   |
@@ -73,3 +74,7 @@ FOUNDRY_ARTIFACT_DIR=/absolute/artifacts node scripts/remix-collection.mjs
 规格、验收边界及独立测试报告见 [docs/motion-films.md](docs/motion-films.md)。GitHub Pages 从 `main` 根目录发布，兼容 `/elys-skill-foundry/` 子目录。旧 `?cut=cinematic` 链接也显示整套新片。
 
 The website preloads the user-selected B edit of Supernova: 507 KB, 25.263 seconds, original 60.600–85.863s, with only 8ms edge fades. The previously rejected bass-heavy 123.789s opening is no longer referenced. It does not load the 9.4 MB full track on hover. Audio starts alongside the video request, without waiting for the video buffer. First-visit sound is ON; an explicitly saved OFF choice is respected. Browser autoplay restrictions may still require the first click on a skill preview.
+
+## 资源看板宣传入口
+
+新增 [资源看板](https://ruanjianjian.github.io/elys-skill-foundry/?v=foundry-13#mac-dev-resource-guard)：16 秒原创工作台短片，可下载 MP4、复制推广文案及安装提示。工具源码与完整安装步骤由[公开源仓库](https://github.com/ruanjianjian/mac-dev-resource-guard)维护，不在片库另存工具源码。看板默认隐藏、菜单栏或 ⌃⌥⌘S 呼出；安装默认不开自动回收。影片为能力示意，不是产品录屏。画面和制作提示词见 [制作与验收范围](docs/resource-guard-promo.md)。
