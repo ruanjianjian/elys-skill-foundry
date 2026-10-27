@@ -112,7 +112,7 @@ export function render(c,{art},id,t) {
       });
       text(c,"菜单栏常驻 · 按需唤起",81,547,18,"#c9dbce");
     }else if(act===1){
-      copy(c,"先看清，","再清理。","分类扫描，先看预览和保留原因。",local);
+      copy(c,"装好后，","自动维护。","每 12 小时检查过期 Xcode 缓存。",local);
       panel(c,678,250,496,319,(x,y)=>{
         const rows=[['构建中间缓存','可回收','#1746a3'],['开发后台','待复核','#8b6833'],['运行中的任务','保留','#16705d']];
         rows.forEach(([label,state,color],i)=>{
@@ -124,16 +124,16 @@ export function render(c,{art},id,t) {
             if(i<2)line(c,x+26,yy+33,x+470,yy+33,"#dce3d9");
           });
         });
-        text(c,"清理前由原工具再次检查",x+27,y+286,15,"#577369");
+        text(c,"清理前再次核对占用与保护",x+27,y+286,15,"#577369");
       });
     }else if(act===2){
       copy(c,"只收尾，","留住现场。","复用 dev-storage / dev-memory。",local);
       const confirm=ease((local-.8)/.5), clear=ease((local-1.75)/1.1);
       layer(c,1-ease((local-1.65)/.35),()=>{
         panel(c,714,238,430,153,(x,y)=>{
-          text(c,"预览后，确认回收",x+25,y+81,22,ink,650);
+          text(c,"已开启安全自动维护",x+25,y+81,22,ink,650);
           rect(c,x+253,y+58,153,46,confirm>.6?"#0c594d":"#178773",12);
-          text(c,confirm>.6?"已确认":"确认清理",x+279,y+82,18,"#f5f6ed",650);
+          text(c,confirm>.6?"已复核":"复核保护",x+279,y+82,18,"#f5f6ed",650);
         });
       });
       cache(c,mix(720,1120,clear),mix(430,245,clear),"中间缓存","#b8d2c1",1-clear);
@@ -143,20 +143,20 @@ export function render(c,{art},id,t) {
         circle(c,780,404,7,"#13816a");text(c,"活跃 · 受保护 · 状态不明",800,405,20,ink,650);
         text(c,"保留，不直接删除任务目录",774,442,17,"#4c6b61");
       });
-      text(c,"范围内回收，确认后执行。",81,463,20,"#c9dbce");
+      text(c,"构建接入一次，同槽重复复用。",81,463,20,"#c9dbce");
     }else{
       layer(c,ease(local/.65),()=>{
         text(c,"资源看板。",76,224,86,paper,740);
         text(c,"平时藏起来，需要时叫出来。",81,310,27,"#d2e3d3",500);
         keys(c,81,391,local-.2,.9);
-        text(c,"macOS 13+  /  开源  /  默认不开自动回收",81,503,20,"#c9dbce");
+        text(c,"macOS 13+  /  开源  /  安装后自动维护",81,503,20,"#c9dbce");
         text(c,"github.com/ruanjianjian/mac-dev-resource-guard",81,549,17,"#9fc8b8",500,mono);
         dial(c,950,371,137,local);
       });
     }
   });
   line(c,77,628,1202,628,"#c6e0ce44");
-  text(c,"能力示意 · 清理范围与保护状态由原工具复核",78,661,15,"#bad1c4",450);
+  text(c,"能力示意 · 仅回收安全候选，不承诺固定容量",78,661,15,"#bad1c4",450);
   text(c,`${String(act+1).padStart(2,'0')} / 04`,1124,661,15,"#bad1c4",500,mono);
   rect(c,78,699,1124,2,"#9fb6a84d",1);
   rect(c,78,699,1124*t/16,2,mint,1);

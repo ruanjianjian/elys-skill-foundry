@@ -897,3 +897,6 @@ dialog::backdrop {
   letter-spacing: 0;
   white-space: nowrap;
 }
+
+/* Installation examples remain readable on narrow screens. */
+.install-commands { max-width: 100%; overflow-x: auto; padding: 16px; border-radius: 12px; background: rgba(0,0,0,.05); font-size: 12px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }

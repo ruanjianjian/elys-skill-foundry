@@ -1,8 +1,8 @@
-import { skills } from "./catalog.js?v=20261023-foundry-13";
+import { skills } from "./catalog.js?v=20261027-resource-guard-13";
 import { initSurfaceMotion } from "./surface-motion.js";
 import { createNativeMusic } from "./native-music.js?v=20261019-foundry-12";
 
-import { films } from "./collection-catalog.js?v=20261023-foundry-13";
+import { films } from "./collection-catalog.js?v=20261027-resource-guard-13";
 const cardVerbs = {
   "ns-spec-cards": "ALIGN",
   "test-journal": "TRACE",
@@ -17,8 +17,8 @@ const cardVerbs = {
   "codex-weekly-session-report": "REVIEW",
 };
 const filmById = new Map(films.map((film) => [film.id, film]));
-const filmPath = (skill) => "media/collection/" + skill.id + ".mp4?v=music-v3";
-const posterPath = (skill) => "media/collection/" + skill.id + ".jpg";
+const filmPath = (skill) => "media/collection/" + skill.id + ".mp4?v=" + (skill.id === "mac-dev-resource-guard" ? "resource-guard-13" : "music-v3");
+const posterPath = (skill) => "media/collection/" + skill.id + ".jpg" + (skill.id === "mac-dev-resource-guard" ? "?v=resource-guard-13" : "");
 
 const grid = document.querySelector("#skill-grid");
 const toast = document.querySelector("[data-toast]");
@@ -376,6 +376,11 @@ for (const [index, skill] of skills.entries()) {
     node("p", "install-note", skill.installText),
     sourceParagraph,
   );
+  if (skill.installCommands) {
+    const commands = node("pre", "install-commands");
+    commands.append(node("code", "", skill.installCommands));
+    details.append(commands);
+  }
   body.append(titleRow, actions, links, details);
   card.append(preview, body);
   const item = {
