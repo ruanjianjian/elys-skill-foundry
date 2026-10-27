@@ -33,9 +33,9 @@
 图形确定性渲染，网页离屏/隐藏自动暂停，用户可随时打断；减少动态时保留静态卡片。
 
 1. 唤起：开发现场轻一点；显示快捷键与内存、磁盘入口。
-2. 扫描：构建中间缓存、开发后台、运行中任务分别显示状态。
-3. 确认：先出现确认回收，再将可回收模块收进托盘；活跃、受保护、状态不明内容保留。
-4. 收尾：资源看板名称、快捷键、默认不开自动回收及公开仓库。
+2. 维护：安装后自动维护，每12小时检查过期Xcode缓存；后台与运行中任务分别显示状态。
+3. 复核：先复核占用与保护，再将可回收模块收进托盘；活跃、受保护、状态不明内容保留；说明构建需接入入口。
+4. 收尾：资源看板名称、快捷键、安装后自动维护及公开仓库。
 
 ## 资产与复现
 
@@ -61,3 +61,18 @@ FOUNDRY_ARTIFACT_DIR=/absolute/artifacts node scripts/remix-collection.mjs --ids
 ```text
 Use case: ads-marketing. Asset type: original cinematic 16:9 background plate for a miniature product film about a Mac developer resource-cleanup menu-bar app. A beautifully art-directed miniature precision workshop on a deep petrol teal tabletop, tactile brushed aluminum and warm ivory resin. Wide near-overhead three-quarter camera, understated modern Japanese industrial product photography, long soft afternoon studio shadows, premium materials and restrained grain. Center-right contains a large perfectly EMPTY flat working mat in muted teal, covering the middle and lower-right 65% so animated cache blocks and a small floating panel can be composited later. At far right a small shallow EMPTY brushed aluminum sorting tray with clear rim; at back right a few compact dark teal stacked machine modules with a single small emerald pilot light, these represent work in progress that stays untouched. At far left edge a cropped low-profile silver keyboard with blank unmarked keys, and one minimal cylindrical dial; keep upper left 40% open dark teal negative space for large readable typographic captions to be overlaid. Quiet sculptural realism, purposeful geometric composition, no human, no robot, no rubbish, no broom, no computer interface, no glowing HUD, no circuit-board wallpaper, no flowchart or arrows. No text, no letters, no numbers, no logos, no watermark. All stationary objects should stay close to the edges; the central work area must be large, empty, and uninterrupted. Landscape 16:9.
 ```
+
+## 2026-10-27 · 1.3 安装说明同步
+
+用户原话：“把新版安装说明和介绍同步到 GitHub README 和之前的宣传网页，给我一个能直接转发给同事的链接，全程后台做，别弹面板。”
+
+AI 转述（非需求真值）：将页面、复制安装说明、群介绍和短片统一为已合入的1.3能力，新增终端安装/接入/升级示例；不修改清理引擎。使用独立无界面浏览器验收，不操作用户桌面。
+
+| ID | 级 | 验收标准 | 落点 | 状态 |
+| --- | --- | --- | --- | --- | --- |
+| AC-P13-01 | 核 | 桌面直达资源看板1.3，展开说明并复制安装、推广文字，包含完整安装、项目接入、升级、保护边界；短片结尾不再写默认不开自动回收 | web-desktop | ✅ 独立headless Chromium实测，复制接收器隔离，视频下载哈希一致 |
+| AC-P13-02 | 核 | 手机390/320px说明和命令完整，无横向溢出，复制文本一致，视频可解码 | web-mobile | ✅ headless Chromium 390/320px实测；未覆盖实体手机 |
+
+TC-P13-01 / guard-install / web-desktop：打开资源卡片，展开说明、复制两类文案、播放及下载新版短片并核对哈希。
+TC-P13-02 / guard-install / web-mobile：390/320px展开说明与命令，检查溢出、复制、主动播放。
+发布后核对 Pages 部署提交、线上脚本/视频哈希与直达入口。视频仍是能力示意，不是原生录屏。

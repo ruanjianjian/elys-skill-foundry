@@ -6,7 +6,7 @@
 | ----------------------------- | ------------------ | --------------------------------------------------------------- |
 | ns-spec-cards                 | 手绘人物与实体卡片 | **重点展示** · 简短问题、逐卡交互，快速与 AI 对齐               |
 | test-journal                  | 纸片侦探           | **重点展示** · 体验出发，抓关键 Bug，沉淀复测动线               |
-| mac-dev-resource-guard       | 墨绿铝制工作台     | **新增** · 内存与磁盘同一入口，预览后回收，保留开发现场         |
+| mac-dev-resource-guard       | 墨绿铝制工作台     | **新增** · 内存与磁盘同一入口，安装后自动维护，接入后复用构建缓存         |
 | multi-agent-coding            | 实体会话调度台     | Claude 派活给可见 Codex session，跟进进度、取回结果、原会话续修 |
 | web-testing                   | 黏土浏览器游乐场   | 必要步骤抓住真实体验卡点                                        |
 | mobile-testing                | 午夜城市与手机门   | 从 App 到系统交互，体验走到底                                   |
@@ -77,4 +77,4 @@ The website preloads the user-selected B edit of Supernova: 507 KB, 25.263 secon
 
 ## 资源看板宣传入口
 
-新增 [资源看板](https://ruanjianjian.github.io/elys-skill-foundry/?v=foundry-13#mac-dev-resource-guard)：16 秒原创工作台短片，可下载 MP4、复制推广文案及安装提示。工具源码与完整安装步骤由[公开源仓库](https://github.com/ruanjianjian/mac-dev-resource-guard)维护，不在片库另存工具源码。看板默认隐藏、菜单栏或 ⌃⌥⌘S 呼出；安装默认不开自动回收。影片为能力示意，不是产品录屏。画面和制作提示词见 [制作与验收范围](docs/resource-guard-promo.md)。
+新增 [资源看板](https://ruanjianjian.github.io/elys-skill-foundry/?v=resource-guard-1.3#mac-dev-resource-guard)：16 秒原创工作台短片，可下载 MP4、复制推广文案及安装提示。工具源码与完整安装步骤由[公开源仓库](https://github.com/ruanjianjian/mac-dev-resource-guard)维护，不在片库另存工具源码。看板默认隐藏、菜单栏或 ⌃⌥⌘S 呼出；1.3 完整安装启用安全自动维护；项目需要实际调用生成的入口才会复用构建缓存。影片为能力示意，不是产品录屏。画面和制作提示词见 [制作与验收范围](docs/resource-guard-promo.md)。
