@@ -1,2 +1,3 @@
 interface:
   display_name: "让哈基米学会反重力飞翔"
+  default_prompt: "用 $antigravity-login 帮我在 Mac 上登录 Antigravity，自己完成适用的排查和重试，直到收到模型回复；需要我本人操作时，只提示我完成那一步。"
